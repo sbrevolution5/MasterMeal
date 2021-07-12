@@ -1,5 +1,6 @@
 using MasterMeal.Data;
 using MasterMeal.Models;
+using MasterMeal.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,6 +39,14 @@ namespace MasterMeal
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddScoped<CommentService>();
+            services.AddScoped<FileService>();
+            services.AddScoped<IngredientService>();
+            services.AddScoped<MealService>();
+            services.AddScoped<RatingService>();
+            services.AddScoped<RecipieService>();
+            services.AddScoped<ShoppingService>();
+            services.AddScoped<SupplyService>();
             services.AddRazorPages();
         }
 
