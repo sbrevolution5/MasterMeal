@@ -11,5 +11,7 @@ namespace MasterMeal.Models
         public int IngredientId { get; set; }
         public int Quantity { get; set; }
         public List<string> Notes { get; set; }
+        public bool InPantry { get; set; }
+
     }
 }

@@ -8,6 +8,8 @@ namespace MasterMeal.Models
     public class ShoppingList
     {
         public int Id { get; set; }
+        public DateTime created { get; set; }
+        public string Name { get; set; }
         public string ChefId { get; set; }
         public virtual Chef Chef { get; set; }
         public List<ShoppingIngredient> ShoppingIngredients { get; set; }
