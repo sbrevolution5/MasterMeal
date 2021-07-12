@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MasterMeal.Data;
 using MasterMeal.Models;
 using MasterMeal.Services.Interfaces;
 
@@ -9,6 +10,13 @@ namespace MasterMeal.Services
 {
     public class RecipieService : IRecipieService
     {
+        private readonly ApplicationDbContext _context;
+
+        public RecipieService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public Task<Recipie> GetRecipieByIdAsync(int recipieId)
         {
             throw new NotImplementedException();

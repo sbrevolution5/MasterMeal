@@ -1,4 +1,5 @@
-﻿using MasterMeal.Models;
+﻿using MasterMeal.Data;
+using MasterMeal.Models;
 using MasterMeal.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,13 @@ namespace MasterMeal.Services
 {
     public class ShoppingService : IShoppingService
     {
+        private readonly ApplicationDbContext _context;
+
+        public ShoppingService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public List<List<QIngredient>> CreateListOfQIngredientsForShopping(List<Meal> meals)
         {
             throw new NotImplementedException();

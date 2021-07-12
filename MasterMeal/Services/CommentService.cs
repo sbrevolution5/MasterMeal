@@ -1,4 +1,5 @@
-﻿using MasterMeal.Models;
+﻿using MasterMeal.Data;
+using MasterMeal.Models;
 using MasterMeal.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,13 @@ namespace MasterMeal.Services
 {
     public class CommentService : ICommentService
     {
+        private readonly ApplicationDbContext _context;
+
+        public CommentService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public List<Comment> GetRecipieCommentsAsync(int recipieId)
         {
             throw new NotImplementedException();

@@ -1,4 +1,5 @@
-﻿using MasterMeal.Models;
+﻿using MasterMeal.Data;
+using MasterMeal.Models;
 using MasterMeal.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,13 @@ namespace MasterMeal.Services
 {
     public class SupplyService : ISupplyService
     {
+        private readonly ApplicationDbContext _context;
+
+        public SupplyService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public Task<List<Supply>> GetSuppliesForMultipleRecipiesAsync(List<Recipie> recipies)
         {
             throw new NotImplementedException();
