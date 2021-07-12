@@ -13,8 +13,10 @@ namespace MasterMeal.Services.Interfaces
         public Task<List<Recipie>> GetUserRecipiesByTypeAsync(string userId,int typeId);
         public Task<List<Recipie>> GetRecipiesByTypeAsync(int typeId);
         public Task<List<Recipie>> GetRecipiesByRatingAsync(int minRating);
-        public Task<List<Recipie>> GetRecipiesByMaxCookingTime(int maxTime);
-        public Task<List<Recipie>> GetRecipiesByMinCookingTime(int minTime);
-        public Task<List<Recipie>> GetUserFavoriteRecipie(string UserId);
+        public Task<List<Recipie>> GetRecipiesByMaxCookingTimeAsync(int maxTime);
+        public Task<List<Recipie>> GetRecipiesByMinCookingTimeAsync(int minTime);
+        public Task<List<Recipie>> GetUserFavoriteRecipiesAsync(string UserId);
+        public Task<List<Recipie>> GetRecipiesByIngredientsAsync(List<Ingredient> ingredients);
+        public Task<List<Recipie>> GetRecipiesBySuppliesAsync(List<Supply> supplies);
     }
 }

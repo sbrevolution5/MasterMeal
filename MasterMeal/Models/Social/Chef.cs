@@ -17,6 +17,7 @@ namespace MasterMeal.Models
         public string DisplayName { get; set; }
         public int ImageId { get; set; }
         public virtual ImageFile Image { get; set; }
+        public List<Recipie> FavoriteRecipies { get; set; }
         [NotMapped]
         public string FullName
         {

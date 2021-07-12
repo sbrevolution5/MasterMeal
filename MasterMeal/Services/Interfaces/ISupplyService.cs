@@ -9,5 +9,7 @@ namespace MasterMeal.Services.Interfaces
     public interface ISupplyService
     {
         public Task<Supply> GetSupplyByIdAsync(int supplyId);
+        public Task<List<Supply>> GetSuppliesForRecipieAsync(int recipieId);
+        public Task<List<Supply>> GetSuppliesForMultipleRecipiesAsync(List<Recipie> recipies);
     }
 }
