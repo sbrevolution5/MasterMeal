@@ -8,7 +8,8 @@ namespace MasterMeal.Services.Interfaces
 {
     public interface IIngredientService
     {
-        public List<Ingredient> GetRecipieIngredientsAsync(int recipieId);
-        public List<Ingredient> GetShoppingListIngredientsAsync(int shoppingListId);
+        public Task<Ingredient> GetIngredientByIdAsync(int ingredientId);
+        public Task<List<Ingredient>> GetRecipieIngredientsAsync(int recipieId);
+        public Task<List<Ingredient>> GetShoppingListIngredientsAsync(int shoppingListId);
     }
 }
