@@ -51,9 +51,15 @@ namespace MasterMeal.Services
             return recipies;
         }
 
-        public Task<List<Recipie>> GetRecipiesByRatingAsync(int minRating)
+        public async Task<List<Recipie>> GetRecipiesByRatingAsync(int minRating)
         {
-            throw new NotImplementedException();
+            var recipies = await _context.Recipie
+                                    .Include(r => r.Ingredients)
+                                    .ThenInclude(i => i.Ingredient)
+                                    .Include(r => r.Type)
+                                    .Include(r => r.Author)
+                                    .Where(r => r.AvgRating >= minRating).ToListAsync();
+            return recipies;
         }
 
         public Task<List<Recipie>> GetRecipiesBySuppliesAsync(List<Supply> supplies)
@@ -100,9 +106,21 @@ namespace MasterMeal.Services
             return recipies;
         }
 
-        public Task<List<Recipie>> GetUserRecipiesWithNoRating(string userId)
+        public async Task<List<Recipie>> GetUserRecipiesWithNoRating(string userId)
         {
-            throw new NotImplementedException();
+            var today = DateTime.Now;
+            var pastMeals = await _context.Meal.Where(m => m.Date < today && m.ChefId == userId).Include(m => m.Recipie).ThenInclude(r=>r.Ratings).ToListAsync();
+            List<Recipie> noRating = new();
+
+            foreach (var meal in pastMeals)
+            {
+                //if the recipie doesn't have a rating where this user rated it, add it to the list
+                if (meal.Recipie.Ratings.Where(r => r.ChefId == userId) == null)
+                {
+                    noRating.Add(meal.Recipie);
+                }
+            }
+            return noRating;
         }
     }
 }

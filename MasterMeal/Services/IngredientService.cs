@@ -1,6 +1,7 @@
 ﻿using MasterMeal.Data;
 using MasterMeal.Models;
 using MasterMeal.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,15 @@ namespace MasterMeal.Services
             _context = context;
         }
 
-        public Task<Ingredient> GetIngredientByIdAsync(int ingredientId)
+        public async Task<Ingredient> GetIngredientByIdAsync(int ingredientId)
         {
-            throw new NotImplementedException();
+            var ingredient = await _context.Ingredient.FirstOrDefaultAsync(i => i.Id == ingredientId);
+            return ingredient;
         }
 
         public Task<List<Ingredient>> GetRecipieIngredientsAsync(int recipieId)
         {
+
             throw new NotImplementedException();
         }
 

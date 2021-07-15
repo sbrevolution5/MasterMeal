@@ -9,6 +9,5 @@ namespace MasterMeal.Services.Interfaces
     public interface IRatingService
     {
         public Task<List<Rating>> GetRatingsByUserAsync(string userId);
-        public Task<List<Rating>> GetRatingsByRecipieAsync(int recipieId);
     }
 }

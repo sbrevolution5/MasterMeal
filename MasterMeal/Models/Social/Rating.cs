@@ -9,6 +9,8 @@ namespace MasterMeal.Models
     {
         public int Id { get; set; }
         public int Stars { get; set; }
+        public string ChefId { get; set; }
+        public virtual Chef Chef { get; set; }
         public int RecipieId { get; set; }
         public virtual Recipie Recipie { get; set; }
     }

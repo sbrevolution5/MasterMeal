@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,5 +20,20 @@ namespace MasterMeal.Models
         public virtual Chef Author { get; set; }
         public int TypeId { get; set; }
         public virtual RecipieType Type { get; set; }
+        [NotMapped]
+        public float AvgRating
+        {
+            get
+            {
+                float avg=0f;
+                int total=0;
+                foreach (var rating in Ratings)
+                {
+                    total += rating.Stars;
+                }
+                avg = total / Ratings.Count;
+                return avg;
+            }
+        }
     }
 }
