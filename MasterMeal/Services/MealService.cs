@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using MasterMeal.Data;
 using MasterMeal.Models;
 using MasterMeal.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 namespace MasterMeal.Services
 {
     public class MealService : IMealService
@@ -16,14 +18,46 @@ namespace MasterMeal.Services
             _context = context;
         }
 
-        public List<Meal> GetUserMealsAsync(string userId)
+        public async Task<List<Meal>> GetUserFutureMealsAsync(string chefId)
         {
-            throw new NotImplementedException();
+            var now = DateTime.Now;
+            var futureMeals = await _context.Meal.Where(m => m.ChefId == chefId)
+                                .Where(m => m.Date >= now)
+                                .Include(m => m.Recipie)
+                                .ThenInclude(r => r.Ingredients)
+                                .ThenInclude(i => i.Ingredient)
+                                .Include(m => m.Recipie)
+                                .ThenInclude(r => r.Supplies)
+                                .ToListAsync();
+
+            return futureMeals;
         }
 
-        public List<Meal> GetUserMealsInDateRangeAsync(string userId, DateTime minDateInclusive, DateTime maxDateInclusive)
+        public async Task<List<Meal>> GetUserMealsAsync(string chefId)
         {
-            throw new NotImplementedException();
+            var userMeals = await _context.Meal.Where(m => m.ChefId == chefId)
+                                .Include(m => m.Recipie)
+                                .ThenInclude(r => r.Ingredients)
+                                .ThenInclude(i => i.Ingredient)
+                                .Include(m => m.Recipie)
+                                .ThenInclude(r => r.Supplies)
+                                .ToListAsync();
+
+            return userMeals;
+        }
+
+        public async Task<List<Meal>> GetUserMealsInDateRangeAsync(string chefId, DateTime minDateInclusive, DateTime maxDateInclusive)
+        {
+            var futureMeals = await _context.Meal.Where(m => m.ChefId == chefId)
+                                .Where(m => m.Date >= minDateInclusive && m.Date <= maxDateInclusive)
+                                .Include(m => m.Recipie)
+                                .ThenInclude(r => r.Ingredients)
+                                .ThenInclude(i => i.Ingredient)
+                                .Include(m => m.Recipie)
+                                .ThenInclude(r => r.Supplies)
+                                .ToListAsync();
+
+            return futureMeals;
         }
     }
 }
