@@ -12,6 +12,6 @@ namespace MasterMeal.Models
         public string ChefId { get; set; }
         public virtual Chef Chef { get; set; }
         public int RecipieId { get; set; }
-        public virtual Recipie Recipie { get; set; }
+        public virtual Recipe Recipie { get; set; }
     }
 }

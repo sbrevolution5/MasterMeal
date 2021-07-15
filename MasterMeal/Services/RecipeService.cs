@@ -9,30 +9,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MasterMeal.Services
 {
-    public class RecipieService : IRecipieService
+    public class RecipeService : IRecipeService
     {
         private readonly ApplicationDbContext _context;
 
-        public RecipieService(ApplicationDbContext context)
+        public RecipeService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Recipie> GetRecipieByIdAsync(int recipieId)
+        public async Task<Recipe> GetRecipieByIdAsync(int recipieId)
         {
-            return await _context.Recipie.FirstOrDefaultAsync(r => r.Id == recipieId);
+            return await _context.Recipe.FirstOrDefaultAsync(r => r.Id == recipieId);
         }
 
 
-        public Task<List<Recipie>> GetRecipiesByIngredientsAsync(List<Ingredient> ingredients)
+        public Task<List<Recipe>> GetRecipiesByIngredientsAsync(List<Ingredient> ingredients)
         {
             throw new NotImplementedException();
         }
 
 
-        public async Task<List<Recipie>> GetRecipiesByMaxCookingTimeAsync(int maxTime)
+        public async Task<List<Recipe>> GetRecipiesByMaxCookingTimeAsync(int maxTime)
         {
-            var recipies = await _context.Recipie
+            var recipies = await _context.Recipe
                                     .Include(r => r.Ingredients)
                                     .ThenInclude(i => i.Ingredient)
                                     .Include(r => r.Type)
@@ -40,9 +40,9 @@ namespace MasterMeal.Services
                                     .Where(r => r.CookingTime <= maxTime).ToListAsync();
             return recipies;
         }
-        public async Task<List<Recipie>> GetRecipiesByMinCookingTimeAsync(int minTime)
+        public async Task<List<Recipe>> GetRecipiesByMinCookingTimeAsync(int minTime)
         {
-            var recipies = await _context.Recipie
+            var recipies = await _context.Recipe
                                     .Include(r => r.Ingredients)
                                     .ThenInclude(i => i.Ingredient)
                                     .Include(r => r.Type)
@@ -51,9 +51,9 @@ namespace MasterMeal.Services
             return recipies;
         }
 
-        public async Task<List<Recipie>> GetRecipiesByRatingAsync(int minRating)
+        public async Task<List<Recipe>> GetRecipiesByRatingAsync(int minRating)
         {
-            var recipies = await _context.Recipie
+            var recipies = await _context.Recipe
                                     .Include(r => r.Ingredients)
                                     .ThenInclude(i => i.Ingredient)
                                     .Include(r => r.Type)
@@ -62,14 +62,14 @@ namespace MasterMeal.Services
             return recipies;
         }
 
-        public Task<List<Recipie>> GetRecipiesBySuppliesAsync(List<Supply> supplies)
+        public Task<List<Recipe>> GetRecipiesBySuppliesAsync(List<Supply> supplies)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<Recipie>> GetRecipiesByTypeAsync(int typeId)
+        public async Task<List<Recipe>> GetRecipiesByTypeAsync(int typeId)
         {
-            var recipies = await _context.Recipie
+            var recipies = await _context.Recipe
                                     .Include(r => r.Ingredients)
                                     .ThenInclude(i => i.Ingredient)
                                     .Include(r => r.Type)
@@ -78,15 +78,15 @@ namespace MasterMeal.Services
             return recipies;
         }
 
-        public Task<List<Recipie>> GetUserFavoriteRecipiesAsync(string UserId)
+        public Task<List<Recipe>> GetUserFavoriteRecipiesAsync(string UserId)
         {
 
             throw new NotImplementedException();
         }
 
-        public async Task<List<Recipie>> GetUserRecipiesAsync(string userId)
+        public async Task<List<Recipe>> GetUserRecipiesAsync(string userId)
         {
-            var recipies = await _context.Recipie
+            var recipies = await _context.Recipe
                                     .Include(r => r.Ingredients)
                                     .ThenInclude(i => i.Ingredient)
                                     .Include(r => r.Type)
@@ -95,9 +95,9 @@ namespace MasterMeal.Services
             return recipies;
         }
 
-        public async Task<List<Recipie>> GetUserRecipiesByTypeAsync(string userId, int typeId)
+        public async Task<List<Recipe>> GetUserRecipiesByTypeAsync(string userId, int typeId)
         {
-            var recipies = await _context.Recipie
+            var recipies = await _context.Recipe
                                     .Include(r => r.Ingredients)
                                     .ThenInclude(i => i.Ingredient)
                                     .Include(r => r.Type)
@@ -106,18 +106,18 @@ namespace MasterMeal.Services
             return recipies;
         }
 
-        public async Task<List<Recipie>> GetUserRecipiesWithNoRating(string userId)
+        public async Task<List<Recipe>> GetUserRecipiesWithNoRating(string userId)
         {
             var today = DateTime.Now;
-            var pastMeals = await _context.Meal.Where(m => m.Date < today && m.ChefId == userId).Include(m => m.Recipie).ThenInclude(r=>r.Ratings).ToListAsync();
-            List<Recipie> noRating = new();
+            var pastMeals = await _context.Meal.Where(m => m.Date < today && m.ChefId == userId).Include(m => m.Recipe).ThenInclude(r=>r.Ratings).ToListAsync();
+            List<Recipe> noRating = new();
 
             foreach (var meal in pastMeals)
             {
                 //if the recipie doesn't have a rating where this user rated it, add it to the list
-                if (meal.Recipie.Ratings.Where(r => r.ChefId == userId) == null)
+                if (meal.Recipe.Ratings.Where(r => r.ChefId == userId) == null)
                 {
-                    noRating.Add(meal.Recipie);
+                    noRating.Add(meal.Recipe);
                 }
             }
             return noRating;

@@ -19,6 +19,8 @@ namespace MasterMeal.Services
 
         public List<List<QIngredient>> CreateListOfQIngredientsForShopping(List<Meal> meals)
         {
+            //First list is all qingredients from meal.recipies
+            //None are combined yet, to preserve the shopping notes for each recipie
             throw new NotImplementedException();
         }
 

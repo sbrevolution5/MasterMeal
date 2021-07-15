@@ -17,7 +17,7 @@ namespace MasterMeal.Services
             _context = context;
         }
 
-        public Task<List<Supply>> GetSuppliesForMultipleRecipiesAsync(List<Recipie> recipies)
+        public Task<List<Supply>> GetSuppliesForMultipleRecipiesAsync(List<Recipe> recipies)
         {
             throw new NotImplementedException();
         }

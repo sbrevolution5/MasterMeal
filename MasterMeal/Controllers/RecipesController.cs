@@ -10,11 +10,11 @@ using MasterMeal.Models;
 
 namespace MasterMeal.Controllers
 {
-    public class RecipiesController : Controller
+    public class RecipesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public RecipiesController(ApplicationDbContext context)
+        public RecipesController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace MasterMeal.Controllers
         // GET: Recipies
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Recipie.Include(r => r.Type);
+            var applicationDbContext = _context.Recipe.Include(r => r.Type);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var recipie = await _context.Recipie
+            var recipie = await _context.Recipe
                 .Include(r => r.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (recipie == null)
@@ -48,7 +48,7 @@ namespace MasterMeal.Controllers
         // GET: Recipies/Create
         public IActionResult Create()
         {
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipieType>(), "Id", "Id");
+            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Id");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CookingTime,Description,AuthorId,TypeId")] Recipie recipie)
+        public async Task<IActionResult> Create([Bind("Id,Name,CookingTime,Description,AuthorId,TypeId")] Recipe recipie)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace MasterMeal.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipieType>(), "Id", "Id", recipie.TypeId);
+            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Id", recipie.TypeId);
             return View(recipie);
         }
 
@@ -77,12 +77,12 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var recipie = await _context.Recipie.FindAsync(id);
+            var recipie = await _context.Recipe.FindAsync(id);
             if (recipie == null)
             {
                 return NotFound();
             }
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipieType>(), "Id", "Id", recipie.TypeId);
+            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Id", recipie.TypeId);
             return View(recipie);
         }
 
@@ -91,7 +91,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CookingTime,Description,AuthorId,TypeId")] Recipie recipie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CookingTime,Description,AuthorId,TypeId")] Recipe recipie)
         {
             if (id != recipie.Id)
             {
@@ -118,7 +118,7 @@ namespace MasterMeal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipieType>(), "Id", "Id", recipie.TypeId);
+            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Id", recipie.TypeId);
             return View(recipie);
         }
 
@@ -130,7 +130,7 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var recipie = await _context.Recipie
+            var recipie = await _context.Recipe
                 .Include(r => r.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (recipie == null)
@@ -146,15 +146,15 @@ namespace MasterMeal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var recipie = await _context.Recipie.FindAsync(id);
-            _context.Recipie.Remove(recipie);
+            var recipie = await _context.Recipe.FindAsync(id);
+            _context.Recipe.Remove(recipie);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RecipieExists(int id)
         {
-            return _context.Recipie.Any(e => e.Id == id);
+            return _context.Recipe.Any(e => e.Id == id);
         }
     }
 }

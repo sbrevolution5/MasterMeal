@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,5 +13,13 @@ namespace MasterMeal.Models
         public virtual Ingredient Ingredient { get; set; }
         public string Notes { get; set; }
         public string Quantity { get; set; }
+        [NotMapped]
+        public string ShoppingNotes
+        {
+            get
+            {
+                return Quantity + " " + Notes;
+            }
+        }
     }
 }

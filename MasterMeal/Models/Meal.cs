@@ -15,7 +15,7 @@ namespace MasterMeal.Models
         public virtual Chef Chef { get; set; }
         public int ImageId { get; set; }
         public virtual ImageFile Image { get; set; }
-        public int RecipieId { get; set; }
-        public virtual Recipie Recipie { get; set; }
+        public int RecipeId { get; set; }
+        public virtual Recipe Recipe { get; set; }
     }
 }

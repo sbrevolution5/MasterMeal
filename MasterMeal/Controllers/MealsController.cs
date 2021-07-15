@@ -22,7 +22,7 @@ namespace MasterMeal.Controllers
         // GET: Meals
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Meal.Include(m => m.Image).Include(m => m.Recipie);
+            var applicationDbContext = _context.Meal.Include(m => m.Image).Include(m => m.Recipe);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,7 +36,7 @@ namespace MasterMeal.Controllers
 
             var meal = await _context.Meal
                 .Include(m => m.Image)
-                .Include(m => m.Recipie)
+                .Include(m => m.Recipe)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (meal == null)
             {
@@ -50,7 +50,7 @@ namespace MasterMeal.Controllers
         public IActionResult Create()
         {
             ViewData["ImageId"] = new SelectList(_context.Set<ImageFile>(), "Id", "Id");
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipie>(), "Id", "Id");
+            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace MasterMeal.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ImageId"] = new SelectList(_context.Set<ImageFile>(), "Id", "Id", meal.ImageId);
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipie>(), "Id", "Id", meal.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
             return View(meal);
         }
 
@@ -86,7 +86,7 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
             ViewData["ImageId"] = new SelectList(_context.Set<ImageFile>(), "Id", "Id", meal.ImageId);
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipie>(), "Id", "Id", meal.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
             return View(meal);
         }
 
@@ -123,7 +123,7 @@ namespace MasterMeal.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ImageId"] = new SelectList(_context.Set<ImageFile>(), "Id", "Id", meal.ImageId);
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipie>(), "Id", "Id", meal.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
             return View(meal);
         }
 
@@ -137,7 +137,7 @@ namespace MasterMeal.Controllers
 
             var meal = await _context.Meal
                 .Include(m => m.Image)
-                .Include(m => m.Recipie)
+                .Include(m => m.Recipe)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (meal == null)
             {

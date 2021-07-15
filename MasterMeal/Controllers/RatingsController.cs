@@ -48,7 +48,7 @@ namespace MasterMeal.Controllers
         // GET: Ratings/Create
         public IActionResult Create()
         {
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipie>(), "Id", "Id");
+            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace MasterMeal.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipie>(), "Id", "Id", rating.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipieId);
             return View(rating);
         }
 
@@ -82,7 +82,7 @@ namespace MasterMeal.Controllers
             {
                 return NotFound();
             }
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipie>(), "Id", "Id", rating.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipieId);
             return View(rating);
         }
 
@@ -118,7 +118,7 @@ namespace MasterMeal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipie>(), "Id", "Id", rating.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipieId);
             return View(rating);
         }
 

@@ -48,7 +48,7 @@ namespace MasterMeal.Controllers
         // GET: Steps/Create
         public IActionResult Create()
         {
-            ViewData["RecipieId"] = new SelectList(_context.Recipie, "Id", "Id");
+            ViewData["RecipieId"] = new SelectList(_context.Recipe, "Id", "Id");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace MasterMeal.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipieId"] = new SelectList(_context.Recipie, "Id", "Id", step.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipieId);
             return View(step);
         }
 
@@ -82,7 +82,7 @@ namespace MasterMeal.Controllers
             {
                 return NotFound();
             }
-            ViewData["RecipieId"] = new SelectList(_context.Recipie, "Id", "Id", step.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipieId);
             return View(step);
         }
 
@@ -118,7 +118,7 @@ namespace MasterMeal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipieId"] = new SelectList(_context.Recipie, "Id", "Id", step.RecipieId);
+            ViewData["RecipieId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipieId);
             return View(step);
         }
 

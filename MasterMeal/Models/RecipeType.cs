@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MasterMeal.Models
 {
-    public class RecipieType
+    public class RecipeType
     {
         public int Id { get; set; }
         public string Name { get; set; }

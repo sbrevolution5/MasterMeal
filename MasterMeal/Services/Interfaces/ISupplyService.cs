@@ -10,6 +10,6 @@ namespace MasterMeal.Services.Interfaces
     {
         public Task<Supply> GetSupplyByIdAsync(int supplyId);
         public Task<List<Supply>> GetSuppliesForRecipieAsync(int recipieId);
-        public Task<List<Supply>> GetSuppliesForMultipleRecipiesAsync(List<Recipie> recipies);
+        public Task<List<Supply>> GetSuppliesForMultipleRecipiesAsync(List<Recipe> recipies);
     }
 }

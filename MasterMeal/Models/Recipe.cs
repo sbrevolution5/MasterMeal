@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MasterMeal.Models
 {
-    public class Recipie
+    public class Recipe
     {
         public int Id { get; set; }
         public virtual ICollection<QIngredient> Ingredients { get; set; }
@@ -19,7 +19,7 @@ namespace MasterMeal.Models
         public string AuthorId { get; set; }
         public virtual Chef Author { get; set; }
         public int TypeId { get; set; }
-        public virtual RecipieType Type { get; set; }
+        public virtual RecipeType Type { get; set; }
         [NotMapped]
         public float AvgRating
         {

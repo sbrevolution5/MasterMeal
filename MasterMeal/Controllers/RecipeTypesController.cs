@@ -10,11 +10,11 @@ using MasterMeal.Models;
 
 namespace MasterMeal.Controllers
 {
-    public class RecipieTypesController : Controller
+    public class RecipeTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public RecipieTypesController(ApplicationDbContext context)
+        public RecipeTypesController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -54,7 +54,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] RecipieType recipieType)
+        public async Task<IActionResult> Create([Bind("Id,Name")] RecipeType recipieType)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] RecipieType recipieType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] RecipeType recipieType)
         {
             if (id != recipieType.Id)
             {

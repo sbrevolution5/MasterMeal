@@ -23,10 +23,10 @@ namespace MasterMeal.Services
             var now = DateTime.Now;
             var futureMeals = await _context.Meal.Where(m => m.ChefId == chefId)
                                 .Where(m => m.Date >= now)
-                                .Include(m => m.Recipie)
+                                .Include(m => m.Recipe)
                                 .ThenInclude(r => r.Ingredients)
                                 .ThenInclude(i => i.Ingredient)
-                                .Include(m => m.Recipie)
+                                .Include(m => m.Recipe)
                                 .ThenInclude(r => r.Supplies)
                                 .ToListAsync();
 
@@ -36,10 +36,10 @@ namespace MasterMeal.Services
         public async Task<List<Meal>> GetUserMealsAsync(string chefId)
         {
             var userMeals = await _context.Meal.Where(m => m.ChefId == chefId)
-                                .Include(m => m.Recipie)
+                                .Include(m => m.Recipe)
                                 .ThenInclude(r => r.Ingredients)
                                 .ThenInclude(i => i.Ingredient)
-                                .Include(m => m.Recipie)
+                                .Include(m => m.Recipe)
                                 .ThenInclude(r => r.Supplies)
                                 .ToListAsync();
 
@@ -50,10 +50,10 @@ namespace MasterMeal.Services
         {
             var futureMeals = await _context.Meal.Where(m => m.ChefId == chefId)
                                 .Where(m => m.Date >= minDateInclusive && m.Date <= maxDateInclusive)
-                                .Include(m => m.Recipie)
+                                .Include(m => m.Recipe)
                                 .ThenInclude(r => r.Ingredients)
                                 .ThenInclude(i => i.Ingredient)
-                                .Include(m => m.Recipie)
+                                .Include(m => m.Recipe)
                                 .ThenInclude(r => r.Supplies)
                                 .ToListAsync();
 

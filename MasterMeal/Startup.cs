@@ -44,7 +44,7 @@ namespace MasterMeal
             services.AddScoped<IngredientService>();
             services.AddScoped<MealService>();
             services.AddScoped<RatingService>();
-            services.AddScoped<RecipieService>();
+            services.AddScoped<RecipeService>();
             services.AddScoped<ShoppingService>();
             services.AddScoped<SupplyService>();
             services.AddRazorPages();
