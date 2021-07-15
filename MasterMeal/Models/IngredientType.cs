@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace MasterMeal.Models
 {
-    public class Ingredient
+    public class IngredientType
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int TypeId { get; set; }
-        public virtual IngredientType Type { get; set; }
     }
 }
