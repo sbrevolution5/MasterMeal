@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MasterMeal.Data;
 using MasterMeal.Models;
 using MasterMeal.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace MasterMeal.Services
 {
@@ -17,9 +18,9 @@ namespace MasterMeal.Services
             _context = context;
         }
 
-        public Task<Recipie> GetRecipieByIdAsync(int recipieId)
+        public async Task<Recipie> GetRecipieByIdAsync(int recipieId)
         {
-            throw new NotImplementedException();
+            return await _context.Recipie.FirstOrDefaultAsync(r => r.Id == recipieId);
         }
 
 
@@ -29,13 +30,25 @@ namespace MasterMeal.Services
         }
 
 
-        public Task<List<Recipie>> GetRecipiesByMaxCookingTimeAsync(int maxTime)
+        public async Task<List<Recipie>> GetRecipiesByMaxCookingTimeAsync(int maxTime)
         {
-            throw new NotImplementedException();
+            var recipies = await _context.Recipie
+                                    .Include(r => r.Ingredients)
+                                    .ThenInclude(i => i.Ingredient)
+                                    .Include(r => r.Type)
+                                    .Include(r => r.Author)
+                                    .Where(r => r.CookingTime <= maxTime).ToListAsync();
+            return recipies;
         }
-        public Task<List<Recipie>> GetRecipiesByMinCookingTimeAsync(int minTime)
+        public async Task<List<Recipie>> GetRecipiesByMinCookingTimeAsync(int minTime)
         {
-            throw new NotImplementedException();
+            var recipies = await _context.Recipie
+                                    .Include(r => r.Ingredients)
+                                    .ThenInclude(i => i.Ingredient)
+                                    .Include(r => r.Type)
+                                    .Include(r => r.Author)
+                                    .Where(r => r.CookingTime >= minTime).ToListAsync();
+            return recipies;
         }
 
         public Task<List<Recipie>> GetRecipiesByRatingAsync(int minRating)
@@ -48,22 +61,46 @@ namespace MasterMeal.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Recipie>> GetRecipiesByTypeAsync(int typeId)
+        public async Task<List<Recipie>> GetRecipiesByTypeAsync(int typeId)
         {
-            throw new NotImplementedException();
+            var recipies = await _context.Recipie
+                                    .Include(r => r.Ingredients)
+                                    .ThenInclude(i => i.Ingredient)
+                                    .Include(r => r.Type)
+                                    .Include(r => r.Author)
+                                    .Where(r => r.TypeId == typeId).ToListAsync();
+            return recipies;
         }
 
         public Task<List<Recipie>> GetUserFavoriteRecipiesAsync(string UserId)
         {
+
             throw new NotImplementedException();
         }
 
-        public Task<List<Recipie>> GetUserRecipiesAsync(string userId)
+        public async Task<List<Recipie>> GetUserRecipiesAsync(string userId)
         {
-            throw new NotImplementedException();
+            var recipies = await _context.Recipie
+                                    .Include(r => r.Ingredients)
+                                    .ThenInclude(i => i.Ingredient)
+                                    .Include(r => r.Type)
+                                    .Include(r => r.Author)
+                                    .Where(r => r.AuthorId == userId).ToListAsync();
+            return recipies;
         }
 
-        public Task<List<Recipie>> GetUserRecipiesByTypeAsync(string userId, int typeId)
+        public async Task<List<Recipie>> GetUserRecipiesByTypeAsync(string userId, int typeId)
+        {
+            var recipies = await _context.Recipie
+                                    .Include(r => r.Ingredients)
+                                    .ThenInclude(i => i.Ingredient)
+                                    .Include(r => r.Type)
+                                    .Include(r => r.Author)
+                                    .Where(r => r.AuthorId == userId && r.TypeId == typeId).ToListAsync();
+            return recipies;
+        }
+
+        public Task<List<Recipie>> GetUserRecipiesWithNoRating(string userId)
         {
             throw new NotImplementedException();
         }

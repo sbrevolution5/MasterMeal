@@ -115,9 +115,14 @@ namespace MasterMeal.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int>("RecipieId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ChefId");
+
+                    b.HasIndex("RecipieId");
 
                     b.ToTable("Comment");
                 });
@@ -247,11 +252,8 @@ namespace MasterMeal.Migrations
                     b.Property<string>("AuthorId")
                         .HasColumnType("text");
 
-                    b.Property<string>("ChefId")
-                        .HasColumnType("text");
-
-                    b.Property<TimeSpan>("CookingTime")
-                        .HasColumnType("interval");
+                    b.Property<int>("CookingTime")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -264,7 +266,7 @@ namespace MasterMeal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChefId");
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("TypeId");
 
@@ -476,7 +478,15 @@ namespace MasterMeal.Migrations
                         .WithMany()
                         .HasForeignKey("ChefId");
 
+                    b.HasOne("MasterMeal.Models.Recipie", "Recipie")
+                        .WithMany()
+                        .HasForeignKey("RecipieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Chef");
+
+                    b.Navigation("Recipie");
                 });
 
             modelBuilder.Entity("MasterMeal.Models.Meal", b =>
@@ -526,15 +536,17 @@ namespace MasterMeal.Migrations
 
             modelBuilder.Entity("MasterMeal.Models.Recipie", b =>
                 {
-                    b.HasOne("MasterMeal.Models.Chef", null)
+                    b.HasOne("MasterMeal.Models.Chef", "Author")
                         .WithMany("FavoriteRecipies")
-                        .HasForeignKey("ChefId");
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("MasterMeal.Models.RecipieType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
 
                     b.Navigation("Type");
                 });

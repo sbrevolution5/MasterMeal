@@ -18,5 +18,6 @@ namespace MasterMeal.Services.Interfaces
         public Task<List<Recipie>> GetUserFavoriteRecipiesAsync(string UserId);
         public Task<List<Recipie>> GetRecipiesByIngredientsAsync(List<Ingredient> ingredients);
         public Task<List<Recipie>> GetRecipiesBySuppliesAsync(List<Supply> supplies);
+        public Task<List<Recipie>> GetUserRecipiesWithNoRating(string userId);
     }
 }

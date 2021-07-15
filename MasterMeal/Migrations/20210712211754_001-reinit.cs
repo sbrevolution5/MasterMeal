@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MasterMeal.Migrations
 {
-    public partial class _001init : Migration
+    public partial class _001reinit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -89,11 +89,10 @@ namespace MasterMeal.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    Discriminator = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: true),
-                    LastName = table.Column<string>(type: "text", nullable: true),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
                     DisplayName = table.Column<string>(type: "text", nullable: true),
-                    ImageId = table.Column<int>(type: "integer", nullable: true),
+                    ImageId = table.Column<int>(type: "integer", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -116,29 +115,6 @@ namespace MasterMeal.Migrations
                         name: "FK_AspNetUsers_ImageFile_ImageId",
                         column: x => x.ImageId,
                         principalTable: "ImageFile",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Recipie",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    CookingTime = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    AuthorId = table.Column<string>(type: "text", nullable: true),
-                    TypeId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Recipie", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Recipie_RecipieType_TypeId",
-                        column: x => x.TypeId,
-                        principalTable: "RecipieType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -168,8 +144,8 @@ namespace MasterMeal.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
@@ -213,8 +189,8 @@ namespace MasterMeal.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -229,11 +205,41 @@ namespace MasterMeal.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Recipie",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    CookingTime = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    AuthorId = table.Column<string>(type: "text", nullable: true),
+                    TypeId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipie", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Recipie_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Recipie_RecipieType_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "RecipieType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comment",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RecipieId = table.Column<int>(type: "integer", nullable: false),
                     CommentBody = table.Column<string>(type: "text", nullable: true),
                     ChefId = table.Column<string>(type: "text", nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
@@ -247,6 +253,12 @@ namespace MasterMeal.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comment_Recipie_RecipieId",
+                        column: x => x.RecipieId,
+                        principalTable: "Recipie",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -415,6 +427,11 @@ namespace MasterMeal.Migrations
                 column: "ChefId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comment_RecipieId",
+                table: "Comment",
+                column: "RecipieId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Meal_ImageId",
                 table: "Meal",
                 column: "ImageId");
@@ -438,6 +455,11 @@ namespace MasterMeal.Migrations
                 name: "IX_Rating_RecipieId",
                 table: "Rating",
                 column: "RecipieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipie_AuthorId",
+                table: "Recipie",
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipie_TypeId",
@@ -494,19 +516,19 @@ namespace MasterMeal.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Ingredient");
 
             migrationBuilder.DropTable(
                 name: "Recipie");
 
             migrationBuilder.DropTable(
-                name: "ImageFile");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "RecipieType");
+
+            migrationBuilder.DropTable(
+                name: "ImageFile");
         }
     }
 }

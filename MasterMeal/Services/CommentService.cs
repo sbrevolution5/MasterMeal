@@ -1,6 +1,7 @@
 ﻿using MasterMeal.Data;
 using MasterMeal.Models;
 using MasterMeal.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +18,16 @@ namespace MasterMeal.Services
             _context = context;
         }
 
-        public List<Comment> GetRecipieCommentsAsync(int recipieId)
+        public async Task<List<Comment>> GetRecipieCommentsAsync(int recipieId)
         {
-            throw new NotImplementedException();
+            var comments = await _context.Comment.Where(c => c.RecipieId == recipieId).ToListAsync();
+            return comments;
         }
 
-        public List<Comment> GetUserCommentsAsync(string userId)
+        public async Task<List<Comment>> GetUserCommentsAsync(string userId)
         {
-            throw new NotImplementedException();
+            var comments = await _context.Comment.Where(c => c.ChefId == userId).ToListAsync();
+            return comments;
         }
     }
 }

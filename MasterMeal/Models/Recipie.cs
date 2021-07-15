@@ -12,10 +12,11 @@ namespace MasterMeal.Models
         public virtual ICollection<Supply> Supplies { get; set; }
         public ICollection<Step> Steps { get; set; }
         public string Name { get; set; }
-        public TimeSpan CookingTime { get; set; }
+        public int CookingTime { get; set; }
         public string Description { get; set; }
         public virtual ICollection<Rating> Ratings { get; set; }
         public string AuthorId { get; set; }
+        public virtual Chef Author { get; set; }
         public int TypeId { get; set; }
         public virtual RecipieType Type { get; set; }
     }
