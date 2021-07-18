@@ -13,6 +13,7 @@ namespace MasterMeal.Models
         public virtual Ingredient Ingredient { get; set; }
         public string Notes { get; set; }
         public string Quantity { get; set; }
+        public int QuantityNumber { get; set; }
         [NotMapped]
         public string ShoppingNotes
         {
