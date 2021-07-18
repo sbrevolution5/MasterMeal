@@ -19,7 +19,7 @@ namespace MasterMeal.Data
         public DbSet<MasterMeal.Models.QIngredient> QIngredient { get; set; }
         public DbSet<MasterMeal.Models.Rating> Rating { get; set; }
         public DbSet<MasterMeal.Models.Recipe> Recipe { get; set; }
-        public DbSet<MasterMeal.Models.RecipeType> RecipieType { get; set; }
+        public DbSet<MasterMeal.Models.RecipeType> RecipeType { get; set; }
         public DbSet<MasterMeal.Models.Step> Step { get; set; }
         public DbSet<MasterMeal.Models.Supply> Supply { get; set; }
     }

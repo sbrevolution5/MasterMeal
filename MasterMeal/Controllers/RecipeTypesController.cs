@@ -19,13 +19,13 @@ namespace MasterMeal.Controllers
             _context = context;
         }
 
-        // GET: RecipieTypes
+        // GET: RecipeTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.RecipieType.ToListAsync());
+            return View(await _context.RecipeType.ToListAsync());
         }
 
-        // GET: RecipieTypes/Details/5
+        // GET: RecipeTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var recipieType = await _context.RecipieType
+            var RecipeType = await _context.RecipeType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (recipieType == null)
+            if (RecipeType == null)
             {
                 return NotFound();
             }
 
-            return View(recipieType);
+            return View(RecipeType);
         }
 
-        // GET: RecipieTypes/Create
+        // GET: RecipeTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: RecipieTypes/Create
+        // POST: RecipeTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] RecipeType recipieType)
+        public async Task<IActionResult> Create([Bind("Id,Name")] RecipeType RecipeType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(recipieType);
+                _context.Add(RecipeType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(recipieType);
+            return View(RecipeType);
         }
 
-        // GET: RecipieTypes/Edit/5
+        // GET: RecipeTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var recipieType = await _context.RecipieType.FindAsync(id);
-            if (recipieType == null)
+            var RecipeType = await _context.RecipeType.FindAsync(id);
+            if (RecipeType == null)
             {
                 return NotFound();
             }
-            return View(recipieType);
+            return View(RecipeType);
         }
 
-        // POST: RecipieTypes/Edit/5
+        // POST: RecipeTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] RecipeType recipieType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] RecipeType RecipeType)
         {
-            if (id != recipieType.Id)
+            if (id != RecipeType.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace MasterMeal.Controllers
             {
                 try
                 {
-                    _context.Update(recipieType);
+                    _context.Update(RecipeType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipieTypeExists(recipieType.Id))
+                    if (!RecipeTypeExists(RecipeType.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace MasterMeal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(recipieType);
+            return View(RecipeType);
         }
 
-        // GET: RecipieTypes/Delete/5
+        // GET: RecipeTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var recipieType = await _context.RecipieType
+            var RecipeType = await _context.RecipeType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (recipieType == null)
+            if (RecipeType == null)
             {
                 return NotFound();
             }
 
-            return View(recipieType);
+            return View(RecipeType);
         }
 
-        // POST: RecipieTypes/Delete/5
+        // POST: RecipeTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var recipieType = await _context.RecipieType.FindAsync(id);
-            _context.RecipieType.Remove(recipieType);
+            var RecipeType = await _context.RecipeType.FindAsync(id);
+            _context.RecipeType.Remove(RecipeType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RecipieTypeExists(int id)
+        private bool RecipeTypeExists(int id)
         {
-            return _context.RecipieType.Any(e => e.Id == id);
+            return _context.RecipeType.Any(e => e.Id == id);
         }
     }
 }

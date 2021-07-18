@@ -22,7 +22,7 @@ namespace MasterMeal.Controllers
         // GET: Steps
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Step.Include(s => s.Recipie);
+            var applicationDbContext = _context.Step.Include(s => s.Recipe);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace MasterMeal.Controllers
             }
 
             var step = await _context.Step
-                .Include(s => s.Recipie)
+                .Include(s => s.Recipe)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (step == null)
             {
@@ -48,7 +48,7 @@ namespace MasterMeal.Controllers
         // GET: Steps/Create
         public IActionResult Create()
         {
-            ViewData["RecipieId"] = new SelectList(_context.Recipe, "Id", "Id");
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "Id", "Id");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RecipieId,StepNumber,Text")] Step step)
+        public async Task<IActionResult> Create([Bind("Id,RecipeId,StepNumber,Text")] Step step)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace MasterMeal.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipieId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipieId);
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipeId);
             return View(step);
         }
 
@@ -82,7 +82,7 @@ namespace MasterMeal.Controllers
             {
                 return NotFound();
             }
-            ViewData["RecipieId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipieId);
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipeId);
             return View(step);
         }
 
@@ -91,7 +91,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RecipieId,StepNumber,Text")] Step step)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RecipeId,StepNumber,Text")] Step step)
         {
             if (id != step.Id)
             {
@@ -118,7 +118,7 @@ namespace MasterMeal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipieId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipieId);
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "Id", "Id", step.RecipeId);
             return View(step);
         }
 
@@ -131,7 +131,7 @@ namespace MasterMeal.Controllers
             }
 
             var step = await _context.Step
-                .Include(s => s.Recipie)
+                .Include(s => s.Recipe)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (step == null)
             {

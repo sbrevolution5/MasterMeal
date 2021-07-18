@@ -22,7 +22,7 @@ namespace MasterMeal.Controllers
         // GET: Ratings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Rating.Include(r => r.Recipie);
+            var applicationDbContext = _context.Rating.Include(r => r.Recipe);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace MasterMeal.Controllers
             }
 
             var rating = await _context.Rating
-                .Include(r => r.Recipie)
+                .Include(r => r.Recipe)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rating == null)
             {
@@ -48,7 +48,7 @@ namespace MasterMeal.Controllers
         // GET: Ratings/Create
         public IActionResult Create()
         {
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id");
+            ViewData["RecipeId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Stars,RecipieId")] Rating rating)
+        public async Task<IActionResult> Create([Bind("Id,Stars,RecipeId")] Rating rating)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace MasterMeal.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipieId);
+            ViewData["RecipeId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipeId);
             return View(rating);
         }
 
@@ -82,7 +82,7 @@ namespace MasterMeal.Controllers
             {
                 return NotFound();
             }
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipieId);
+            ViewData["RecipeId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipeId);
             return View(rating);
         }
 
@@ -91,7 +91,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Stars,RecipieId")] Rating rating)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Stars,RecipeId")] Rating rating)
         {
             if (id != rating.Id)
             {
@@ -118,7 +118,7 @@ namespace MasterMeal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipieId);
+            ViewData["RecipeId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", rating.RecipeId);
             return View(rating);
         }
 
@@ -131,7 +131,7 @@ namespace MasterMeal.Controllers
             }
 
             var rating = await _context.Rating
-                .Include(r => r.Recipie)
+                .Include(r => r.Recipe)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rating == null)
             {

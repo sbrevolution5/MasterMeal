@@ -50,7 +50,7 @@ namespace MasterMeal.Controllers
         public IActionResult Create()
         {
             ViewData["ImageId"] = new SelectList(_context.Set<ImageFile>(), "Id", "Id");
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id");
+            ViewData["RecipeId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Serves,Date,Name,ImageId,RecipieId")] Meal meal)
+        public async Task<IActionResult> Create([Bind("Id,Serves,Date,Name,ImageId,RecipeId")] Meal meal)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace MasterMeal.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ImageId"] = new SelectList(_context.Set<ImageFile>(), "Id", "Id", meal.ImageId);
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
+            ViewData["RecipeId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
             return View(meal);
         }
 
@@ -86,7 +86,7 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
             ViewData["ImageId"] = new SelectList(_context.Set<ImageFile>(), "Id", "Id", meal.ImageId);
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
+            ViewData["RecipeId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
             return View(meal);
         }
 
@@ -95,7 +95,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Serves,Date,Name,ImageId,RecipieId")] Meal meal)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Serves,Date,Name,ImageId,RecipeId")] Meal meal)
         {
             if (id != meal.Id)
             {
@@ -123,7 +123,7 @@ namespace MasterMeal.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ImageId"] = new SelectList(_context.Set<ImageFile>(), "Id", "Id", meal.ImageId);
-            ViewData["RecipieId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
+            ViewData["RecipeId"] = new SelectList(_context.Set<Recipe>(), "Id", "Id", meal.RecipeId);
             return View(meal);
         }
 

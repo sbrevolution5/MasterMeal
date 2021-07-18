@@ -8,8 +8,8 @@ namespace MasterMeal.Models
     public class Comment
     {
         public int Id { get; set; }
-        public int RecipieId { get; set; }
-        public virtual Recipe Recipie { get; set; }
+        public int RecipeId { get; set; }
+        public virtual Recipe Recipe { get; set; }
         public string CommentBody { get; set; }
         public string ChefId { get; set; }
         public virtual Chef Chef { get; set; }
