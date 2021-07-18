@@ -8,7 +8,7 @@ namespace MasterMeal.Services.Interfaces
 {
     public interface ICommentService
     {
-        public Task<List<Comment>> GetRecipieCommentsAsync(int recipieId);
+        public Task<List<Comment>> GetRecipeCommentsAsync(int RecipeId);
         public Task<List<Comment>> GetUserCommentsAsync(string userId);
     }
 }

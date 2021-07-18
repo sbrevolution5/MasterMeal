@@ -17,12 +17,12 @@ namespace MasterMeal.Services
             _context = context;
         }
 
-        public Task<List<Supply>> GetSuppliesForMultipleRecipiesAsync(List<Recipe> recipies)
+        public Task<List<Supply>> GetSuppliesForMultipleRecipesAsync(List<Recipe> Recipes)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Supply>> GetSuppliesForRecipieAsync(int recipieId)
+        public Task<List<Supply>> GetSuppliesForRecipeAsync(int RecipeId)
         {
             throw new NotImplementedException();
         }

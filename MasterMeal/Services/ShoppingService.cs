@@ -19,7 +19,7 @@ namespace MasterMeal.Services
 
         public List<QIngredient> CreateListOfQIngredientsForShopping(List<Meal> meals)
         {
-            //First list is all qingredients from meal.recipies
+            //First list is all qingredients from meal.Recipes
             List<QIngredient> qIngredients = new();
             foreach (var meal in meals)
             {
@@ -28,14 +28,14 @@ namespace MasterMeal.Services
                     qIngredients.Add(qIngredient);
                 }
             }
-            //None are combined yet, to preserve the shopping notes for each recipie
+            //None are combined yet, to preserve the shopping notes for each Recipe
             //ordered to make it easier to parse in next step
             return qIngredients.OrderByDescending(q=>q.IngredientId).ToList();
         }
 
         public ShoppingIngredient CreateOneShoppingIngredientFromMultipleQIngredients(List<QIngredient> listOfOneIngredient)
         {
-            List<String> notes = new();
+            List<string> notes = new();
             string totalQuantity = ""; //TODO this needs to be changed to correct measurement
             foreach (var qingredient in listOfOneIngredient)
             {
@@ -48,12 +48,12 @@ namespace MasterMeal.Services
             }
             ShoppingIngredient result = new()
             {
-                Quantity = totalQuantity,
+                Measurement = totalQuantity,
                 IngredientId = listOfOneIngredient.First().IngredientId,
                 Notes = notes
             };
 
-            throw new NotImplementedException();
+            return result;
         }
 
         public List<ShoppingIngredient> CreateShoppingIngredientFromQIngredients(List<QIngredient> allIngredients)

@@ -8,16 +8,16 @@ namespace MasterMeal.Services.Interfaces
 {
     public interface IRecipeService
     {
-        public Task<Recipe> GetRecipieByIdAsync(int recipieId);
-        public Task<List<Recipe>> GetUserRecipiesAsync(string userId);
-        public Task<List<Recipe>> GetUserRecipiesByTypeAsync(string userId,int typeId);
-        public Task<List<Recipe>> GetRecipiesByTypeAsync(int typeId);
-        public Task<List<Recipe>> GetRecipiesByRatingAsync(int minRating);
-        public Task<List<Recipe>> GetRecipiesByMaxCookingTimeAsync(int maxTime);
-        public Task<List<Recipe>> GetRecipiesByMinCookingTimeAsync(int minTime);
-        public Task<List<Recipe>> GetUserFavoriteRecipiesAsync(string UserId);
-        public Task<List<Recipe>> GetRecipiesByIngredientsAsync(List<Ingredient> ingredients);
-        public Task<List<Recipe>> GetRecipiesBySuppliesAsync(List<Supply> supplies);
-        public Task<List<Recipe>> GetUserRecipiesWithNoRating(string userId);
+        public Task<Recipe> GetRecipeByIdAsync(int RecipeId);
+        public Task<List<Recipe>> GetUserRecipesAsync(string userId);
+        public Task<List<Recipe>> GetUserRecipesByTypeAsync(string userId,int typeId);
+        public Task<List<Recipe>> GetRecipesByTypeAsync(int typeId);
+        public Task<List<Recipe>> GetRecipesByRatingAsync(int minRating);
+        public Task<List<Recipe>> GetRecipesByMaxCookingTimeAsync(int maxTime);
+        public Task<List<Recipe>> GetRecipesByMinCookingTimeAsync(int minTime);
+        public Task<List<Recipe>> GetUserFavoriteRecipesAsync(string UserId);
+        public Task<List<Recipe>> GetRecipesByIngredientsAsync(List<Ingredient> ingredients);
+        public Task<List<Recipe>> GetRecipesBySuppliesAsync(List<Supply> supplies);
+        public Task<List<Recipe>> GetUserRecipesWithNoRating(string userId);
     }
 }

@@ -13,5 +13,8 @@ namespace MasterMeal.Services.Interfaces
         public string DecodeMassMeasurement(int fracOz);
         public int EncodeMassMeasurement(int wholeNumber, Fraction fraction, MassMeasurementUnit unit);
         public double FractionToDouble(Fraction fraction);
+        public Fraction DoubleToFraction(double input);
+        public string FractionToString(Fraction fraction);
+
     }
 }

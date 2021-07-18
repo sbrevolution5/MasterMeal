@@ -18,9 +18,9 @@ namespace MasterMeal.Services
             _context = context;
         }
 
-        public async Task<List<Comment>> GetRecipieCommentsAsync(int recipieId)
+        public async Task<List<Comment>> GetRecipeCommentsAsync(int RecipeId)
         {
-            var comments = await _context.Comment.Where(c => c.RecipieId == recipieId).ToListAsync();
+            var comments = await _context.Comment.Where(c => c.RecipeId == RecipeId).ToListAsync();
             return comments;
         }
 

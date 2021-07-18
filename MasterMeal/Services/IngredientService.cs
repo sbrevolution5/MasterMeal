@@ -24,7 +24,7 @@ namespace MasterMeal.Services
             return ingredient;
         }
 
-        public Task<List<Ingredient>> GetRecipieIngredientsAsync(int recipieId)
+        public Task<List<Ingredient>> GetRecipeIngredientsAsync(int RecipeId)
         {
 
             throw new NotImplementedException();
