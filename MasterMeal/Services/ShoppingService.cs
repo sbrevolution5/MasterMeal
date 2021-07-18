@@ -17,15 +17,49 @@ namespace MasterMeal.Services
             _context = context;
         }
 
-        public List<List<QIngredient>> CreateListOfQIngredientsForShopping(List<Meal> meals)
+        public List<QIngredient> CreateListOfQIngredientsForShopping(List<Meal> meals)
         {
             //First list is all qingredients from meal.recipies
+            List<QIngredient> qIngredients = new();
+            foreach (var meal in meals)
+            {
+                foreach (var qIngredient in meal.Recipe.Ingredients)
+                {
+                    qIngredients.Add(qIngredient);
+                }
+            }
             //None are combined yet, to preserve the shopping notes for each recipie
+            //ordered to make it easier to parse in next step
+            return qIngredients.OrderByDescending(q=>q.IngredientId).ToList();
+        }
+
+        public ShoppingIngredient CreateOneShoppingIngredientFromMultipleQIngredients(List<QIngredient> listOfOneIngredient)
+        {
+            List<String> notes = new();
+            string totalQuantity = ""; //TODO this needs to be changed to correct measurement
+            foreach (var qingredient in listOfOneIngredient)
+            {
+
+                //If string has Notes (it always has shopping notes due to quantity)
+                if (!string.IsNullOrWhiteSpace(qingredient.Notes) )
+                {
+                    notes.Add(qingredient.ShoppingNotes);
+                }
+            }
+            ShoppingIngredient result = new()
+            {
+                Quantity = totalQuantity,
+                IngredientId = listOfOneIngredient.First().IngredientId,
+                Notes = notes
+            };
+
             throw new NotImplementedException();
         }
 
-        public ShoppingIngredient CreateShoppingIngredientFromQIngredient(List<QIngredient> recipieIngredients)
+        public List<ShoppingIngredient> CreateShoppingIngredientFromQIngredients(List<QIngredient> allIngredients)
         {
+            //All ingredients that are the same Id need to be combined, and removed from the list until list is empty.  
+            //pass to subfunction to combine
             throw new NotImplementedException();
         }
 
