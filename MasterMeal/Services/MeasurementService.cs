@@ -68,10 +68,20 @@ namespace MasterMeal.Services
                 unitString += "s";
                 //round down to whole unit
                 fracTSP -= remainder;
+                //if fraction > .75, just round to next whole number.
+                if (remainder/conversionFactor > 0.75)
+                {
+                    fracTSP += conversionFactor;
+                    howMany = fracTSP / conversionFactor;
+                    measurement = howMany + unitString;
+                }
+                else
+                {
                 //Round up to fraction
                 string fraction = RemainderToFraction(remainder, unit);
                 howMany = fracTSP / conversionFactor;
                 measurement = howMany + fraction + unitString;
+                }
 
             }
             else
@@ -206,10 +216,20 @@ namespace MasterMeal.Services
                 unitString += "s";
                 //round down to whole unit
                 fracOz -= remainder;
+                if (remainder / conversionFactor > 0.75)
+                {
+                    fracOz += conversionFactor;
+                    howMany = fracOz / conversionFactor;
+                    measurement = howMany + unitString;
+                }
+                else
+                {
+
                 //Round up to fraction
                 string fraction = RemainderToFraction(remainder, unit);
                 howMany = fracOz / conversionFactor;
                 measurement = howMany + fraction + unitString;
+                }
 
             }
             else
