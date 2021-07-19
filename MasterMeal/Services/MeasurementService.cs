@@ -88,48 +88,58 @@ namespace MasterMeal.Services
             return measurement;
         }
 
+        private string RemainderToFraction(int remainder, MassMeasurementUnit unit)
+        {
+            if (unit == MassMeasurementUnit.ounce)
+            {
+                return FractionToString(DoubleToFraction(remainder / 2));
+            }
+            else
+            {
+                return FractionToString(DoubleToFraction(remainder / 32));
+
+            }
+        }
         private string RemainderToFraction(int remainder, LiquidMeasurementUnit unit)
         {
-            string frac = "";
-            if (remainder == 0)
+            //TODO What if 1/3 And 3/4 are combined, or 1/3 1/2???
+            if (unit == LiquidMeasurementUnit.Teaspoon)
             {
-                return frac;
-            }
-            else if (unit == LiquidMeasurementUnit.Teaspoon)
-            {
-                DoubleToFraction(remainder / 24);
+                return FractionToString(DoubleToFraction(remainder / 24));
             }
             else if (unit == LiquidMeasurementUnit.Tablespoon)
             {
-                DoubleToFraction(remainder / 24 * 3);
+                return FractionToString(DoubleToFraction(remainder / 24 * 3));
 
             }
             else if (unit == LiquidMeasurementUnit.Ounce)
             {
-                DoubleToFraction(remainder / 24 * 3 * 2);
+                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2));
 
             }
             else if (unit == LiquidMeasurementUnit.Cup)
             {
-                DoubleToFraction(remainder / 24 * 3 * 2 * 8);
+                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2 * 8));
 
             }
             else if (unit == LiquidMeasurementUnit.Pint)
             {
-                DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2);
-
+                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2));
             }
             else if (unit == LiquidMeasurementUnit.Quart)
             {
-                DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2 * 2);
+                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2 * 2));
 
             }
             else if (unit == LiquidMeasurementUnit.Gallon)
             {
-                DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2 * 2 * 4);
+                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2 * 2 * 4));
 
             }
-            return frac;
+            else
+            {
+                return "";
+            }
         }
         /// <summary>
         /// Rounds up to ensure you have enough ingredient
@@ -163,54 +173,27 @@ namespace MasterMeal.Services
                 return Fraction.ThreeQuarters;
             }
         }
-
+        /// <summary>
+        /// Converts a number of 1/2 ounce into real measurements
+        /// </summary>
+        /// <param name="fracOz"></param>
+        /// <returns></returns>
         public string DecodeMassMeasurement(int fracOz)
         {
             string unitString = "";
-            LiquidMeasurementUnit unit;
+            MassMeasurementUnit unit;
             int conversionFactor;
-            if (fracOz >= 4 * 2 * 2 * 8 * 2 * 3 * 24)
+            if (fracOz >= 32)
             {
-                unitString = "Gallon";
-                unit = LiquidMeasurementUnit.Gallon;
-                conversionFactor = 4 * 2 * 2 * 8 * 2 * 3 * 24;
-            }
-            else if (fracOz >= 2 * 2 * 8 * 2 * 3 * 24)
-            {
-                unitString = "Quart";
-                unit = LiquidMeasurementUnit.Quart;
-                conversionFactor = 2 * 2 * 8 * 2 * 3 * 24;
-            }
-            else if (fracOz >= 2 * 8 * 2 * 3 * 24)
-            {
-                unitString = "Pint";
-                unit = LiquidMeasurementUnit.Pint;
-                conversionFactor = 2 * 8 * 2 * 3 * 24;
-            }
-            else if (fracOz >= 8 * 2 * 3 * 24)
-            {
-                unitString = "Cup";
-                unit = LiquidMeasurementUnit.Cup;
-                conversionFactor = 8 * 2 * 3 * 24;
-
-            }
-            else if (fracOz >= 24 * 3 * 2)
-            {
-                unitString = "Ounce";
-                unit = LiquidMeasurementUnit.Ounce;
-                conversionFactor = 2 * 3 * 24;
-            }
-            else if (fracOz <= 24 * 3)
-            {
-                unitString = "Tablespoon";
-                unit = LiquidMeasurementUnit.Tablespoon;
-                conversionFactor = 3 * 24;
+                unitString = "Pound";
+                unit = MassMeasurementUnit.pound;
+                conversionFactor = 32;
             }
             else //Must be Teaspoon or less
             {
-                unitString = "Teaspoon";
-                unit = LiquidMeasurementUnit.Teaspoon;
-                conversionFactor = 24;
+                unitString = "Ounce";
+                unit = MassMeasurementUnit.ounce;
+                conversionFactor = 2;
 
             }
             //Get whats left from remainder
