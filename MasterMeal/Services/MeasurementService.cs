@@ -80,7 +80,16 @@ namespace MasterMeal.Services
                     //Round up to fraction
                     string fraction = RemainderToFraction(remainder, unit);
                     howMany = fracTSP / conversionFactor;
+                    if (howMany == 0)
+                    {
+                        measurement = fraction + " " + unitString;
+
+                    }
+                    else
+                    {
+
                     measurement = howMany + " " + fraction + " " + unitString;
+                    }
                 }
 
             }
@@ -229,6 +238,16 @@ namespace MasterMeal.Services
                     //Round up to fraction
                     string fraction = RemainderToFraction(remainder, unit);
                     howMany = fracOz / conversionFactor;
+                    if (howMany == 0)
+                    {
+                        measurement = fraction + " " + unitString;
+
+                    }
+                    else
+                    {
+
+                        measurement = howMany + " " + fraction + " " + unitString;
+                    }
                     measurement = howMany + " " + fraction + " " + unitString;
                 }
 
