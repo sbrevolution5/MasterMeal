@@ -252,7 +252,7 @@ namespace MasterMeal.Services
                 }
 
             }
-            else
+            else //no remainder
             {
                 howMany = fracOz / conversionFactor;
                 //add S to plurals
