@@ -45,7 +45,7 @@ namespace MasterMeal.Services
                 unit = LiquidMeasurementUnit.Ounce;
                 conversionFactor = 2 * 3 * 24;
             }
-            else if (fracTSP <= 24 * 3)
+            else if (fracTSP >= 24 * 3)
             {
                 unitString = "Tablespoon";
                 unit = LiquidMeasurementUnit.Tablespoon;
@@ -69,18 +69,18 @@ namespace MasterMeal.Services
                 //round down to whole unit
                 fracTSP -= remainder;
                 //if fraction > .75, just round to next whole number.
-                if (remainder/conversionFactor > 0.75)
+                if (remainder / conversionFactor > 0.75)
                 {
                     fracTSP += conversionFactor;
                     howMany = fracTSP / conversionFactor;
-                    measurement = howMany + unitString;
+                    measurement = howMany + " " + unitString;
                 }
                 else
                 {
-                //Round up to fraction
-                string fraction = RemainderToFraction(remainder, unit);
-                howMany = fracTSP / conversionFactor;
-                measurement = howMany + fraction + unitString;
+                    //Round up to fraction
+                    string fraction = RemainderToFraction(remainder, unit);
+                    howMany = fracTSP / conversionFactor;
+                    measurement = howMany + " " + fraction + " " + unitString;
                 }
 
             }
@@ -92,7 +92,7 @@ namespace MasterMeal.Services
                 {
                     unitString += "s";
                 }
-                measurement = howMany + unitString;
+                measurement = howMany + " " + unitString;
 
             }
             return measurement;
@@ -102,11 +102,12 @@ namespace MasterMeal.Services
         {
             if (unit == MassMeasurementUnit.ounce)
             {
-                return FractionToString(DoubleToFraction(remainder / 2));
+                return FractionToString(DoubleToFraction(remainder / 2d));
             }
             else
             {
-                return FractionToString(DoubleToFraction(remainder / 32));
+                double fractionDouble = remainder / 32d;
+                return FractionToString(DoubleToFraction(fractionDouble));
 
             }
         }
@@ -115,35 +116,35 @@ namespace MasterMeal.Services
             //TODO What if 1/3 And 3/4 are combined, or 1/3 1/2???
             if (unit == LiquidMeasurementUnit.Teaspoon)
             {
-                return FractionToString(DoubleToFraction(remainder / 24));
+                return FractionToString(DoubleToFraction(remainder / 24d));
             }
             else if (unit == LiquidMeasurementUnit.Tablespoon)
             {
-                return FractionToString(DoubleToFraction(remainder / 24 * 3));
+                return FractionToString(DoubleToFraction(remainder / 24d * 3d));
 
             }
             else if (unit == LiquidMeasurementUnit.Ounce)
             {
-                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2));
+                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d));
 
             }
             else if (unit == LiquidMeasurementUnit.Cup)
             {
-                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2 * 8));
+                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d * 8d));
 
             }
             else if (unit == LiquidMeasurementUnit.Pint)
             {
-                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2));
+                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d * 8d * 2d));
             }
             else if (unit == LiquidMeasurementUnit.Quart)
             {
-                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2 * 2));
+                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d * 8d * 2d * 2d));
 
             }
             else if (unit == LiquidMeasurementUnit.Gallon)
             {
-                return FractionToString(DoubleToFraction(remainder / 24 * 3 * 2 * 8 * 2 * 2 * 4));
+                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d * 8d * 2d * 2d * 4d));
 
             }
             else
@@ -210,25 +211,25 @@ namespace MasterMeal.Services
             string measurement = "";
             int remainder = fracOz % conversionFactor;
             int howMany;
-            if (remainder > 0)
+            if (remainder > 0d)
             {
                 //Add s to unit
                 unitString += "s";
                 //round down to whole unit
                 fracOz -= remainder;
-                if (remainder / conversionFactor > 0.75)
+                if (remainder / conversionFactor > 0.75d)
                 {
                     fracOz += conversionFactor;
                     howMany = fracOz / conversionFactor;
-                    measurement = howMany + unitString;
+                    measurement = howMany + " " + unitString;
                 }
                 else
                 {
 
-                //Round up to fraction
-                string fraction = RemainderToFraction(remainder, unit);
-                howMany = fracOz / conversionFactor;
-                measurement = howMany + fraction + unitString;
+                    //Round up to fraction
+                    string fraction = RemainderToFraction(remainder, unit);
+                    howMany = fracOz / conversionFactor;
+                    measurement = howMany + " " + fraction + " " + unitString;
                 }
 
             }
@@ -240,7 +241,7 @@ namespace MasterMeal.Services
                 {
                     unitString += "s";
                 }
-                measurement = howMany + unitString;
+                measurement = howMany + " " + unitString;
 
             }
             return measurement;
@@ -278,7 +279,7 @@ namespace MasterMeal.Services
                 conversionFactor = 4 * 2 * 2 * 8 * 2 * 3 * 24;
 
             }
-            int convertedFraction = (int)(FractionToDouble(fraction) * conversionFactor);
+            int convertedFraction = Convert.ToInt32(FractionToDouble(fraction) * conversionFactor);
             int convertedWhole = wholeNumber * conversionFactor;
             return convertedFraction + convertedWhole;
         }
@@ -303,23 +304,23 @@ namespace MasterMeal.Services
             double res;
             if (fraction == Fraction.OneQuarter)
             {
-                res = 1 / 4;
+                res = 1d / 4d;
             }
             else if (fraction == Fraction.OneThird)
             {
-                res = 1 / 3;
+                res = 1d / 3d;
             }
             else if (fraction == Fraction.Half)
             {
-                res = 1 / 2;
+                res = 1d / 2d;
             }
             else if (fraction == Fraction.TwoThirds)
             {
-                res = 2 / 3;
+                res = 2d / 3d;
             }
             else if (fraction == Fraction.ThreeQuarters)
             {
-                res = 3 / 4;
+                res = 3d / 4d;
             }
             else
             {
