@@ -34,7 +34,17 @@ namespace MasterMeal.Services.Tests
         [Test]
         [TestCase(12,"1/2 Teaspoons")]
         [TestCase(18,"1/4 Tablespoons")]
+        [TestCase(54, "3/4 Tablespoons")]
+        [TestCase(36, "1/2 Tablespoons")]
         public void DecodeLiquidMeasurement_FractionalInput_ReturnsCorrectUnit(int input, string expected)
+        {
+            var result = _measurementService.DecodeLiquidMeasurement(input);
+            Assert.That(result, Does.Contain(expected));
+        }
+        [Test]
+        [TestCase(1152,"8 oz.")]
+        [TestCase(18,"0.125 oz.")]
+        public void DecodeLiquidMeasurement_FractionalInput_ReturnsCorrectOunce(int input, string expected)
         {
             var result = _measurementService.DecodeLiquidMeasurement(input);
             Assert.That(result, Does.Contain(expected));
@@ -49,17 +59,28 @@ namespace MasterMeal.Services.Tests
         [Test()]
         [TestCase(2,"1 Ounce")]
         [TestCase(32,"1 Pound")]
-        [TestCase(16, "8 Ounces")]
+        [TestCase(16, "1/2 Pounds")]
         [TestCase(40, "1 1/4 Pounds")]
         [TestCase(34, "1 1/4 Pounds")]
         public void DecodeMassMeasurementTest_SimpleInput_ReturnsCorrectUnit(int input, string expected)
         {
             var result = _measurementService.DecodeMassMeasurement(input);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.That(result, Does.Contain(expected));
+        }
+        [Test()]
+        [TestCase(32,"(16 oz.)")]
+        [TestCase(16, "(8 oz.)")]
+        [TestCase(40, "(20 oz.)")]
+        [TestCase(34, "(17 oz.)")]
+        public void DecodeMassMeasurementTest_SimpleInput_ReturnsCorrectOunce(int input, string expected)
+        {
+            var result = _measurementService.DecodeMassMeasurement(input);
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test()]
         [TestCase(4, Fraction.Half, LiquidMeasurementUnit.Cup, 5184)]
+        [TestCase(1, Fraction.Zero, LiquidMeasurementUnit.Gallon, 18432)]
         public void EncodeLiquidMeasurementTest(int wholeNum, Fraction fraction, LiquidMeasurementUnit unit, int expected)
         {
             var result = _measurementService.EncodeLiquidMeasurement(wholeNum, fraction, unit);
@@ -67,9 +88,13 @@ namespace MasterMeal.Services.Tests
         }
 
         [Test()]
-        public void EncodeMassMeasurementTest()
+        [TestCase(1, Fraction.Half, MassMeasurementUnit.pound, 48)]
+        [TestCase(1, Fraction.Zero, MassMeasurementUnit.ounce, 2)]
+        [TestCase(15, Fraction.Zero, MassMeasurementUnit.ounce, 30)]
+        public void EncodeMassMeasurementTest(int wholeNum, Fraction fraction, MassMeasurementUnit unit, int expected)
         {
-            Assert.Fail();
+            var result = _measurementService.EncodeMassMeasurement(wholeNum, fraction, unit);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test()]

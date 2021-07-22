@@ -15,7 +15,7 @@ namespace MasterMeal.Models
         public string Name { get; set; }
         public int CookingTime { get; set; }
         public string Description { get; set; }
-        public virtual ICollection<Rating> Ratings { get; set; }
+        public virtual ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
         public string AuthorId { get; set; }
         public virtual Chef Author { get; set; }
         public int TypeId { get; set; }
@@ -26,6 +26,10 @@ namespace MasterMeal.Models
             get
             {
                 float avg=0f;
+                if(Ratings?.Count == 0)
+                {
+                    return avg;
+                }
                 int total=0;
                 foreach (var rating in Ratings)
                 {

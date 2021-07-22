@@ -14,6 +14,7 @@ namespace MasterMeal.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+        [Required]
         public string DisplayName { get; set; }
         public int ImageId { get; set; }
         public virtual ImageFile Image { get; set; }

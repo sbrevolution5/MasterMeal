@@ -45,7 +45,7 @@ namespace MasterMeal.Services
                 unit = LiquidMeasurementUnit.Ounce;
                 conversionFactor = 2 * 3 * 24;
             }
-            else if (fracTSP >= 24 * 3 || fracTSP == 18 || fracTSP ==36 || fracTSP == 54)
+            else if (fracTSP >= 24 * 3 || fracTSP == 18 || fracTSP == 36 || fracTSP == 54)
             {
                 unitString = "Tablespoon";
                 unit = LiquidMeasurementUnit.Tablespoon;
@@ -74,7 +74,7 @@ namespace MasterMeal.Services
                 {
                     fracTSP += conversionFactor;
                     howMany = fracTSP / conversionFactor;
-                    measurement = howMany + " " + unitString + "(" + ozConversion + "oz.)";
+                    measurement = howMany + " " + unitString + "(" + ozConversion + " oz.)";
                 }
                 else
                 {
@@ -83,13 +83,13 @@ namespace MasterMeal.Services
                     howMany = fracTSP / conversionFactor;
                     if (howMany == 0)
                     {
-                        measurement = fraction + " " + unitString;
+                        measurement = fraction + " " + unitString + "(" + ozConversion + " oz.)";
 
                     }
                     else
                     {
 
-                    measurement = howMany + " " + fraction + " " + unitString + "(" + ozConversion + "oz.)";
+                        measurement = howMany + " " + fraction + " " + unitString + "(" + ozConversion + " oz.)";
                     }
                 }
 
@@ -102,7 +102,7 @@ namespace MasterMeal.Services
                 {
                     unitString += "s";
                 }
-                measurement = howMany + " " + unitString + "(" + ozConversion + "oz.)";
+                measurement = howMany + " " + unitString + "(" + ozConversion + " oz.)";
 
             }
             return measurement;
@@ -210,7 +210,7 @@ namespace MasterMeal.Services
             string unitString = "";
             MassMeasurementUnit unit;
             int conversionFactor;
-            if (fracOz >= 32)
+            if (fracOz >= 32 || fracOz == 16 || fracOz == 8 || fracOz == 24)
             {
                 unitString = "Pound";
                 unit = MassMeasurementUnit.pound;
@@ -223,8 +223,9 @@ namespace MasterMeal.Services
                 conversionFactor = 2;
 
             }
+            float ozConversion = (float)fracOz / 2f;
             //Get whats left from remainder
-            string measurement = "";
+            string measurement;
             int remainder = fracOz % conversionFactor;
             int howMany;
             if (remainder > 0d)
@@ -237,7 +238,14 @@ namespace MasterMeal.Services
                 {
                     fracOz += conversionFactor;
                     howMany = fracOz / conversionFactor;
-                    measurement = howMany + " " + unitString;
+                    if (unitString != "Ounces")
+                    {
+                        measurement = howMany + " " + unitString + "(" + ozConversion + " oz.)";
+                    }
+                    else
+                    {
+                        measurement = howMany + " " + unitString;
+                    }
                 }
                 else
                 {
@@ -247,15 +255,27 @@ namespace MasterMeal.Services
                     howMany = fracOz / conversionFactor;
                     if (howMany == 0)
                     {
-                        measurement = fraction + " " + unitString;
-
+                        if (unitString != "Ounces")
+                        {
+                            measurement = fraction + " " + unitString + "(" + ozConversion + " oz.)";
+                        }
+                        else
+                        {
+                            measurement = fraction + " " + unitString;
+                        }
                     }
                     else
                     {
 
-                        measurement = howMany + " " + fraction + " " + unitString;
+                        if (unitString != "Ounces")
+                        {
+                            measurement = howMany + " " + fraction + " " + unitString + "(" + ozConversion + " oz.)";
+                        }
+                        else
+                        {
+                            measurement = howMany + " " + fraction + " " + unitString;
+                        }
                     }
-                    measurement = howMany + " " + fraction + " " + unitString;
                 }
 
             }
@@ -267,7 +287,14 @@ namespace MasterMeal.Services
                 {
                     unitString += "s";
                 }
-                measurement = howMany + " " + unitString;
+                if (unitString != "Ounces")
+                {
+                    measurement = howMany + " " + unitString + "(" + ozConversion + " oz.)";
+                }
+                else
+                {
+                    measurement = howMany + " " + unitString;
+                }
 
             }
             return measurement;
@@ -315,11 +342,11 @@ namespace MasterMeal.Services
             int conversionFactor;
             if (unit == MassMeasurementUnit.ounce)
             {
-                conversionFactor = 24;
+                conversionFactor = 2;
             }
             else //Unit must be pounds
             {
-                conversionFactor = 24 * 16;
+                conversionFactor = 2 * 16;
             }
             int convertedFraction = (int)(FractionToDouble(fraction) * conversionFactor);
             int convertedWhole = wholeNumber * conversionFactor;

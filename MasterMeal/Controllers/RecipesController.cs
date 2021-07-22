@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MasterMeal.Data;
 using MasterMeal.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace MasterMeal.Controllers
 {
     public class RecipesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Chef> _userManager;
 
-        public RecipesController(ApplicationDbContext context)
+        public RecipesController(ApplicationDbContext context, UserManager<Chef> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Recipes
@@ -48,7 +51,7 @@ namespace MasterMeal.Controllers
         // GET: Recipes/Create
         public IActionResult Create()
         {
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Id");
+            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Name");
             return View();
         }
 
@@ -57,10 +60,12 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CookingTime,Description,AuthorId,TypeId")] Recipe Recipe)
+        public async Task<IActionResult> Create([Bind("Id,Name,CookingTime,Description,TypeId")] Recipe Recipe)
         {
+
             if (ModelState.IsValid)
             {
+                Recipe.AuthorId = _userManager.GetUserId(User);
                 _context.Add(Recipe);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

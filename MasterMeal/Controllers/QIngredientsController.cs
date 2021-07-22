@@ -48,7 +48,7 @@ namespace MasterMeal.Controllers
         // GET: QIngredients/Create
         public IActionResult Create()
         {
-            ViewData["IngredientId"] = new SelectList(_context.Ingredient, "Id", "Id");
+            ViewData["IngredientId"] = new SelectList(_context.Ingredient, "Id", "Name");
             return View();
         }
 
