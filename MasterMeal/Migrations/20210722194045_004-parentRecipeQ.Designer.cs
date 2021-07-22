@@ -3,15 +3,17 @@ using System;
 using MasterMeal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MasterMeal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210722194045_004-parentRecipeQ")]
+    partial class _004parentRecipeQ
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,6 +161,9 @@ namespace MasterMeal.Migrations
                     b.Property<int>("TypeId")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("UsesWeight")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TypeId");
@@ -230,7 +235,7 @@ namespace MasterMeal.Migrations
                     b.Property<int>("IngredientId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("MassMeasurementUnit")
+                    b.Property<int>("MassMeasurementUnit")
                         .HasColumnType("integer");
 
                     b.Property<int>("MeasurementType")
@@ -238,9 +243,6 @@ namespace MasterMeal.Migrations
 
                     b.Property<string>("Notes")
                         .HasColumnType("text");
-
-                    b.Property<int>("NumberOfUnits")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Quantity")
                         .HasColumnType("text");
@@ -251,7 +253,7 @@ namespace MasterMeal.Migrations
                     b.Property<int>("RecipeId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("VolumeMeasurementUnit")
+                    b.Property<int>("VolumeMeasurementUnit")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

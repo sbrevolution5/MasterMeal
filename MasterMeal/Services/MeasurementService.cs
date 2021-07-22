@@ -11,50 +11,50 @@ namespace MasterMeal.Services
     {
         public string DecodeLiquidMeasurement(int fracTSP)
         {
-            LiquidMeasurementUnit unit;
+            VolumeMeasurementUnit unit;
             int conversionFactor;
             string unitString;
             if (fracTSP >= 4 * 2 * 2 * 8 * 2 * 3 * 24)
             {
                 unitString = "Gallon";
-                unit = LiquidMeasurementUnit.Gallon;
+                unit = VolumeMeasurementUnit.Gallon;
                 conversionFactor = 4 * 2 * 2 * 8 * 2 * 3 * 24;
             }
             else if (fracTSP >= 2 * 2 * 8 * 2 * 3 * 24)
             {
                 unitString = "Quart";
-                unit = LiquidMeasurementUnit.Quart;
+                unit = VolumeMeasurementUnit.Quart;
                 conversionFactor = 2 * 2 * 8 * 2 * 3 * 24;
             }
             else if (fracTSP >= 2 * 8 * 2 * 3 * 24)
             {
                 unitString = "Pint";
-                unit = LiquidMeasurementUnit.Pint;
+                unit = VolumeMeasurementUnit.Pint;
                 conversionFactor = 2 * 8 * 2 * 3 * 24;
             }
             else if (fracTSP >= 8 * 2 * 3 * 24)
             {
                 unitString = "Cup";
-                unit = LiquidMeasurementUnit.Cup;
+                unit = VolumeMeasurementUnit.Cup;
                 conversionFactor = 8 * 2 * 3 * 24;
 
             }
             else if (fracTSP >= 24 * 3 * 2)
             {
                 unitString = "Ounce";
-                unit = LiquidMeasurementUnit.Ounce;
+                unit = VolumeMeasurementUnit.Ounce;
                 conversionFactor = 2 * 3 * 24;
             }
             else if (fracTSP >= 24 * 3 || fracTSP == 18 || fracTSP == 36 || fracTSP == 54)
             {
                 unitString = "Tablespoon";
-                unit = LiquidMeasurementUnit.Tablespoon;
+                unit = VolumeMeasurementUnit.Tablespoon;
                 conversionFactor = 3 * 24;
             }
             else //Must be Teaspoon or less
             {
                 unitString = "Teaspoon";
-                unit = LiquidMeasurementUnit.Teaspoon;
+                unit = VolumeMeasurementUnit.Teaspoon;
                 conversionFactor = 24;
 
             }
@@ -121,43 +121,43 @@ namespace MasterMeal.Services
 
             }
         }
-        private string RemainderToFraction(int remainder, LiquidMeasurementUnit unit)
+        private string RemainderToFraction(int remainder, VolumeMeasurementUnit unit)
         {
             //TODO What if 1/3 And 3/4 are combined, or 1/3 1/2???
-            if (unit == LiquidMeasurementUnit.Teaspoon)
+            if (unit == VolumeMeasurementUnit.Teaspoon)
             {
                 return FractionToString(DoubleToFraction(remainder / 24d));
             }
-            else if (unit == LiquidMeasurementUnit.Tablespoon)
+            else if (unit == VolumeMeasurementUnit.Tablespoon)
             {
                 var fraction = DoubleToFraction(remainder / (24d * 3d));
                 return FractionToString(fraction);
 
             }
-            else if (unit == LiquidMeasurementUnit.Ounce)
+            else if (unit == VolumeMeasurementUnit.Ounce)
             {
                 Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d));
                 return FractionToString(fraction);
 
             }
-            else if (unit == LiquidMeasurementUnit.Cup)
+            else if (unit == VolumeMeasurementUnit.Cup)
             {
                 Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d * 8d));
                 return FractionToString(fraction);
 
             }
-            else if (unit == LiquidMeasurementUnit.Pint)
+            else if (unit == VolumeMeasurementUnit.Pint)
             {
                 Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d * 8d * 2d));
                 return FractionToString(fraction);
             }
-            else if (unit == LiquidMeasurementUnit.Quart)
+            else if (unit == VolumeMeasurementUnit.Quart)
             {
                 Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d * 8d * 2d * 2d));
                 return FractionToString(fraction);
 
             }
-            else if (unit == LiquidMeasurementUnit.Gallon)
+            else if (unit == VolumeMeasurementUnit.Gallon)
             {
                 Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d * 8d * 2d * 2d * 4d));
                 return FractionToString(fraction);
@@ -300,30 +300,30 @@ namespace MasterMeal.Services
             return measurement;
         }
 
-        public int EncodeLiquidMeasurement(int wholeNumber, Fraction fraction, LiquidMeasurementUnit unit)
+        public int EncodeLiquidMeasurement(int wholeNumber, Fraction fraction, VolumeMeasurementUnit unit)
         {
             int conversionFactor;
-            if (unit == LiquidMeasurementUnit.Teaspoon)
+            if (unit == VolumeMeasurementUnit.Teaspoon)
             {
                 conversionFactor = 24;
             }
-            else if (unit == LiquidMeasurementUnit.Tablespoon)
+            else if (unit == VolumeMeasurementUnit.Tablespoon)
             {
                 conversionFactor = 3 * 24;
             }
-            else if (unit == LiquidMeasurementUnit.Ounce)
+            else if (unit == VolumeMeasurementUnit.Ounce)
             {
                 conversionFactor = 2 * 3 * 24;
             }
-            else if (unit == LiquidMeasurementUnit.Cup)
+            else if (unit == VolumeMeasurementUnit.Cup)
             {
                 conversionFactor = 8 * 2 * 3 * 24;
             }
-            else if (unit == LiquidMeasurementUnit.Pint)
+            else if (unit == VolumeMeasurementUnit.Pint)
             {
                 conversionFactor = 2 * 8 * 2 * 3 * 24;
             }
-            else if (unit == LiquidMeasurementUnit.Quart)
+            else if (unit == VolumeMeasurementUnit.Quart)
             {
                 conversionFactor = 2 * 2 * 8 * 2 * 3 * 24;
             }
@@ -409,6 +409,33 @@ namespace MasterMeal.Services
                 res = "";
             }
             return res;
+        }
+
+        public int EncodeUnitMeasurement(int quantityNumber, Fraction fraction)
+        {
+            int conversionFactor= 24;
+            
+            int convertedFraction = (int)(FractionToDouble(fraction) * conversionFactor);
+            int convertedWhole = quantityNumber * conversionFactor;
+            return convertedFraction + convertedWhole;
+        }
+
+        public string DecodeUnitMeasurement(int numberOfUnits)
+        {
+            string measurement;
+            int remainder = numberOfUnits % 24;
+            int howMany = (numberOfUnits -remainder)/24;
+            double fractionDec = remainder/24d;
+            string fraction = FractionToString(DoubleToFraction(fractionDec));
+            if (fraction == "")
+            {
+                measurement = howMany.ToString();
+            }
+            else
+            {
+            measurement = $"{howMany} {fraction}";
+            }
+            return measurement;
         }
     }
 }

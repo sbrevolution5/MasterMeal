@@ -79,9 +79,9 @@ namespace MasterMeal.Services.Tests
         }
 
         [Test()]
-        [TestCase(4, Fraction.Half, LiquidMeasurementUnit.Cup, 5184)]
-        [TestCase(1, Fraction.Zero, LiquidMeasurementUnit.Gallon, 18432)]
-        public void EncodeLiquidMeasurementTest(int wholeNum, Fraction fraction, LiquidMeasurementUnit unit, int expected)
+        [TestCase(4, Fraction.Half, VolumeMeasurementUnit.Cup, 5184)]
+        [TestCase(1, Fraction.Zero, VolumeMeasurementUnit.Gallon, 18432)]
+        public void EncodeLiquidMeasurementTest(int wholeNum, Fraction fraction, VolumeMeasurementUnit unit, int expected)
         {
             var result = _measurementService.EncodeLiquidMeasurement(wholeNum, fraction, unit);
             Assert.That(result, Is.EqualTo(expected));

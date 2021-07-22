@@ -9,12 +9,13 @@ namespace MasterMeal.Services.Interfaces
     public interface IMeasurementService
     {
         public string DecodeLiquidMeasurement(int fracTSP);
-        public int EncodeLiquidMeasurement(int wholeNumber, Fraction fraction, LiquidMeasurementUnit unit);
+        public int EncodeLiquidMeasurement(int wholeNumber, Fraction fraction, VolumeMeasurementUnit unit);
         public string DecodeMassMeasurement(int fracOz);
         public int EncodeMassMeasurement(int wholeNumber, Fraction fraction, MassMeasurementUnit unit);
         public double FractionToDouble(Fraction fraction);
         public Fraction DoubleToFraction(double input);
         public string FractionToString(Fraction fraction);
-
+        int EncodeUnitMeasurement(int quantityNumber, Fraction fraction);
+        string DecodeUnitMeasurement(int numberOfUnits);
     }
 }

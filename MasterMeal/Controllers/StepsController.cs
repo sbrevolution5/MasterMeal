@@ -46,9 +46,18 @@ namespace MasterMeal.Controllers
         }
 
         // GET: Steps/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            ViewData["RecipeId"] = new SelectList(_context.Recipe, "Id", "Name");
+            var step = new Step();
+            if (id is not null)
+            {
+                ViewData["RecipeId"] = new SelectList(_context.Recipe.Where(r=>r.Id== id), "Id", "Name");
+            }
+            else
+            {
+                step.RecipeId = (int)id;
+                step.Recipe = _context.Recipe.Find(id);
+            }
             return View();
         }
 
@@ -57,7 +66,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RecipeId,StepNumber,Text")] Step step)
+        public async Task<IActionResult> Create([Bind("RecipeId,StepNumber,Text")] Step step)
         {
             if (ModelState.IsValid)
             {

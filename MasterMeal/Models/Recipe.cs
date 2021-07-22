@@ -9,9 +9,9 @@ namespace MasterMeal.Models
     public class Recipe
     {
         public int Id { get; set; }
-        public virtual ICollection<QIngredient> Ingredients { get; set; }
-        public virtual ICollection<Supply> Supplies { get; set; }
-        public ICollection<Step> Steps { get; set; }
+        public virtual ICollection<QIngredient> Ingredients { get; set; } = new HashSet<QIngredient>();
+        public virtual ICollection<Supply> Supplies { get; set; } = new HashSet<Supply>();
+        public ICollection<Step> Steps { get; set; } = new HashSet<Step>();
         public string Name { get; set; }
         public int CookingTime { get; set; }
         public string Description { get; set; }

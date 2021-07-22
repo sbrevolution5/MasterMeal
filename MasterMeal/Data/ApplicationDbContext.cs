@@ -22,5 +22,6 @@ namespace MasterMeal.Data
         public DbSet<MasterMeal.Models.RecipeType> RecipeType { get; set; }
         public DbSet<MasterMeal.Models.Step> Step { get; set; }
         public DbSet<MasterMeal.Models.Supply> Supply { get; set; }
+        public DbSet<MasterMeal.Models.IngredientType> IngredientType { get; set; }
     }
 }

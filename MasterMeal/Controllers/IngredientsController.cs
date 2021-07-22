@@ -46,6 +46,7 @@ namespace MasterMeal.Controllers
         // GET: Ingredients/Create
         public IActionResult Create()
         {
+            ViewData["IngredientType"] = new SelectList(_context.IngredientType, "Id", "Name");
             return View();
         }
 
@@ -54,7 +55,7 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Type")] Ingredient ingredient)
+        public async Task<IActionResult> Create([Bind("Id,Name,TypeId")] Ingredient ingredient)
         {
             if (ModelState.IsValid)
             {

@@ -1,6 +1,7 @@
 using MasterMeal.Data;
 using MasterMeal.Models;
 using MasterMeal.Services;
+using MasterMeal.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -47,6 +48,7 @@ namespace MasterMeal
             services.AddScoped<RecipeService>();
             services.AddScoped<ShoppingService>();
             services.AddScoped<SupplyService>();
+            services.AddScoped<IMeasurementService, MeasurementService>();
             services.AddRazorPages();
         }
 

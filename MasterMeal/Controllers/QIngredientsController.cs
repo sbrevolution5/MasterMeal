@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MasterMeal.Data;
 using MasterMeal.Models;
+using MasterMeal.Enums;
+using MasterMeal.Services.Interfaces;
 
 namespace MasterMeal.Controllers
 {
     public class QIngredientsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMeasurementService _measurementService;
 
-        public QIngredientsController(ApplicationDbContext context)
+        public QIngredientsController(ApplicationDbContext context, IMeasurementService measurementService)
         {
             _context = context;
+            _measurementService = measurementService;
         }
 
         // GET: QIngredients
@@ -49,6 +53,7 @@ namespace MasterMeal.Controllers
         public IActionResult Create()
         {
             ViewData["IngredientId"] = new SelectList(_context.Ingredient, "Id", "Name");
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "Id", "Name");
             return View();
         }
 
@@ -57,15 +62,28 @@ namespace MasterMeal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IngredientId,Notes,Quantity")] QIngredient qIngredient)
+        public async Task<IActionResult> Create([Bind("Id,RecipeId,IngredientId,MeasurementType,VolumeMeasurementUnit,MassMeasurementUnit,Fraction,Notes,QuantityNumber")] QIngredient qIngredient)
         {
             if (ModelState.IsValid)
             {
+                if (qIngredient.MeasurementType == MeasurementType.Volume)
+                {
+                    qIngredient.NumberOfUnits = _measurementService.EncodeLiquidMeasurement(qIngredient.QuantityNumber, qIngredient.Fraction, qIngredient.VolumeMeasurementUnit.Value);
+                    qIngredient.Quantity = _measurementService.DecodeLiquidMeasurement(qIngredient.NumberOfUnits);
+                }else if (qIngredient.MeasurementType == MeasurementType.Mass)
+                {
+                    qIngredient.NumberOfUnits = _measurementService.EncodeMassMeasurement(qIngredient.QuantityNumber, qIngredient.Fraction, qIngredient.MassMeasurementUnit.Value);
+                    qIngredient.Quantity = _measurementService.DecodeMassMeasurement(qIngredient.NumberOfUnits);
+                }else if (qIngredient.MeasurementType == MeasurementType.Count)
+                {
+                    qIngredient.NumberOfUnits = _measurementService.EncodeUnitMeasurement(qIngredient.QuantityNumber, qIngredient.Fraction);
+                    qIngredient.Quantity = _measurementService.DecodeUnitMeasurement(qIngredient.NumberOfUnits);
+                }
                 _context.Add(qIngredient);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IngredientId"] = new SelectList(_context.Ingredient, "Id", "Id", qIngredient.IngredientId);
+            ViewData["IngredientId"] = new SelectList(_context.Ingredient, "Id", "Name", qIngredient.IngredientId);
             return View(qIngredient);
         }
 

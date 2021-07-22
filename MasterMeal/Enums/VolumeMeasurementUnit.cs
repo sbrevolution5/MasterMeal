@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MasterMeal.Enums
 {
-    public enum LiquidMeasurementUnit
+    public enum VolumeMeasurementUnit
     {
         Teaspoon,
         Tablespoon,

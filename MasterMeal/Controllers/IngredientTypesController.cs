@@ -7,29 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MasterMeal.Data;
 using MasterMeal.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace MasterMeal.Controllers
 {
-    public class RecipesController : Controller
+    public class IngredientTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<Chef> _userManager;
 
-        public RecipesController(ApplicationDbContext context, UserManager<Chef> userManager)
+        public IngredientTypesController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
-        // GET: Recipes
+        // GET: IngredientTypes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Recipe.Include(r => r.Type);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.IngredientType.ToListAsync());
         }
 
-        // GET: Recipes/Details/5
+        // GET: IngredientTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,50 +33,39 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var Recipe = await _context.Recipe
-                .Include(r => r.Type)
-                .Include(r => r.Steps)
-                .Include(r => r.Author)
-                .Include(r=> r.Ingredients)
-                .ThenInclude(i=> i.Ingredient)
-                .ThenInclude(i=>i.Type)
-                .Include(r=>r.Supplies)
+            var ingredientType = await _context.IngredientType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (Recipe == null)
+            if (ingredientType == null)
             {
                 return NotFound();
             }
 
-            return View(Recipe);
+            return View(ingredientType);
         }
 
-        // GET: Recipes/Create
+        // GET: IngredientTypes/Create
         public IActionResult Create()
         {
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Name");
             return View();
         }
 
-        // POST: Recipes/Create
+        // POST: IngredientTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CookingTime,Description,TypeId")] Recipe Recipe)
+        public async Task<IActionResult> Create([Bind("Id,Name")] IngredientType ingredientType)
         {
-
             if (ModelState.IsValid)
             {
-                Recipe.AuthorId = _userManager.GetUserId(User);
-                _context.Add(Recipe);
+                _context.Add(ingredientType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Id", Recipe.TypeId);
-            return View(Recipe);
+            return View(ingredientType);
         }
 
-        // GET: Recipes/Edit/5
+        // GET: IngredientTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,23 +73,22 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var Recipe = await _context.Recipe.FindAsync(id);
-            if (Recipe == null)
+            var ingredientType = await _context.IngredientType.FindAsync(id);
+            if (ingredientType == null)
             {
                 return NotFound();
             }
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Id", Recipe.TypeId);
-            return View(Recipe);
+            return View(ingredientType);
         }
 
-        // POST: Recipes/Edit/5
+        // POST: IngredientTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CookingTime,Description,AuthorId,TypeId")] Recipe Recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] IngredientType ingredientType)
         {
-            if (id != Recipe.Id)
+            if (id != ingredientType.Id)
             {
                 return NotFound();
             }
@@ -113,12 +97,12 @@ namespace MasterMeal.Controllers
             {
                 try
                 {
-                    _context.Update(Recipe);
+                    _context.Update(ingredientType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipeExists(Recipe.Id))
+                    if (!IngredientTypeExists(ingredientType.Id))
                     {
                         return NotFound();
                     }
@@ -129,11 +113,10 @@ namespace MasterMeal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeId"] = new SelectList(_context.Set<RecipeType>(), "Id", "Id", Recipe.TypeId);
-            return View(Recipe);
+            return View(ingredientType);
         }
 
-        // GET: Recipes/Delete/5
+        // GET: IngredientTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -141,31 +124,30 @@ namespace MasterMeal.Controllers
                 return NotFound();
             }
 
-            var Recipe = await _context.Recipe
-                .Include(r => r.Type)
+            var ingredientType = await _context.IngredientType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (Recipe == null)
+            if (ingredientType == null)
             {
                 return NotFound();
             }
 
-            return View(Recipe);
+            return View(ingredientType);
         }
 
-        // POST: Recipes/Delete/5
+        // POST: IngredientTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var Recipe = await _context.Recipe.FindAsync(id);
-            _context.Recipe.Remove(Recipe);
+            var ingredientType = await _context.IngredientType.FindAsync(id);
+            _context.IngredientType.Remove(ingredientType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RecipeExists(int id)
+        private bool IngredientTypeExists(int id)
         {
-            return _context.Recipe.Any(e => e.Id == id);
+            return _context.IngredientType.Any(e => e.Id == id);
         }
     }
 }
