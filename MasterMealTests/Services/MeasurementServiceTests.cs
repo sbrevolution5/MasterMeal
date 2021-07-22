@@ -29,7 +29,7 @@ namespace MasterMeal.Services.Tests
         public void DecodeLiquidMeasurement_SimpleInput_ReturnsCorrectUnit(int input, string expected)
         {
             var result = _measurementService.DecodeLiquidMeasurement(input);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.That(result, Does.Contain(expected));
         }
         [Test]
         [TestCase(12,"1/2 Teaspoons")]
@@ -37,7 +37,7 @@ namespace MasterMeal.Services.Tests
         public void DecodeLiquidMeasurement_FractionalInput_ReturnsCorrectUnit(int input, string expected)
         {
             var result = _measurementService.DecodeLiquidMeasurement(input);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test()]

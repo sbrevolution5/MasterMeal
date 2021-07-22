@@ -45,7 +45,7 @@ namespace MasterMeal.Services
                 unit = LiquidMeasurementUnit.Ounce;
                 conversionFactor = 2 * 3 * 24;
             }
-            else if (fracTSP >= 24 * 3)
+            else if (fracTSP >= 24 * 3 || fracTSP == 18 || fracTSP ==36 || fracTSP == 54)
             {
                 unitString = "Tablespoon";
                 unit = LiquidMeasurementUnit.Tablespoon;
@@ -62,6 +62,7 @@ namespace MasterMeal.Services
             string measurement = "";
             int remainder = fracTSP % conversionFactor;
             int howMany;
+            float ozConversion = (float)fracTSP / (24f * 3f * 2f);
             if (remainder > 0)
             {
                 //Add s to unit
@@ -73,7 +74,7 @@ namespace MasterMeal.Services
                 {
                     fracTSP += conversionFactor;
                     howMany = fracTSP / conversionFactor;
-                    measurement = howMany + " " + unitString;
+                    measurement = howMany + " " + unitString + "(" + ozConversion + "oz.)";
                 }
                 else
                 {
@@ -88,7 +89,7 @@ namespace MasterMeal.Services
                     else
                     {
 
-                    measurement = howMany + " " + fraction + " " + unitString;
+                    measurement = howMany + " " + fraction + " " + unitString + "(" + ozConversion + "oz.)";
                     }
                 }
 
@@ -101,7 +102,7 @@ namespace MasterMeal.Services
                 {
                     unitString += "s";
                 }
-                measurement = howMany + " " + unitString;
+                measurement = howMany + " " + unitString + "(" + ozConversion + "oz.)";
 
             }
             return measurement;
@@ -129,31 +130,37 @@ namespace MasterMeal.Services
             }
             else if (unit == LiquidMeasurementUnit.Tablespoon)
             {
-                return FractionToString(DoubleToFraction(remainder / 24d * 3d));
+                var fraction = DoubleToFraction(remainder / (24d * 3d));
+                return FractionToString(fraction);
 
             }
             else if (unit == LiquidMeasurementUnit.Ounce)
             {
-                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d));
+                Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d));
+                return FractionToString(fraction);
 
             }
             else if (unit == LiquidMeasurementUnit.Cup)
             {
-                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d * 8d));
+                Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d * 8d));
+                return FractionToString(fraction);
 
             }
             else if (unit == LiquidMeasurementUnit.Pint)
             {
-                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d * 8d * 2d));
+                Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d * 8d * 2d));
+                return FractionToString(fraction);
             }
             else if (unit == LiquidMeasurementUnit.Quart)
             {
-                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d * 8d * 2d * 2d));
+                Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d * 8d * 2d * 2d));
+                return FractionToString(fraction);
 
             }
             else if (unit == LiquidMeasurementUnit.Gallon)
             {
-                return FractionToString(DoubleToFraction(remainder / 24d * 3d * 2d * 8d * 2d * 2d * 4d));
+                Fraction fraction = DoubleToFraction(remainder / (24d * 3d * 2d * 8d * 2d * 2d * 4d));
+                return FractionToString(fraction);
 
             }
             else
@@ -209,7 +216,7 @@ namespace MasterMeal.Services
                 unit = MassMeasurementUnit.pound;
                 conversionFactor = 32;
             }
-            else //Must be Teaspoon or less
+            else //Must be Ounce or less
             {
                 unitString = "Ounce";
                 unit = MassMeasurementUnit.ounce;
