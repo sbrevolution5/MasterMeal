@@ -68,14 +68,18 @@ namespace MasterMeal.Controllers
             {
                 if (qIngredient.MeasurementType == MeasurementType.Volume)
                 {
+                    qIngredient.MassMeasurementUnit = null;
                     qIngredient.NumberOfUnits = _measurementService.EncodeLiquidMeasurement(qIngredient.QuantityNumber, qIngredient.Fraction, qIngredient.VolumeMeasurementUnit.Value);
                     qIngredient.Quantity = _measurementService.DecodeLiquidMeasurement(qIngredient.NumberOfUnits);
                 }else if (qIngredient.MeasurementType == MeasurementType.Mass)
                 {
+                    qIngredient.VolumeMeasurementUnit = null;
                     qIngredient.NumberOfUnits = _measurementService.EncodeMassMeasurement(qIngredient.QuantityNumber, qIngredient.Fraction, qIngredient.MassMeasurementUnit.Value);
                     qIngredient.Quantity = _measurementService.DecodeMassMeasurement(qIngredient.NumberOfUnits);
                 }else if (qIngredient.MeasurementType == MeasurementType.Count)
                 {
+                    qIngredient.VolumeMeasurementUnit = null;
+                    qIngredient.MassMeasurementUnit = null;
                     qIngredient.NumberOfUnits = _measurementService.EncodeUnitMeasurement(qIngredient.QuantityNumber, qIngredient.Fraction);
                     qIngredient.Quantity = _measurementService.DecodeUnitMeasurement(qIngredient.NumberOfUnits);
                 }

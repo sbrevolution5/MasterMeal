@@ -32,19 +32,19 @@ namespace MasterMeal.Services
                 unit = VolumeMeasurementUnit.Pint;
                 conversionFactor = 2 * 8 * 2 * 3 * 24;
             }
-            else if (fracTSP >= 8 * 2 * 3 * 24)
+            else if (fracTSP >= 4 * 3 * 24)
             {
                 unitString = "Cup";
                 unit = VolumeMeasurementUnit.Cup;
                 conversionFactor = 8 * 2 * 3 * 24;
 
             }
-            else if (fracTSP >= 24 * 3 * 2)
-            {
-                unitString = "Ounce";
-                unit = VolumeMeasurementUnit.Ounce;
-                conversionFactor = 2 * 3 * 24;
-            }
+            //else if (fracTSP >= 24 * 3 * 2)
+            //{
+            //    unitString = "Ounce";
+            //    unit = VolumeMeasurementUnit.Ounce;
+            //    conversionFactor = 2 * 3 * 24;
+            //}
             else if (fracTSP >= 24 * 3 || fracTSP == 18 || fracTSP == 36 || fracTSP == 54)
             {
                 unitString = "Tablespoon";
