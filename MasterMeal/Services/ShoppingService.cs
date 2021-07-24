@@ -11,10 +11,12 @@ namespace MasterMeal.Services
     public class ShoppingService : IShoppingService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMeasurementService _measurementService;
 
-        public ShoppingService(ApplicationDbContext context)
+        public ShoppingService(ApplicationDbContext context, IMeasurementService measurementService)
         {
             _context = context;
+            _measurementService = measurementService;
         }
 
         public List<QIngredient> CreateListOfQIngredientsForShopping(List<Meal> meals)
@@ -36,10 +38,10 @@ namespace MasterMeal.Services
         public ShoppingIngredient CreateOneShoppingIngredientFromMultipleQIngredients(List<QIngredient> listOfOneIngredient)
         {
             List<string> notes = new();
-            string totalQuantity = ""; //TODO this needs to be changed to correct measurement
+            int totalQuantity = 0; //TODO this needs to be changed to correct measurement
             foreach (var qingredient in listOfOneIngredient)
             {
-
+                totalQuantity +=qingredient.NumberOfUnits;
                 //If string has Notes (it always has shopping notes due to quantity)
                 if (!string.IsNullOrWhiteSpace(qingredient.Notes) )
                 {
@@ -48,7 +50,7 @@ namespace MasterMeal.Services
             }
             ShoppingIngredient result = new()
             {
-                Measurement = totalQuantity,
+                Measurement =  _measurementService.DecodeVolumeMeasurement(totalQuantity),
                 IngredientId = listOfOneIngredient.First().IngredientId,
                 Notes = notes
             };

@@ -9,7 +9,7 @@ namespace MasterMeal.Services
 {
     public class MeasurementService : IMeasurementService
     {
-        public string DecodeLiquidMeasurement(int fracTSP)
+        public string DecodeVolumeMeasurement(int fracTSP)
         {
             VolumeMeasurementUnit unit;
             int conversionFactor;
@@ -112,11 +112,11 @@ namespace MasterMeal.Services
         {
             if (unit == MassMeasurementUnit.ounce)
             {
-                return FractionToString(DoubleToFraction(remainder / 2d));
+                return FractionToString(DoubleToFraction(remainder / 24d));
             }
             else
             {
-                double fractionDouble = remainder / 32d;
+                double fractionDouble = remainder / 24d*16d;
                 return FractionToString(DoubleToFraction(fractionDouble));
 
             }
@@ -210,17 +210,17 @@ namespace MasterMeal.Services
             string unitString = "";
             MassMeasurementUnit unit;
             int conversionFactor;
-            if (fracOz >= 32 || fracOz == 16 || fracOz == 8 || fracOz == 24)
+            if (fracOz >= 24*16 || fracOz == 24*8 || fracOz == 24*4 || fracOz == 24*12)
             {
                 unitString = "Pound";
                 unit = MassMeasurementUnit.pound;
-                conversionFactor = 32;
+                conversionFactor = 24*16;
             }
             else //Must be Ounce or less
             {
                 unitString = "Ounce";
                 unit = MassMeasurementUnit.ounce;
-                conversionFactor = 2;
+                conversionFactor = 24;
 
             }
             float ozConversion = (float)fracOz / 2f;
@@ -300,7 +300,7 @@ namespace MasterMeal.Services
             return measurement;
         }
 
-        public int EncodeLiquidMeasurement(int wholeNumber, Fraction fraction, VolumeMeasurementUnit unit)
+        public int EncodeVolumeMeasurement(int wholeNumber, Fraction fraction, VolumeMeasurementUnit unit)
         {
             int conversionFactor;
             if (unit == VolumeMeasurementUnit.Teaspoon)
@@ -342,11 +342,11 @@ namespace MasterMeal.Services
             int conversionFactor;
             if (unit == MassMeasurementUnit.ounce)
             {
-                conversionFactor = 2;
+                conversionFactor = 24;
             }
             else //Unit must be pounds
             {
-                conversionFactor = 2 * 16;
+                conversionFactor = 24 * 16;
             }
             int convertedFraction = (int)(FractionToDouble(fraction) * conversionFactor);
             int convertedWhole = wholeNumber * conversionFactor;

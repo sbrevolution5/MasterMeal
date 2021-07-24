@@ -21,14 +21,14 @@ namespace MasterMeal.Services.Tests
         [Test]
         [TestCase(24,"1 Teaspoon")]
         [TestCase(72,"1 Tablespoon")]
-        [TestCase(144, "1 Ounce")]
+        [TestCase(144, "2 Tablespoons")]
         [TestCase(1152, "1 Cup")]
         [TestCase(2304, "1 Pint")]
         [TestCase(4608, "1 Quart")]
         [TestCase(18432, "1 Gallon")]
         public void DecodeLiquidMeasurement_SimpleInput_ReturnsCorrectUnit(int input, string expected)
         {
-            var result = _measurementService.DecodeLiquidMeasurement(input);
+            var result = _measurementService.DecodeVolumeMeasurement(input);
             Assert.That(result, Does.Contain(expected));
         }
         [Test]
@@ -38,7 +38,7 @@ namespace MasterMeal.Services.Tests
         [TestCase(36, "1/2 Tablespoons")]
         public void DecodeLiquidMeasurement_FractionalInput_ReturnsCorrectUnit(int input, string expected)
         {
-            var result = _measurementService.DecodeLiquidMeasurement(input);
+            var result = _measurementService.DecodeVolumeMeasurement(input);
             Assert.That(result, Does.Contain(expected));
         }
         [Test]
@@ -46,7 +46,7 @@ namespace MasterMeal.Services.Tests
         [TestCase(18,"0.125 oz.")]
         public void DecodeLiquidMeasurement_FractionalInput_ReturnsCorrectOunce(int input, string expected)
         {
-            var result = _measurementService.DecodeLiquidMeasurement(input);
+            var result = _measurementService.DecodeVolumeMeasurement(input);
             Assert.That(result, Does.Contain(expected));
         }
 
@@ -83,7 +83,7 @@ namespace MasterMeal.Services.Tests
         [TestCase(1, Fraction.Zero, VolumeMeasurementUnit.Gallon, 18432)]
         public void EncodeLiquidMeasurementTest(int wholeNum, Fraction fraction, VolumeMeasurementUnit unit, int expected)
         {
-            var result = _measurementService.EncodeLiquidMeasurement(wholeNum, fraction, unit);
+            var result = _measurementService.EncodeVolumeMeasurement(wholeNum, fraction, unit);
             Assert.That(result, Is.EqualTo(expected));
         }
 
@@ -112,9 +112,3 @@ namespace MasterMeal.Services.Tests
     }
 }
 
-namespace MasterMealTests.Services
-{
-    class MeasurementServiceTests
-    {
-    }
-}

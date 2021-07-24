@@ -69,8 +69,8 @@ namespace MasterMeal.Controllers
                 if (qIngredient.MeasurementType == MeasurementType.Volume)
                 {
                     qIngredient.MassMeasurementUnit = null;
-                    qIngredient.NumberOfUnits = _measurementService.EncodeLiquidMeasurement(qIngredient.QuantityNumber, qIngredient.Fraction, qIngredient.VolumeMeasurementUnit.Value);
-                    qIngredient.Quantity = _measurementService.DecodeLiquidMeasurement(qIngredient.NumberOfUnits);
+                    qIngredient.NumberOfUnits = _measurementService.EncodeVolumeMeasurement(qIngredient.QuantityNumber, qIngredient.Fraction, qIngredient.VolumeMeasurementUnit.Value);
+                    qIngredient.Quantity = _measurementService.DecodeVolumeMeasurement(qIngredient.NumberOfUnits);
                 }else if (qIngredient.MeasurementType == MeasurementType.Mass)
                 {
                     qIngredient.VolumeMeasurementUnit = null;
