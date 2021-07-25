@@ -1,13 +1,13 @@
 ﻿using NUnit.Framework;
-using MasterMeal.Services;
+using MasterMealBlazor.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MasterMeal.Enums;
+using MasterMealBlazor.Enums;
 
-namespace MasterMeal.Services.Tests
+namespace MasterMealBlazor.Services.Tests
 {
     [TestFixture()]
     public class MeasurementServiceTests

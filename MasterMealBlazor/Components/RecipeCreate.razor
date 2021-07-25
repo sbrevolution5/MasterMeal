@@ -1,0 +1,46 @@
+﻿@page "/RecipeCreate"
+@using MasterMealBlazor.Data
+@using MasterMealBlazor.Models
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+<h3>RecipeCreate</h3>
+<EditForm Model="@recipe">
+
+    <input @bind="recipeName" />
+    <input @bind="recipeDescription" />
+    <input @bind="cookingTime" />
+    <InputSelect @bind-value="TypeId" TValue="int">
+        @foreach (RecipeType type in Types)
+        {
+            <option value="@type.Id">@type.Name</option>
+        }
+    </InputSelect>
+    <button @onclick="SaveRecipe"></button>
+</EditForm>
+
+@code {
+    private RecipeType[] Types;
+    protected async override Task OnInitializedAsync()
+    {
+        var context = ContextFactory.CreateDbContext();
+
+
+        Types = await context.RecipeType.ToArrayAsync();
+
+    }
+    private string recipeName;
+    private string recipeDescription;
+    private int cookingTime;
+    private int TypeId;
+    private Recipe recipe = new();
+    public async void SaveRecipe()
+    {
+        recipe.Name = recipeName;
+        recipe.Description = recipeDescription;
+        recipe.CookingTime = cookingTime;
+        recipe.TypeId = TypeId;
+        var context = ContextFactory.CreateDbContext();
+        context.Add(recipe);
+        await context.SaveChangesAsync();
+    }
+}

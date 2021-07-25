@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MasterMeal\MasterMeal.csproj" />
+    <ProjectReference Include="..\MasterMealBlazor\MasterMealBlazor.csproj" />
   </ItemGroup>
 
 </Project>

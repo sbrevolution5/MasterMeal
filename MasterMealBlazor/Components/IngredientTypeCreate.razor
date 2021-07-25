@@ -1,0 +1,23 @@
+﻿@using MasterMealBlazor.Data
+@using Microsoft.EntityFrameworkCore
+@page "/ingredientType/Create"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@using MasterMealBlazor.Models
+<h3>IngredientTypeCreate</h3>
+<EditForm Model="@type" OnValidSubmit="CreateType">
+
+    <input @bind-value="type.Name" />
+    <button type="submit">submit</button>
+</EditForm>
+@code {
+    private IngredientType type = new IngredientType();
+    public async void CreateType()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+
+            context.Add(type);
+            await context.SaveChangesAsync();
+        }
+    }
+}

@@ -1,0 +1,36 @@
+﻿@using MasterMealBlazor.Data
+@using Microsoft.EntityFrameworkCore
+@page "/ingredientType/index"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@using MasterMealBlazor.Models
+<h3>IngredientTypeIndex</h3>
+<NavLink class="nav-link" href="IngredientType/create">
+    <span class="oi oi-plus" aria-hidden="true"></span> Create Ingredient Type
+</NavLink>
+@if (types == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h1>There are @types.Count() types</h1>
+    <ul>
+
+        @foreach (IngredientType type in types)
+        {
+            <li>@type.Name</li>
+        }
+    </ul>
+}
+@code {
+    private IngredientType[] types;
+    protected override async Task OnInitializedAsync()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+
+            types = await context.IngredientType.ToArrayAsync();
+
+        }
+    }
+}

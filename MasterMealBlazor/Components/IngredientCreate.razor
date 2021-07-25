@@ -1,0 +1,54 @@
+﻿@using MasterMealBlazor.Models
+@using Microsoft.EntityFrameworkCore
+@using MasterMealBlazor.Data
+@page "/ingredient"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+
+<h3>IngredientCreate</h3>
+@if (loading == true)
+{
+    <p>Loading</p>
+}
+else
+{
+    <EditForm OnValidSubmit="AddIngredient" Model="@ingredient">
+
+        <input @bind-value="ingredient.Name" />
+        <select @bind="ingredient.TypeId">
+            @foreach (IngredientType type in types)
+            {
+                <option value="@type.Id">@type.Name</option>
+            }
+        </select>
+        <button type="submit">submit</button>
+    </EditForm>
+
+}
+@code {
+    private bool loading = true;
+    private Ingredient ingredient = new();
+    private IngredientType[] types;
+    protected override async Task OnInitializedAsync()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+
+            types = await context.IngredientType.ToArrayAsync();
+
+        }
+        loading = false;
+    }
+
+    public async void AddIngredient()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+
+            context.Add(ingredient);
+            await context.SaveChangesAsync();
+        }
+        ingredient = new();
+        return;
+    }
+
+}

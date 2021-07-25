@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using MasterMealBlazor.Models
+<h3>RecipeForm</h3>
+@if (Recipe != null)
+{
+
+}
+@code {
+    /// <summary>
+    /// Let parent handle result of validation.
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> ValidationResult { get; set; }
+
+    /// <summary>
+    /// Let parent handle what to do on cancel.
+    /// </summary>
+    [Parameter]
+    public EventCallback CancelRequest { get; set; }
+
+    /// <summary>
+    /// <c>True</c> if add mode.
+    /// </summary>
+    [Parameter]
+    public bool IsAdd { get; set; }
+
+    /// <summary>
+    /// The <see cref="Recipe"/> to upsert.
+    /// </summary>
+    [Parameter]
+    public Recipe Recipe { get; set; }
+
+    /// <summary>
+    /// The database version of <see cref="Contact"/> if a concurrency issue
+    /// exists.
+    /// </summary>
+    [Parameter]
+    public Recipe DbRecipe { get; set; }
+
+    /// <summary>
+    /// Prevent multiple asynchronous operations at the same time.
+    /// </summary>
+    [Parameter]
+    public bool Busy { get; set; }
+
+    /// <summary>
+    /// Mode.
+    /// </summary>
+    private string Mode => IsAdd ? "Add" : "Edit";
+
+    /// <summary>
+    /// Ask to cancel.
+    /// </summary>
+    /// <returns>A <see cref="Task"/>.</returns>
+    private Task CancelAsync()
+    {
+        return CancelRequest.InvokeAsync(null);
+    }
+
+    /// <summary>
+    /// Handle form submission request.
+    /// </summary>
+    /// <param name="isValid"><c>True</c> when field validation passed.</param>
+    /// <returns>A <see cref="Task"/>.</returns>
+    private Task HandleSubmitAsync(bool isValid)
+    {
+        return ValidationResult.InvokeAsync(isValid);
+    }
+}
