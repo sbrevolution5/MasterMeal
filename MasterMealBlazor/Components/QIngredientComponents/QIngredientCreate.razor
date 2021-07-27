@@ -6,18 +6,19 @@
 @inject IIngredientService ingredientService
 @inject NavigationManager navigationManager
 <h3>Ingredient Create</h3>
-@if (ingredients == null && qIngredient is null)
+@if (ingredients == null || qIngredient is null || measurementType is null)
 {
     <p>loading</p>
 }
 else
 {
     <div>
-        <EditForm Model="@qIngredient" OnValidSubmit="CreateQIngredient">
+        <EditForm Model="@qIngredient">
             <label>Shopping Notes:</label>
-            <input @bind-value="qIngredient.Notes" />
+            <InputText @bind-Value="qIngredient.Notes" />
             <label>Ingredient Name</label>
             <InputSelect ValueExpression="@(()=>qIngredient.IngredientId)" Value="@qIngredient.IngredientId" ValueChanged="@((int id)=>TypeChange(id))">
+                <option value="">Select An Ingredient</option>
                 @foreach (var ingredient in ingredients)
                 {
                     <option value="@ingredient.Id">@ingredient.Name</option>
@@ -28,7 +29,8 @@ else
             {
                 <p>Count</p>
                 <div>
-                    <input @bind="qIngredient.QuantityNumber" />
+                    <label>How Many</label>
+                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int"/>
                     <InputSelect @bind-Value="qIngredient.Fraction">
                         @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
                                 {
@@ -40,6 +42,7 @@ else
             else if (measurementType == MeasurementType.Volume)
             {
                 <p>Volume</p>
+                <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int"/>
                 <InputSelect @bind-Value="qIngredient.Fraction">
                     @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
                             {
@@ -56,17 +59,17 @@ else
             else if (measurementType == MeasurementType.Mass)
             {
                 <p>Mass</p>
-
-                <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
-                    @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
-                            {
-                        <option value="@unit">@unit</option>
-                            }
-                </InputSelect>
+                <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int"/>
                 <InputSelect @bind-Value="qIngredient.Fraction">
                     @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
                             {
                         <option value="@fraction">@fraction</option>
+                            }
+                </InputSelect>
+                <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
+                    @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
+                            {
+                        <option value="@unit">@unit</option>
                             }
                 </InputSelect>
             }
@@ -74,11 +77,14 @@ else
             {
                 <p>please select an ingredient</p>
             }
-            <button type="submit">Add Ingredient</button>
+            @*<button type="submit">Add Ingredient</button>*@
         </EditForm>
     </div>
 }
 @code {
+    [Parameter]
+    public QIngredient qIngredient { get; set; }
+
     private MeasurementType? measurementType = null;
     private List<Ingredient> ingredients = new();
     protected override async Task OnInitializedAsync()
@@ -87,23 +93,25 @@ else
         {
             ingredients = await context.Ingredient.ToListAsync();
         }
+        qIngredient.Notes = "";
+        qIngredient.QuantityNumber = 1;
+        TypeChange(ingredients.First().Id);
     }
-    private QIngredient qIngredient = new QIngredient();
-    public async void TypeChange(int id)
+    public void TypeChange(int id)
     {
         qIngredient.IngredientId = id;
         measurementType = ingredients.FirstOrDefault(i => i.Id == id).MeasurementType;
         return;
     }
-    public async void CreateQIngredient()
-    {
-        using (var context = ContextFactory.CreateDbContext())
-        {
+    //public async void CreateQIngredient()
+    //{
+    //    using (var context = ContextFactory.CreateDbContext())
+    //    {
 
-            context.Add(qIngredient);
-            await context.SaveChangesAsync();
+    //        context.Add(qIngredient);
+    //        await context.SaveChangesAsync();
 
-        }
-        navigationManager.NavigateTo("/recipe/index");
-    }
+    //    }
+    //    navigationManager.NavigateTo("/recipe/index");
+    //}
 }

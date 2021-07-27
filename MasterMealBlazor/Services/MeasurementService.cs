@@ -177,7 +177,7 @@ namespace MasterMealBlazor.Services
         {
             if (input == 0)
             {
-                return Fraction.Zero;
+                return Fraction.NoFraction;
             }
             else if (input <= .25)
             {

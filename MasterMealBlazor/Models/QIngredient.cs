@@ -15,7 +15,7 @@ namespace MasterMealBlazor.Models
         public virtual Recipe Recipe { get; set; }
         public int IngredientId { get; set; }
         public virtual Ingredient Ingredient { get; set; }
-        public string Notes { get; set; }
+        public string Notes { get; set; } = "";
         public string Quantity { get; set; }
         [Required]
         public MeasurementType MeasurementType { get; set; }

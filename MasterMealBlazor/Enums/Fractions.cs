@@ -7,7 +7,7 @@ namespace MasterMealBlazor.Enums
 {
     public enum Fraction
     {
-        Zero,
+        NoFraction,
         OneQuarter,
         OneThird,
         Half,

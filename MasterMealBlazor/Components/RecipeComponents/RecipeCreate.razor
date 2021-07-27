@@ -2,7 +2,7 @@
 @using MasterMealBlazor.Data
 @using MasterMealBlazor.Models
 @using MasterMealBlazor.Components.QIngredientComponents
-@using MasterMealBlazor.Components.SupplyComponents
+@*@using MasterMealBlazor.Components.SupplyComponents*@
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 <h3>RecipeCreate</h3>
@@ -63,7 +63,7 @@
                     {
                         <li>
 
-                            <QIngredientCreate />
+                            <QIngredientCreate qIngredient="@ingredient"/>
                             <button class="btn btn-danger" @onclick="(()=>RemoveIngredient(ingredient))">Remove</button>
                         </li>
                     }
@@ -82,7 +82,7 @@
                     {
                         <li>
 
-                            <SupplyPicker />
+                            @*<SupplyPicker />*@
                         </li>
                     }
                 </ol>

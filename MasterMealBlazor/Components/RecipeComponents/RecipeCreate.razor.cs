@@ -13,17 +13,15 @@ namespace MasterMealBlazor.Components.RecipeComponents
     private RecipeType[] Types;
         protected async override Task OnInitializedAsync()
         {
-            using (var context = ContextFactory.CreateDbContext())
-            {
-                Types = await context.RecipeType.ToArrayAsync();
-            }
+            using var context = ContextFactory.CreateDbContext();
+            Types = await context.RecipeType.ToArrayAsync();
 
 
 
         }
         private List<Step> steps = new();
         private List<string> supplies = new();
-        private List<string> ingredients = new();
+        private List<QIngredient> ingredients = new();
         private string recipeName;
         private string recipeDescription;
         private int cookingTime;
@@ -41,15 +39,20 @@ namespace MasterMealBlazor.Components.RecipeComponents
             foreach (var step in steps)
             {
                 step.RecipeId = recipe.Id;
-                SaveStep(context, step);
+                context.Add(step);
+            }
+            foreach (var ingredient in ingredients)
+            {
+                ingredient.RecipeId = recipe.Id;
+                context.Add(ingredient);
             }
             await context.SaveChangesAsync();
 
         }
-        private static void SaveStep(DbContext context, Step step)
-        {
-            context.Add(step);
-        }
+        //private static void SaveStep(DbContext context, Step step)
+        //{
+        //    context.Add(step);
+        //}
         public void AddStep()
         {
             steps.Add(new Models.Step());
@@ -60,9 +63,9 @@ namespace MasterMealBlazor.Components.RecipeComponents
         }
         public void AddIngredient()
         {
-            ingredients.Add("");
+            ingredients.Add(new QIngredient());
         }
-        public void RemoveIngredient(string i)
+        public void RemoveIngredient(QIngredient i)
         {
             ingredients.Remove(i);
         }
