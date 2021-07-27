@@ -1,0 +1,101 @@
+﻿@page "/RecipeCreate"
+@using MasterMealBlazor.Data
+@using MasterMealBlazor.Models
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+<h3>RecipeCreate</h3>
+<EditForm Model="@recipe">
+    <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
+    <Div class="row">
+        <Div class="col">
+            <Div class="form-group">
+                <Label>Name:</Label>
+                <InputText @bind-Value="recipeName" />
+
+            </Div>
+        </Div>
+    </Div>
+    <Div class="row">
+        <Div class="col">
+            <Div class="form-group">
+                <Label>Description:</Label>
+                <InputTextArea @bind-Value="recipeDescription" />
+
+            </Div>
+        </Div>
+    </Div>
+    <Div class="row">
+        <Div class="col">
+            <Div class="form-group">
+                <Label>Cooking Time:</Label>
+                <InputNumber @bind-Value="cookingTime" TValue="int" />
+
+            </Div>
+        </Div>
+    </Div>
+    <Div class="row">
+        <Div class="col">
+            <Div class="form-group">
+                <label>Recipe Type</label>
+                @if (Types == null)
+                {
+                    <p>loading...</p>}
+                else
+                {
+                    <InputSelect @bind-Value="TypeId" TValue="int">
+                        @foreach (RecipeType type in Types)
+                        {
+                            <option value="@type.Id">@type.Name</option>
+                        }
+                    </InputSelect>
+                }
+            </Div>
+        </Div>
+    </Div>
+    <ol>
+    @foreach(var step in steps)
+                {
+                    <li>
+
+                        <StepInput />
+                    </li>
+                }
+    </ol>
+
+    <button @onclick="AddStep" class="btn btn-success">Add step</button>
+    <button @onclick="SaveRecipe" class="btn btn-success">Save</button>
+</EditForm>
+
+@code {
+    private RecipeType[] Types;
+    protected async override Task OnInitializedAsync()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+            Types = await context.RecipeType.ToArrayAsync();
+        }
+
+
+
+    }
+    private List<string> steps=new();
+    private string recipeName;
+    private string recipeDescription;
+    private int cookingTime;
+    private int TypeId;
+    private Recipe recipe = new();
+    public async void SaveRecipe()
+    {
+        recipe.Name = recipeName;
+        recipe.Description = recipeDescription;
+        recipe.CookingTime = cookingTime;
+        recipe.TypeId = TypeId;
+        var context = ContextFactory.CreateDbContext();
+        context.Add(recipe);
+        await context.SaveChangesAsync();
+    }
+    public void AddStep()
+    {
+        steps.Add("");
+    }
+}

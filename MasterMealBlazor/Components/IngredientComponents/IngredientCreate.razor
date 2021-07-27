@@ -1,0 +1,52 @@
+﻿@using MasterMealBlazor.Enums
+@page "/ingredient/Create"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@inject NavigationManager navigationManager
+<h3>Ingredient Create</h3>
+@if (types == null)
+{
+    <p>loading</p>
+}
+else
+{
+    
+<EditForm Model="@ingredient" OnValidSubmit="CreateType">
+
+    <input @bind-value="ingredient.Name" />
+    <InputSelect @bind-Value="ingredient.MeasurementType">
+        @foreach(var measure in Enum.GetValues(typeof(MeasurementType)))
+        {
+            <option value="@measure">@measure</option>
+        }
+    </InputSelect>
+    <InputSelect @bind-Value="ingredient.TypeId">
+        @foreach(var type in types)
+        {
+            <option value="@type.Id">@type.Name</option>
+        }
+    </InputSelect>
+    <button type="submit">submit</button>
+</EditForm>
+}
+@code {
+    private List<IngredientType> types = new();
+    protected override async Task OnInitializedAsync()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+            types = await context.IngredientType.ToListAsync();
+        }
+    }
+    private Ingredient ingredient = new Ingredient();
+    public async void CreateType()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+
+            context.Add(ingredient);
+            await context.SaveChangesAsync();
+
+        }
+        navigationManager.NavigateTo("/ingredienttype/index");
+    }
+}

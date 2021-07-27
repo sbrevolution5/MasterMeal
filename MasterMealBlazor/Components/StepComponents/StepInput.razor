@@ -1,0 +1,23 @@
+﻿<Div class="row">
+    <Div class="col">
+        <Div class="form-group">
+            <Label>Step text:</Label>
+            <InputTextArea @bind-Value="stepText" />
+
+        </Div>
+    </Div>
+</Div>
+<Div class="row">
+    <Div class="col">
+        <Div class="form-group">
+            <Label>Step Number:</Label>
+            <InputNumber @bind-Value="stepNumber" TValue="int" />
+
+        </Div>
+    </Div>
+</Div>
+
+@code {
+    public string stepText { get; set; }
+    public int stepNumber { get; set; }
+}

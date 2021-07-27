@@ -1,0 +1,48 @@
+﻿@using MasterMealBlazor.Enums
+@page "/qingredient/Create"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@inject NavigationManager navigationManager
+<h3>Ingredient Create</h3>
+@if (ingredients == null && qIngredient is null)
+{
+    <p>loading</p>
+}
+else
+{
+    <div>
+        <EditForm Model="@qIngredient" OnValidSubmit="CreateType">
+
+            <input @bind-value="qIngredient.Notes" />
+            <InputSelect @bind-Value="qIngredient.IngredientId" onchange="MeasurementInput.RefreshMe()">
+                @foreach (var ingredient in ingredients)
+                {
+                <option value="@ingredient.Id">@ingredient.Name</option>
+                }
+        </InputSelect>
+        <MeasurementInput measurementType="qIngredient.Ingredient?.MeasurementType" />
+        <button type="submit">submit</button>
+    </EditForm>
+</div>
+}
+@code {
+    private List<Ingredient> ingredients = new();
+    protected override async Task OnInitializedAsync()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+            ingredients = await context.Ingredient.ToListAsync();
+        }
+    }
+    private QIngredient qIngredient = new QIngredient();
+    public async void CreateType()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+
+            context.Add(qIngredient);
+            await context.SaveChangesAsync();
+
+        }
+        navigationManager.NavigateTo("/ingredienttype/index");
+    }
+}

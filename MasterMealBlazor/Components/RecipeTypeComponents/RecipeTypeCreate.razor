@@ -1,16 +1,16 @@
-﻿@using MasterMealBlazor.Data
-@using Microsoft.EntityFrameworkCore
-@page "/ingredientType/Create"
+﻿
+@page "/recipeType/Create"
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@inject NavigationManager navigationManager
 @using MasterMealBlazor.Models
-<h3>IngredientTypeCreate</h3>
+<h3>New Recipe Type</h3>
 <EditForm Model="@type" OnValidSubmit="CreateType">
 
     <input @bind-value="type.Name" />
     <button type="submit">submit</button>
 </EditForm>
 @code {
-    private IngredientType type = new IngredientType();
+    private RecipeType type = new RecipeType();
     public async void CreateType()
     {
         using (var context = ContextFactory.CreateDbContext())
@@ -19,5 +19,6 @@
             context.Add(type);
             await context.SaveChangesAsync();
         }
+        navigationManager.NavigateTo("/recipetype/index");
     }
 }
