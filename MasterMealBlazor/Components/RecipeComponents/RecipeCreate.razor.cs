@@ -35,20 +35,18 @@ namespace MasterMealBlazor.Components.RecipeComponents
             recipe.Description = recipeDescription;
             recipe.CookingTime = cookingTime;
             recipe.TypeId = TypeId;
-            using (var context = ContextFactory.CreateDbContext())
+            using var context = ContextFactory.CreateDbContext();
+            context.Add(recipe);
+            await context.SaveChangesAsync();
+            foreach (var step in steps)
             {
-                context.Add(recipe);
-                await context.SaveChangesAsync();
-                foreach (var step in steps)
-                {
-                    step.RecipeId = recipe.Id;
-                    SaveStep(context, step);
-                }
-                await context.SaveChangesAsync();
+                step.RecipeId = recipe.Id;
+                SaveStep(context, step);
             }
+            await context.SaveChangesAsync();
 
         }
-        private void SaveStep(DbContext context, Step step)
+        private static void SaveStep(DbContext context, Step step)
         {
             context.Add(step);
         }

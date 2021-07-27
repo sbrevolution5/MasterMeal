@@ -1,4 +1,5 @@
-﻿using MasterMealBlazor.Models;
+﻿using MasterMealBlazor.Enums;
+using MasterMealBlazor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace MasterMealBlazor.Services.Interfaces
 {
     public interface IIngredientService
     {
+        public Task<MeasurementType> GetMeasurementTypeOfIngredientByIdAsync(int ingredientId);
         public Task<Ingredient> GetIngredientByIdAsync(int ingredientId);
         public Task<List<Ingredient>> GetRecipeIngredientsAsync(int RecipeId);
         public Task<List<Ingredient>> GetShoppingListIngredientsAsync(int shoppingListId);

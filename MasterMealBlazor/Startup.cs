@@ -1,5 +1,7 @@
 using MasterMealBlazor.Areas.Identity;
 using MasterMealBlazor.Data;
+using MasterMealBlazor.Services;
+using MasterMealBlazor.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -49,6 +51,7 @@ namespace MasterMealBlazor
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddScoped<IIngredientService, IngredientService>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddSingleton<WeatherForecastService>();
         }

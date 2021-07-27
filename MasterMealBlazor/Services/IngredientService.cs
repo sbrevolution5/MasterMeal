@@ -1,4 +1,5 @@
 ﻿using MasterMealBlazor.Data;
+using MasterMealBlazor.Enums;
 using MasterMealBlazor.Models;
 using MasterMealBlazor.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,24 @@ namespace MasterMealBlazor.Services
 {
     public class IngredientService : IIngredientService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> ContextFactory;
 
-        public IngredientService(ApplicationDbContext context)
+        public IngredientService(IDbContextFactory<ApplicationDbContext> contextFactory)
         {
-            _context = context;
+            ContextFactory = contextFactory;
         }
 
         public async Task<Ingredient> GetIngredientByIdAsync(int ingredientId)
         {
+            using var _context = ContextFactory.CreateDbContext();
             var ingredient = await _context.Ingredient.FirstOrDefaultAsync(i => i.Id == ingredientId);
             return ingredient;
+        }
+
+        public async Task<MeasurementType> GetMeasurementTypeOfIngredientByIdAsync(int ingredientId)
+        {
+            var ingredient = await GetIngredientByIdAsync(ingredientId);
+            return ingredient.MeasurementType;
         }
 
         public Task<List<Ingredient>> GetRecipeIngredientsAsync(int RecipeId)

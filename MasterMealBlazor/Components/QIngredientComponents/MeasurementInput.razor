@@ -1,57 +1,11 @@
 ﻿@using MasterMealBlazor.Enums
 <h3>MeasurementInput</h3>
-@if (measurementType == MeasurementType.Count)
-        {
-            <p>Count</p>
-            @*<div>
-                <input @bind="qIngredient.QuantityNumber" />
-                <InputSelect @bind-Value="qIngredient.Fraction">
-                    @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                    {
-                <option value="@fraction">@fraction</option>
-                    }
-        </InputSelect>
-    </div>*@
-        }
-        else if (measurementType == MeasurementType.Volume)
-        {
-            <p>Volume</p>
-            @*<InputSelect @bind-Value="Fraction">
-                @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                {
-            <option value="@fraction">@fraction</option>
-                }
-    </InputSelect>
-            <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit">
-                @foreach (var unit in Enum.GetValues(typeof(VolumeMeasurementUnit)))
-                {
-            <option value="@unit">@unit</option>
-                }
-    </InputSelect>*@
-        }
-        else if (measurementType == MeasurementType.Mass)
-        {
-            <p>Mass</p>
-@*
-            <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
-                @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
-                {
-            <option value="@unit">@unit</option>
-                }
-    </InputSelect>
-            <InputSelect @bind-Value="qIngredient.Fraction">
-                @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                {
-            <option value="@fraction">@fraction</option>
-                }
-    </InputSelect>*@
-        }
-        else
-        {
-            <p>please select an ingredient</p>
-        }
-@code { [Parameter]
+
+@code { 
+    [Parameter]
     public MeasurementType? measurementType { get; set; }
+    [Parameter]
+    public EventCallback<Type> OnTypeChange { get; set; }
     public void RefreshMe()
     {
         StateHasChanged();
