@@ -15,9 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blazorise;
-using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
+
 
 namespace MasterMealBlazor
 {
@@ -34,12 +32,12 @@ namespace MasterMealBlazor
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBlazorise(options =>
-            {
-                options.ChangeTextOnKeyPress = true;
-            })
-                .AddBootstrapProviders()
-                .AddFontAwesomeIcons();
+            //services.AddBlazorise(options =>
+            //{
+            //    options.ChangeTextOnKeyPress = true;
+            //})
+            //    .AddBootstrapProviders()
+            //    .AddFontAwesomeIcons();
             services.AddDbContextFactory<ApplicationDbContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));

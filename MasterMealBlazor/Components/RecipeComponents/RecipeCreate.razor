@@ -6,36 +6,36 @@
 <h3>RecipeCreate</h3>
 <EditForm Model="@recipe">
     <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
-    <Div class="row">
-        <Div class="col">
-            <Div class="form-group">
-                <Label>Name:</Label>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Name:</label>
                 <InputText @bind-Value="recipeName" />
 
-            </Div>
-        </Div>
-    </Div>
-    <Div class="row">
-        <Div class="col">
-            <Div class="form-group">
-                <Label>Description:</Label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Description:</label>
                 <InputTextArea @bind-Value="recipeDescription" />
 
-            </Div>
-        </Div>
-    </Div>
-    <Div class="row">
-        <Div class="col">
-            <Div class="form-group">
-                <Label>Cooking Time:</Label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Cooking Time:</label>
                 <InputNumber @bind-Value="cookingTime" TValue="int" />
 
-            </Div>
-        </Div>
-    </Div>
-    <Div class="row">
-        <Div class="col">
-            <Div class="form-group">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
                 <label>Recipe Type</label>
                 @if (Types == null)
                 {
@@ -49,20 +49,66 @@
                         }
                     </InputSelect>
                 }
-            </Div>
-        </Div>
-    </Div>
-    <ol>
-    @foreach(var step in steps)
-                {
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Ingredients</label>
+                <ol>
+                    @foreach(var ingredient in ingredients)
+                    {
+                        <li>
+
+                            <QIngredientCreate />
+                            <button class="btn btn-danger" @onclick="(()=>RemoveIngredient(ingredient))">Remove</button>
+                        </li>
+                    }
+                </ol>
+
+                <button @onclick="AddIngredient" class="btn btn-success">Add Ingredient</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Supplies</label>
+                <ol>
+                    @foreach (var supply in supplies)
+                    {
+                        <li>
+
+                            <SupplyPicker />
+                        </li>
+                    }
+                </ol>
+                <button @onclick="AddSupply" class="btn btn-success">Add Supply</button>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Steps</label>
+                <ol>
+                    @foreach (var step in steps)
+                    {
                     <li>
-
-                        <StepInput />
+                        <InputTextArea @bind-Value="step.Text"></InputTextArea>
+                        @*<StepInput />*@
+                        <button class="btn btn-danger" @onclick="(()=>steps.Remove(step))">Remove</button>
                     </li>
-                }
-    </ol>
+                    }
+                </ol>
 
-    <button @onclick="AddStep" class="btn btn-success">Add step</button>
+                <button @onclick="AddStep" class="btn btn-success">Add Step</button>
+            </div>
+        </div>
+    </div>
+
     <button @onclick="SaveRecipe" class="btn btn-success">Save</button>
 </EditForm>
 
@@ -78,7 +124,9 @@
 
 
     }
-    private List<string> steps=new();
+    private List<Step> steps = new();
+    private List<string> supplies = new();
+    private List<string> ingredients = new();
     private string recipeName;
     private string recipeDescription;
     private int cookingTime;
@@ -90,12 +138,45 @@
         recipe.Description = recipeDescription;
         recipe.CookingTime = cookingTime;
         recipe.TypeId = TypeId;
-        var context = ContextFactory.CreateDbContext();
-        context.Add(recipe);
-        await context.SaveChangesAsync();
+        using (var context = ContextFactory.CreateDbContext())
+        {
+            context.Add(recipe);
+            await context.SaveChangesAsync();
+            foreach (var step in steps)
+            {
+                step.RecipeId = recipe.Id;
+                SaveStep(context, step);
+            }
+            await context.SaveChangesAsync();
+        }
+
+    }
+    private void SaveStep(DbContext context, Step step)
+    {
+        context.Add(step);
     }
     public void AddStep()
     {
-        steps.Add("");
+        steps.Add(new Models.Step());
+    }
+    public void AddSupply()
+    {
+        supplies.Add("");
+    }
+    public void AddIngredient()
+    {
+        ingredients.Add("");
+    }
+    public void RemoveIngredient(string i)
+    {
+        ingredients.Remove(i);
+    }
+    public void RemoveSupply(string i)
+    {
+        supplies.Remove(i);
+    }
+    public void RemoveStep(Step i)
+    {
+        steps.Remove(i);
     }
 }
