@@ -42,6 +42,25 @@ namespace MasterMealBlazor.Components.RecipeComponents
             foreach (var ingredient in ingredients)
             {
                 ingredient.RecipeId = recipe.Id;
+                if (ingredient.MeasurementType == MeasurementType.Volume)
+                {
+                    ingredient.MassMeasurementUnit = null;
+                    ingredient.NumberOfUnits = _measurementService.EncodeVolumeMeasurement(ingredient.QuantityNumber, ingredient.Fraction, ingredient.VolumeMeasurementUnit.Value);
+                    ingredient.Quantity = _measurementService.DecodeVolumeMeasurement(ingredient.NumberOfUnits);
+                }
+                if (ingredient.MeasurementType == MeasurementType.Volume)
+                {
+                    ingredient.VolumeMeasurementUnit = null;
+                    ingredient.NumberOfUnits = _measurementService.EncodeMassMeasurement(ingredient.QuantityNumber, ingredient.Fraction, ingredient.MassMeasurementUnit.Value);
+                    ingredient.Quantity = _measurementService.DecodeMassMeasurement(ingredient.NumberOfUnits);
+                }
+                if (ingredient.MeasurementType == MeasurementType.Volume)
+                {
+                    ingredient.VolumeMeasurementUnit = null;
+                    ingredient.MassMeasurementUnit = null;
+                    ingredient.NumberOfUnits = _measurementService.EncodeUnitMeasurement(ingredient.QuantityNumber, ingredient.Fraction);
+                    ingredient.Quantity = _measurementService.DecodeUnitMeasurement(ingredient.NumberOfUnits);
+                }
                 context.Add(ingredient);
             }
             await context.SaveChangesAsync();

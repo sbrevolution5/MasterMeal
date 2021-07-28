@@ -1,10 +1,13 @@
 ﻿@page "/Recipe/Create"
 @using MasterMealBlazor.Data
 @using MasterMealBlazor.Models
+@using MasterMealBlazor.Services
+@using MasterMealBlazor.Services.Interfaces
 @using MasterMealBlazor.Components.QIngredientComponents
 @*@using MasterMealBlazor.Components.SupplyComponents*@
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@inject IMeasurementService _measurementService
 <h3>RecipeCreate</h3>
 <EditForm Model="@recipe">
     <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
