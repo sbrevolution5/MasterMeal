@@ -5,7 +5,6 @@
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject IIngredientService ingredientService
 @inject NavigationManager navigationManager
-<h3>Ingredient Create</h3>
 @if (ingredients == null || qIngredient is null || measurementType is null)
 {
     <p>loading</p>
@@ -24,59 +23,57 @@ else
                     <option value="@ingredient.Id">@ingredient.Name</option>
                 }
             </InputSelect>
-
-            @if (measurementType == MeasurementType.Count)
-            {
-                <p>Count</p>
-                <div>
-                    <label>How Many</label>
-                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int"/>
+            <div>
+                <label>Quantity</label>
+                <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" />
+                <InputSelect @bind-Value="qIngredient.Fraction">
+                    @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
+                        {
+                        <option value="@fraction">@fraction</option>
+                        }
+                </InputSelect>
+                @if (measurementType == MeasurementType.Volume)
+                {
+                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" />
                     <InputSelect @bind-Value="qIngredient.Fraction">
                         @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
                                 {
                             <option value="@fraction">@fraction</option>
                                 }
                     </InputSelect>
-                </div>
+                    <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit">
+                        @foreach (var unit in Enum.GetValues(typeof(VolumeMeasurementUnit)))
+                                {
+                            <option value="@unit">@unit</option>
+                                }
+                    </InputSelect>
+                }
+                else if (measurementType == MeasurementType.Mass)
+                {
+                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" />
+                    <InputSelect @bind-Value="qIngredient.Fraction">
+                        @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
+                                {
+                            <option value="@fraction">@fraction</option>
+                                }
+                    </InputSelect>
+                    <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
+                        @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
+                                {
+                            <option value="@unit">@unit</option>
+                                }
+                    </InputSelect>
+                }
+                else if (measurementType == MeasurementType.Count)
+                {
+                }
+                else
+                {
+                    <p>please select an ingredient</p>
+                }
+            </div>
             }
-            else if (measurementType == MeasurementType.Volume)
-            {
-                <p>Volume</p>
-                <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int"/>
-                <InputSelect @bind-Value="qIngredient.Fraction">
-                    @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                            {
-                        <option value="@fraction">@fraction</option>
-                            }
-                </InputSelect>
-                <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit">
-                    @foreach (var unit in Enum.GetValues(typeof(VolumeMeasurementUnit)))
-                            {
-                        <option value="@unit">@unit</option>
-                            }
-                </InputSelect>
-            }
-            else if (measurementType == MeasurementType.Mass)
-            {
-                <p>Mass</p>
-                <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int"/>
-                <InputSelect @bind-Value="qIngredient.Fraction">
-                    @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                            {
-                        <option value="@fraction">@fraction</option>
-                            }
-                </InputSelect>
-                <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
-                    @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
-                            {
-                        <option value="@unit">@unit</option>
-                            }
-                </InputSelect>
-            }
-            else
-            {
-                <p>please select an ingredient</p>
-            }
+
             @*<button type="submit">Add Ingredient</button>*@
         </EditForm>
     </div>

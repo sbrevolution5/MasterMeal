@@ -1,0 +1,67 @@
+﻿@page "/recipe/details/{id}"
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+<h3>Recipe Details</h3>
+@if (id is null)
+{
+    //Redirect to recipe index
+}
+else
+{
+    if (recipe is null)
+    {
+        <p>loading...</p>
+    }
+    else
+    {
+        <h1>@recipe.Name</h1>
+        <p>@recipe.Description</p>
+        @foreach (var ingredient in recipe.Ingredients)
+        {
+            <div class="card">
+
+                <div class="card-body">
+                    <h4 class="card-title">@ingredient.Ingredient.Name</h4>
+                    <p class="card-text">@ingredient.ShoppingNotes</p>
+                </div>
+            </div>
+        }
+        @foreach (var supply in recipe.Supplies)
+        {
+            //card with supply
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">@supply.Name</h4>
+                    @*<p class="card-text">Text</p>*@
+                </div>
+            </div>
+        }
+        @foreach (var step in recipe.Steps)
+        {
+            //card with step
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Title</h4>
+                    <p class="card-text">@step.Text</p>
+                </div>
+            </div>
+        }
+    }
+}
+@code {
+    [Parameter]
+    public string id{ get; set; }
+    private Recipe recipe;
+    protected async override Task OnInitializedAsync()
+    {
+        using var context = ContextFactory.CreateDbContext();
+        recipe = await context.Recipe
+            .Include(r => r.Steps)
+            .Include(r => r.Supplies)
+            .Include(r => r.Author)
+            .Include(r => r.Ingredients)
+            .ThenInclude(i => i.Ingredient)
+            .FirstOrDefaultAsync(r => r.Id == Convert.ToInt32(id));
+    }
+
+}

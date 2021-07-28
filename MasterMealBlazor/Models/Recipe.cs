@@ -12,6 +12,7 @@ namespace MasterMealBlazor.Models
         public virtual ICollection<QIngredient> Ingredients { get; set; } = new HashSet<QIngredient>();
         public virtual ICollection<Supply> Supplies { get; set; } = new HashSet<Supply>();
         public ICollection<Step> Steps { get; set; } = new HashSet<Step>();
+        public int Servings { get; set; }
         public string Name { get; set; }
         public int CookingTime { get; set; }
         public string Description { get; set; }

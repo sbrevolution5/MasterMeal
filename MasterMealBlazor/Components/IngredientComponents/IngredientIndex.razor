@@ -1,0 +1,47 @@
+﻿@page "/ingredients/index"
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+<h3>IngredientIndex</h3>
+
+<NavLink class="nav-link" href="Ingredienttype/index">
+    <button class="btn btn-primary" aria-hidden="true">
+        Ingredient Types
+    </button>
+</NavLink>
+@if (ingredients == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Measurement Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ingredient in ingredients)
+            {
+
+                <tr>
+                    <td scope="row">@ingredient.Id</td>
+                    <td>@ingredient.Name</td>
+                    <td>@ingredient.Type.Name</td>
+                    <td>@ingredient.MeasurementType.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private List<Ingredient> ingredients;
+    protected async override Task OnInitializedAsync()
+    {
+        using var context = ContextFactory.CreateDbContext();
+        ingredients = await context.Ingredient.Include(i => i.Type).ToListAsync();
+    }
+}

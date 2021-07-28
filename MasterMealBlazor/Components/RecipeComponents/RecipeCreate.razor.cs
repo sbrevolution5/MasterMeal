@@ -5,19 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 
 namespace MasterMealBlazor.Components.RecipeComponents
 {
-    public partial class RecipeCreate
+    public partial class RecipeCreate : ComponentBase
     {
-    private RecipeType[] Types;
+        private RecipeType[] Types;
         protected async override Task OnInitializedAsync()
         {
             using var context = ContextFactory.CreateDbContext();
             Types = await context.RecipeType.ToArrayAsync();
-
-
-
         }
         private List<Step> steps = new();
         private List<string> supplies = new();

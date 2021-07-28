@@ -1,4 +1,4 @@
-﻿@page "/RecipeCreate"
+﻿@page "/Recipe/Create"
 @using MasterMealBlazor.Data
 @using MasterMealBlazor.Models
 @using MasterMealBlazor.Components.QIngredientComponents
@@ -31,6 +31,15 @@
             <div class="form-group">
                 <label>Cooking Time:</label>
                 <InputNumber @bind-Value="cookingTime" TValue="int" />
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Cooking Time:</label>
+                <InputNumber @bind-Value="recipe.Servings" TValue="int" />
 
             </div>
         </div>
@@ -114,71 +123,4 @@
     <button @onclick="SaveRecipe" class="btn btn-success">Save</button>
 </EditForm>
 
-@*@code {
-    private RecipeType[] Types;
-    protected async override Task OnInitializedAsync()
-    {
-        using (var context = ContextFactory.CreateDbContext())
-        {
-            Types = await context.RecipeType.ToArrayAsync();
-        }
 
-
-
-    }
-    private List<Step> steps = new();
-    private List<string> supplies = new();
-    private List<string> ingredients = new();
-    private string recipeName;
-    private string recipeDescription;
-    private int cookingTime;
-    private int TypeId;
-    private Recipe recipe = new();
-    public async void SaveRecipe()
-    {
-        recipe.Name = recipeName;
-        recipe.Description = recipeDescription;
-        recipe.CookingTime = cookingTime;
-        recipe.TypeId = TypeId;
-        using (var context = ContextFactory.CreateDbContext())
-        {
-            context.Add(recipe);
-            await context.SaveChangesAsync();
-            foreach (var step in steps)
-            {
-                step.RecipeId = recipe.Id;
-                SaveStep(context, step);
-            }
-            await context.SaveChangesAsync();
-        }
-
-    }
-    private void SaveStep(DbContext context, Step step)
-    {
-        context.Add(step);
-    }
-    public void AddStep()
-    {
-        steps.Add(new Models.Step());
-    }
-    public void AddSupply()
-    {
-        supplies.Add("");
-    }
-    public void AddIngredient()
-    {
-        ingredients.Add("");
-    }
-    public void RemoveIngredient(string i)
-    {
-        ingredients.Remove(i);
-    }
-    public void RemoveSupply(string i)
-    {
-        supplies.Remove(i);
-    }
-    public void RemoveStep(Step i)
-    {
-        steps.Remove(i);
-    }
-}*@

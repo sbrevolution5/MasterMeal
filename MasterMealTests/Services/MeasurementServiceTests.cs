@@ -80,7 +80,7 @@ namespace MasterMealBlazor.Services.Tests
 
         [Test()]
         [TestCase(4, Fraction.Half, VolumeMeasurementUnit.Cup, 5184)]
-        [TestCase(1, Fraction.Zero, VolumeMeasurementUnit.Gallon, 18432)]
+        [TestCase(1, Fraction.NoFraction, VolumeMeasurementUnit.Gallon, 18432)]
         public void EncodeLiquidMeasurementTest(int wholeNum, Fraction fraction, VolumeMeasurementUnit unit, int expected)
         {
             var result = _measurementService.EncodeVolumeMeasurement(wholeNum, fraction, unit);
@@ -89,8 +89,8 @@ namespace MasterMealBlazor.Services.Tests
 
         [Test()]
         [TestCase(1, Fraction.Half, MassMeasurementUnit.pound, 48)]
-        [TestCase(1, Fraction.Zero, MassMeasurementUnit.ounce, 2)]
-        [TestCase(15, Fraction.Zero, MassMeasurementUnit.ounce, 30)]
+        [TestCase(1, Fraction.NoFraction, MassMeasurementUnit.ounce, 2)]
+        [TestCase(15, Fraction.NoFraction, MassMeasurementUnit.ounce, 30)]
         public void EncodeMassMeasurementTest(int wholeNum, Fraction fraction, MassMeasurementUnit unit, int expected)
         {
             var result = _measurementService.EncodeMassMeasurement(wholeNum, fraction, unit);
