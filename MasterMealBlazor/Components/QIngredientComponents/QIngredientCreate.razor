@@ -11,10 +11,8 @@
 }
 else
 {
-    <div>
+    <div class="card m-1 shadow">
         <EditForm Model="@qIngredient">
-            <label>Shopping Notes:</label>
-            <InputText @bind-Value="qIngredient.Notes" />
             <label>Ingredient Name</label>
             <InputSelect ValueExpression="@(()=>qIngredient.IngredientId)" Value="@qIngredient.IngredientId" ValueChanged="@((int id)=>TypeChange(id))">
                 <option value="">Select An Ingredient</option>
@@ -23,46 +21,55 @@ else
                     <option value="@ingredient.Id">@ingredient.Name</option>
                 }
             </InputSelect>
-            <div>
-                <label>Quantity</label>
-                <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" />
-                <InputSelect @bind-Value="qIngredient.Fraction">
-                    @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                        {
-                        <option value="@fraction">@fraction</option>
-                        }
-                </InputSelect>
-                @if (measurementType == MeasurementType.Volume)
-                {
-                    
-            <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit">
-                <option value="">Select A Unit</option>
-                @foreach (var unit in Enum.GetValues(typeof(VolumeMeasurementUnit)))
-                        {
-                    <option value="@unit">@unit</option>
-                        }
-            </InputSelect>
-                }
-                else if (measurementType == MeasurementType.Mass)
-                {
-                    
-                    <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
-                        <option value="">Select A Unit</option>
-                        @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
-                                {
-                            <option value="@unit">@unit</option>
-                                }
+            <div class="row">
+                <div class="col">
+                    <label>Quantity</label>
+                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" />
+                    <InputSelect @bind-Value="qIngredient.Fraction">
+                        @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
+                            {
+                            <option value="@fraction">@fraction</option>
+                            }
                     </InputSelect>
-                }
-                else if (measurementType == MeasurementType.Count)
-                {
-                }
-                else
-                {
-                    <p>please select an ingredient</p>
-                }
+                    @if (measurementType == MeasurementType.Volume)
+                    {
+
+                        <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit">
+                            <option value="">Select A Unit</option>
+                            @foreach (var unit in Enum.GetValues(typeof(VolumeMeasurementUnit)))
+                                    {
+                                <option value="@unit">@unit</option>
+                                    }
+                        </InputSelect>
+                    }
+                    else if (measurementType == MeasurementType.Mass)
+                    {
+
+                        <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
+                            <option value="">Select A Unit</option>
+                            @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
+                                    {
+                                <option value="@unit">@unit</option>
+                                    }
+                        </InputSelect>
+                    }
+                    else if (measurementType == MeasurementType.Count)
+                    {
+                    }
+                    else
+                    {
+                        <p>please select an ingredient</p>
+                    }
+                </div>
             </div>
-            }
+            <div class="row">
+                <div class="col">
+                    <label>Shopping Notes:</label>
+                    <InputText @bind-Value="qIngredient.Notes" />
+
+                </div>
+            </div>
+
 
             @*<button type="submit">Add Ingredient</button>*@
         </EditForm>

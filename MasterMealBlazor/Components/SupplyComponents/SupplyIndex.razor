@@ -1,0 +1,42 @@
+﻿@using MasterMealBlazor.Data
+@using Microsoft.EntityFrameworkCore
+@page "/supplies/index"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@using MasterMealBlazor.Models
+<h3>SupplyIndex</h3>
+<NavLink class="nav-link" href="Supplies/create">
+    <button class="btn btn-success" aria-hidden="true">
+        Create Supply
+    </button>
+</NavLink>
+@if (supplies == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h1>There are @supplies.Count() types</h1>
+    <ul>
+
+        @foreach (IngredientType type in supplies)
+        {
+            <li>@type.Name</li>
+        }
+    </ul>
+}
+@code {
+    private Supply[] supplies;
+    protected override async Task OnInitializedAsync()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+
+            supplies = await context.Supply.ToArrayAsync();
+
+        }
+    }
+}
+
+@code {
+
+}
