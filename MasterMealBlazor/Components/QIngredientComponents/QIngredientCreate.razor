@@ -34,30 +34,20 @@ else
                 </InputSelect>
                 @if (measurementType == MeasurementType.Volume)
                 {
-                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" />
-                    <InputSelect @bind-Value="qIngredient.Fraction">
-                        @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                                {
-                            <option value="@fraction">@fraction</option>
-                                }
-                    </InputSelect>
-                    <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit">
-                        @foreach (var unit in Enum.GetValues(typeof(VolumeMeasurementUnit)))
-                                {
-                            <option value="@unit">@unit</option>
-                                }
-                    </InputSelect>
+                    
+            <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit">
+                <option value="">Select A Unit</option>
+                @foreach (var unit in Enum.GetValues(typeof(VolumeMeasurementUnit)))
+                        {
+                    <option value="@unit">@unit</option>
+                        }
+            </InputSelect>
                 }
                 else if (measurementType == MeasurementType.Mass)
                 {
-                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" />
-                    <InputSelect @bind-Value="qIngredient.Fraction">
-                        @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                                {
-                            <option value="@fraction">@fraction</option>
-                                }
-                    </InputSelect>
+                    
                     <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
+                        <option value="">Select A Unit</option>
                         @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
                                 {
                             <option value="@unit">@unit</option>
@@ -98,6 +88,7 @@ else
     {
         qIngredient.IngredientId = id;
         measurementType = ingredients.FirstOrDefault(i => i.Id == id).MeasurementType;
+        qIngredient.MeasurementType = measurementType.Value;
         return;
     }
     //public async void CreateQIngredient()

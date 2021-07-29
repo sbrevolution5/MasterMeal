@@ -48,13 +48,13 @@ namespace MasterMealBlazor.Components.RecipeComponents
                     ingredient.NumberOfUnits = _measurementService.EncodeVolumeMeasurement(ingredient.QuantityNumber, ingredient.Fraction, ingredient.VolumeMeasurementUnit.Value);
                     ingredient.Quantity = _measurementService.DecodeVolumeMeasurement(ingredient.NumberOfUnits);
                 }
-                if (ingredient.MeasurementType == MeasurementType.Volume)
+                else if (ingredient.MeasurementType == MeasurementType.Mass)
                 {
                     ingredient.VolumeMeasurementUnit = null;
                     ingredient.NumberOfUnits = _measurementService.EncodeMassMeasurement(ingredient.QuantityNumber, ingredient.Fraction, ingredient.MassMeasurementUnit.Value);
                     ingredient.Quantity = _measurementService.DecodeMassMeasurement(ingredient.NumberOfUnits);
                 }
-                if (ingredient.MeasurementType == MeasurementType.Volume)
+                else if (ingredient.MeasurementType == MeasurementType.Count)
                 {
                     ingredient.VolumeMeasurementUnit = null;
                     ingredient.MassMeasurementUnit = null;

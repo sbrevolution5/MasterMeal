@@ -12,7 +12,7 @@ else
     
 <EditForm Model="@ingredient" OnValidSubmit="CreateType">
 
-    <input @bind-value="ingredient.Name" />
+    <InputText @bind-Value="ingredient.Name" />
     <InputSelect @bind-Value="ingredient.MeasurementType">
         @foreach(var measure in Enum.GetValues(typeof(MeasurementType)))
         {
@@ -47,6 +47,6 @@ else
             await context.SaveChangesAsync();
 
         }
-        navigationManager.NavigateTo("/ingredienttype/index");
+        navigationManager.NavigateTo("/ingredient/index");
     }
 }
