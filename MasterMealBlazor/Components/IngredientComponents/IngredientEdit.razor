@@ -1,0 +1,55 @@
+﻿@using MasterMealBlazor.Enums
+@page "/ingredient/edit/{id}"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@inject NavigationManager navigationManager
+<h3>Ingredient edit</h3>
+@if (types == null || ingredient == null)
+{
+    <p>loading</p>
+}
+else
+{
+    
+<EditForm Model="@ingredient" OnValidSubmit="EditIngredient">
+
+    <InputText @bind-Value="ingredient.Name" />
+    <InputSelect @bind-Value="ingredient.MeasurementType">
+        @foreach(var measure in Enum.GetValues(typeof(MeasurementType)))
+        {
+            <option value="@measure">@measure</option>
+        }
+    </InputSelect>
+    <InputSelect @bind-Value="ingredient.TypeId">
+        @foreach(var type in types)
+        {
+            <option value="@type.Id">@type.Name</option>
+        }
+    </InputSelect>
+    <button type="submit">submit</button>
+</EditForm>
+}
+@code {
+    [Parameter]
+    public string id { get; set; }
+    private List<IngredientType> types = new();
+    private Ingredient ingredient = new Ingredient();
+    protected override async Task OnInitializedAsync()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+            types = await context.IngredientType.ToListAsync();
+            ingredient = await context.Ingredient.FirstOrDefaultAsync(i => i.Id == Convert.ToInt32(id));
+        }
+    }
+    public async void EditIngredient()
+    {
+        using (var context = ContextFactory.CreateDbContext())
+        {
+
+            context.Update(ingredient);
+            await context.SaveChangesAsync();
+
+        }
+        navigationManager.NavigateTo("/ingredient/index");
+    }
+}

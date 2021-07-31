@@ -1,5 +1,28 @@
-﻿<h3>SupplyPicker</h3>
+﻿@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@if (supplies is null)
+{
 
+
+    <p>Loading...</p>
+}
+else
+{
+
+<InputSelect ValueExpression="@(()=>supply.Id)" Value="@supply.Id">
+    <option value="">Select An Ingredient</option>
+    @foreach (var supply in supplies)
+    {
+        <option value="@supply.Id">@supply.Name</option>
+    }
+</InputSelect>
+}
 @code {
-
+    [Parameter]
+    public Supply supply { get; set; }
+    public List<Supply> supplies { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = ContextFactory.CreateDbContext();
+        supplies = await context.Supply.ToListAsync();
+    }
 }

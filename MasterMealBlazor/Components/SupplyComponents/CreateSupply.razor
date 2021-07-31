@@ -1,6 +1,21 @@
 ﻿@page "/supplies/create"
+@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@inject NavigationManager navigationManager
+
 <h3>CreateSupply</h3>
-
+<EditForm Model="@supply" OnValidSubmit="SaveSupply">
+    <label>Supply Name</label>
+    <InputText @bind-Value="supply.Name"></InputText>
+    <button type="submit" class="btn btn-success">Submit</button>
+</EditForm>
 @code {
+    public Supply supply { get; set; } = new Supply();
+    public async Task SaveSupply()
+    {
+        using var context = ContextFactory.CreateDbContext();
+        context.Add(supply);
+        await context.SaveChangesAsync();
+        navigationManager.NavigateTo("/supplies/index");
 
+    }
 }

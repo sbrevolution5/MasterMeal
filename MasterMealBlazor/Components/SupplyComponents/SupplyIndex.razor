@@ -18,9 +18,9 @@ else
     <h1>There are @supplies.Count() types</h1>
     <ul>
 
-        @foreach (IngredientType type in supplies)
+        @foreach (Supply supply in supplies)
         {
-            <li>@type.Name</li>
+            <li>@supply.Name</li>
         }
     </ul>
 }

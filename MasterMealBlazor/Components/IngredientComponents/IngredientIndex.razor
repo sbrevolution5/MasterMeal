@@ -26,6 +26,7 @@ else
                 <th>Name</th>
                 <th>Type</th>
                 <th>Measurement Type</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +38,7 @@ else
                     <td>@ingredient.Name</td>
                     <td>@ingredient.Type.Name</td>
                     <td>@ingredient.MeasurementType.ToString()</td>
+                    <td><a href="/ingredient/details/@ingredient.Id" class="disabled btn btn-primary">Details</a><a href="/ingredient/edit/@ingredient.Id" class="btn btn-primary">Edit</a></td>
                 </tr>
             }
         </tbody>
