@@ -1,0 +1,34 @@
+﻿@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+<h3>MealCreate</h3>
+@if (recipes == null)
+{
+    <p>Loading...</p>
+//TODO Change this to a button on the meal page
+}
+else
+{
+
+    <EditForm Model="@meal">
+        <label>Date of Meal</label>
+        <InputDate @bind-Value="meal.Date">
+
+        </InputDate>
+        <label>Recipe</label>
+        <InputSelect @bind-Value="meal.RecipeId">
+            <option value="">Select A recipe</option>
+            @foreach(var recipe in recipes)
+                    {
+                        <option value="@recipe.Id">@recipe.Name</option>
+                    }
+        </InputSelect>
+    </EditForm>
+}
+@code {
+    private Meal meal;
+    private List<Recipe> recipes;
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = ContextFactory.CreateDbContext();
+        recipes = await context.Recipe.ToListAsync();
+    }
+}
