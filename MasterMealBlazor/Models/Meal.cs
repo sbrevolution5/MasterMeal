@@ -14,7 +14,7 @@ namespace MasterMealBlazor.Models
         public string ChefId { get; set; }
         public virtual Chef Chef { get; set; }
         public int ImageId { get; set; }
-        public virtual ImageFile Image { get; set; }
+        public virtual DBImage Image { get; set; }
         public int RecipeId { get; set; }
         public virtual Recipe Recipe { get; set; }
     }

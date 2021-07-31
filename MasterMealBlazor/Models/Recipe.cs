@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SixLabors.ImageSharp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -20,7 +21,9 @@ namespace MasterMealBlazor.Models
         public string AuthorId { get; set; }
         public virtual Chef Author { get; set; }
         public int TypeId { get; set; }
+        public int ImageId { get; set; }
         public virtual RecipeType Type { get; set; }
+        public virtual DBImage Image { get; set; }
         [NotMapped]
         public float AvgRating
         {

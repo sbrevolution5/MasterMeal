@@ -23,5 +23,6 @@ namespace MasterMealBlazor.Data
         public DbSet<Step> Step { get; set; }
         public DbSet<Supply> Supply { get; set; }
         public DbSet<IngredientType> IngredientType { get; set; }
+        public DbSet<DBImage> Image { get; set; }
     }
 }

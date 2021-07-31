@@ -6,19 +6,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using SixLabors.ImageSharp;
+using Microsoft.AspNetCore.Http;
 
 namespace MasterMealBlazor.Components.RecipeComponents
 {
     public partial class RecipeCreate : ComponentBase
     {
         private RecipeType[] Types;
+        private IFormFile imageFile;
         protected async override Task OnInitializedAsync()
         {
             using var context = ContextFactory.CreateDbContext();
             Types = await context.RecipeType.ToArrayAsync();
         }
         private List<Step> steps = new();
-        private List<string> supplies = new();
+        private List<Supply> supplies = new();
         private List<QIngredient> ingredients = new();
         private string recipeName;
         private string recipeDescription;
@@ -32,6 +35,21 @@ namespace MasterMealBlazor.Components.RecipeComponents
             recipe.CookingTime = cookingTime;
             recipe.TypeId = TypeId;
             using var context = ContextFactory.CreateDbContext();
+            int imageId = 1;
+            if (imageFile is not null)
+            {
+                using var image = Image.Load(imageFile.OpenReadStream());
+                var imageBytes = await _fileService.ConvertFileToByteArrayAsync(image, imageFile.ContentType);
+                DBImage dBImage = new()
+                {
+                    ContentType = imageFile.ContentType,
+                    ImageData = imageBytes
+                };
+                context.Add(dBImage);
+                await context.SaveChangesAsync();
+                imageId = dBImage.Id;
+            }
+            recipe.ImageId = imageId;
             context.Add(recipe);
             await context.SaveChangesAsync();
             foreach (var step in steps)
@@ -76,7 +94,7 @@ namespace MasterMealBlazor.Components.RecipeComponents
         }
         public void AddSupply()
         {
-            supplies.Add("");
+            supplies.Add(new Supply());
         }
         public void AddIngredient()
         {
@@ -86,7 +104,7 @@ namespace MasterMealBlazor.Components.RecipeComponents
         {
             ingredients.Remove(i);
         }
-        public void RemoveSupply(string i)
+        public void RemoveSupply(Supply i)
         {
             supplies.Remove(i);
         }

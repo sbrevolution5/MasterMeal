@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MasterMealBlazor.Models
 {
-    public class ImageFile
+    public class DBImage
     {
         public int Id { get; set; }
         public byte[] ImageData { get; set; }

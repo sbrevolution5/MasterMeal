@@ -4,12 +4,14 @@
 @using MasterMealBlazor.Services
 @using MasterMealBlazor.Services.Interfaces
 @using MasterMealBlazor.Components.QIngredientComponents
+@using MasterMealBlazor.Components.SupplyComponents
 @*@using MasterMealBlazor.Components.SupplyComponents*@
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject IMeasurementService _measurementService
+@inject IFileService _fileService 
 <h3>RecipeCreate</h3>
-<EditForm Model="@recipe">
+<EditForm Model="@recipe" OnValidSubmit="SaveRecipe">
     <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
     <div class="row">
         <div class="col">
@@ -20,6 +22,16 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Image:</label>
+                <InputFile @bind-Value="imageFile" />
+                <p>Image will be cropped down to 128x128, distortion may occur.</p>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col">
             <div class="form-group">
@@ -81,7 +93,7 @@
                     }
                 </ol>
 
-                <button @onclick="AddIngredient" class="btn btn-success">Add Ingredient</button>
+                <button type="submit" class="btn btn-success">Add Ingredient</button>
             </div>
         </div>
     </div>
@@ -94,7 +106,7 @@
                     {
                         <li>
 
-                            @*<SupplyPicker />*@
+                            <SupplyPicker supply="@supply"/>
                         </li>
                     }
                 </ol>

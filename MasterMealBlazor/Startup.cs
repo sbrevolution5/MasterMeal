@@ -1,3 +1,4 @@
+using JamesonBugTracker.Services;
 using MasterMealBlazor.Areas.Identity;
 using MasterMealBlazor.Data;
 using MasterMealBlazor.Services;
@@ -52,7 +53,8 @@ namespace MasterMealBlazor
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddScoped<IIngredientService, IngredientService>();
-            services.AddSingleton<IMeasurementService, MeasurementService>();
+            services.AddScoped<IMeasurementService, MeasurementService>();
+            services.AddScoped<IFileService, FileService>();
             services.AddDatabaseDeveloperPageExceptionFilter();
         }
 

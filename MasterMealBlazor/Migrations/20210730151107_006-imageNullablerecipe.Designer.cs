@@ -3,15 +3,17 @@ using System;
 using MasterMealBlazor.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MasterMealBlazor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210730151107_006-imageNullablerecipe")]
+    partial class _006imageNullablerecipe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,7 +145,7 @@ namespace MasterMealBlazor.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Image");
+                    b.ToTable("DBImage");
                 });
 
             modelBuilder.Entity("MasterMealBlazor.Models.Ingredient", b =>
@@ -307,7 +309,7 @@ namespace MasterMealBlazor.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -630,9 +632,7 @@ namespace MasterMealBlazor.Migrations
 
                     b.HasOne("MasterMealBlazor.Models.DBImage", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.HasOne("MasterMealBlazor.Models.RecipeType", "Type")
                         .WithMany()
