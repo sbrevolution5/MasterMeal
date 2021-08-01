@@ -69,6 +69,7 @@
                 else
                 {
                     <InputSelect @bind-Value="TypeId" TValue="int">
+                        <option value="">Select a Type</option>
                         @foreach (RecipeType type in Types)
                         {
                             <option value="@type.Id">@type.Name</option>
