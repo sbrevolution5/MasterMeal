@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using JamesonBugTracker.Services;
 using MasterMealBlazor.Areas.Identity;
 using MasterMealBlazor.Data;
@@ -56,6 +57,7 @@ namespace MasterMealBlazor
             services.AddScoped<IMeasurementService, MeasurementService>();
             services.AddScoped<IFileService, FileService>();
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddBlazoredModal();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

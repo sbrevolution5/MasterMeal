@@ -1,6 +1,8 @@
 ﻿@page "/recipe/details/{id}"
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@using MasterMealBlazor.Components.MealComponents
+@*@inject IModalService modalService*@
 <h3>Recipe Details</h3>
 @if (id is null)
 {
@@ -16,7 +18,7 @@ else
     {
         <h1>@recipe.Name</h1>
         <p>@recipe.Description</p>
-        <button class="btn btn-primary">Schedule a meal</button>
+        <button class="btn btn-primary" @onclick="@(()=>Modal.Show<MealCreate>("New Meal"))">Schedule a meal</button>
         @foreach (var ingredient in recipe.Ingredients)
         {
             <div class="card">
@@ -51,6 +53,8 @@ else
     }
 }
 @code {
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
     [Parameter]
     public string id{ get; set; }
     private Recipe recipe;

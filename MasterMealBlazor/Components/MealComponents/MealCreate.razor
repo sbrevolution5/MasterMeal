@@ -1,26 +1,37 @@
 ﻿@inject IDbContextFactory<ApplicationDbContext> ContextFactory
 <h3>MealCreate</h3>
-@if (recipes == null)
+@if (recipes == null || meal == null)
 {
     <p>Loading...</p>
-//TODO Change this to a button on the meal page
 }
 else
 {
 
     <EditForm Model="@meal">
-        <label>Date of Meal</label>
-        <InputDate @bind-Value="meal.Date">
+        <div class="row">
+            <div class="col">
+                <label>Date of Meal</label>
+                <InputDate @bind-Value="meal.Date">
 
-        </InputDate>
-        <label>Recipe</label>
-        <InputSelect @bind-Value="meal.RecipeId">
-            <option value="">Select A recipe</option>
-            @foreach(var recipe in recipes)
-                    {
+                </InputDate>
+                <label>Recipe</label>
+                <InputSelect @bind-Value="meal.RecipeId">
+                    <option value="">Select a Recipe</option>
+                    @foreach (var recipe in recipes)
+                        {
                         <option value="@recipe.Id">@recipe.Name</option>
-                    }
-        </InputSelect>
+                        }
+                </InputSelect>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+
+                <button type="submit" class="btn btn-success">Schedule Meal</button>
+            </div>
+        </div>
     </EditForm>
 }
 @code {
@@ -28,6 +39,10 @@ else
     private List<Recipe> recipes;
     protected override async Task OnInitializedAsync()
     {
+        meal = new()
+        {
+            Date = DateTime.Today
+        };
         using var context = ContextFactory.CreateDbContext();
         recipes = await context.Recipe.ToListAsync();
     }

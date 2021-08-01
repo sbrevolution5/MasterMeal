@@ -32,7 +32,11 @@ namespace JamesonBugTracker.Services
         public async Task<byte[]> ConvertFileToByteArrayAsync(Image file, string contentType)
         {
             //using var image = Image.Load(Input.ImageFile.OpenReadStream());
-            file.Mutate(x => x.Resize(128, 128));
+            file.Mutate(x => x.Resize(new ResizeOptions
+            {
+                Mode = ResizeMode.Min,
+                Size = new Size(128)
+            }));
             
             MemoryStream memoryStream = new MemoryStream();
             if (contentType == "image/png")
