@@ -11,7 +11,7 @@
 @inject IMeasurementService _measurementService
 @inject IFileService _fileService 
 <h3>RecipeCreate</h3>
-<EditForm Model="@recipe" OnValidSubmit="SaveRecipe">
+<EditForm Model="@recipe">
     <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
     <div class="row">
         <div class="col">
@@ -136,7 +136,7 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-success">Save</button>
+    <button @onclick="SaveRecipe" class="btn btn-success">Save</button>
 </EditForm>
 
 

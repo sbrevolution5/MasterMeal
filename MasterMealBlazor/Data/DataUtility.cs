@@ -27,6 +27,7 @@ namespace MasterMealBlazor.Data
             //TsTEP 1: This is the programmatic equivalent to Update-Database
             await dbContextSvc.Database.MigrateAsync();
             await SeedDefaultImageAsync(dbContextSvc);
+            await SeedRecipeTypesAsync(dbContextSvc);
         }
 
         private static async Task SeedDefaultImageAsync(ApplicationDbContext context)
@@ -42,6 +43,39 @@ namespace MasterMealBlazor.Data
                     Id = 1
                 };
                 context.Add(newImage);
+                await context.SaveChangesAsync();
+            }
+        }
+        private static async Task SeedRecipeTypesAsync(ApplicationDbContext context)
+        {
+            if ((await context.RecipeType.ToListAsync()).Count()<1)
+            {
+                var types = new List<RecipeType>();
+                types.Add(new()
+                {
+                    Name = "American"
+                });
+                types.Add(new()
+                {
+                    Name = "Mexican"
+                });
+                types.Add(new()
+                {
+                    Name = "Seafood"
+                });
+                types.Add(new()
+                {
+                    Name = "Italian"
+                });
+                types.Add(new()
+                {
+                    Name = "Breakfast"
+                });
+                types.Add(new()
+                {
+                    Name = "Asian"
+                });
+                context.AddRange(types);
                 await context.SaveChangesAsync();
             }
         }

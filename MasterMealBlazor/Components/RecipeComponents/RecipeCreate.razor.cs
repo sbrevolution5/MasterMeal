@@ -112,6 +112,10 @@ namespace MasterMealBlazor.Components.RecipeComponents
         {
             steps.Remove(i);
         }
+        public void DoNothing()
+        {
+            return;
+        }
     }
 
 }
