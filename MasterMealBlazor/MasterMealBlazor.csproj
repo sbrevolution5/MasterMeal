@@ -1,9 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>aspnet-MasterMealBlazor-FDAB3C29-B119-48C1-901D-433F6A3960A2</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\material-dashboard-master\**" />
+    <Compile Remove="wwwroot\quixlab\**" />
+    <Content Remove="wwwroot\material-dashboard-master\**" />
+    <Content Remove="wwwroot\quixlab\**" />
+    <EmbeddedResource Remove="wwwroot\material-dashboard-master\**" />
+    <EmbeddedResource Remove="wwwroot\quixlab\**" />
+    <None Remove="wwwroot\material-dashboard-master\**" />
+    <None Remove="wwwroot\quixlab\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Blazored.Modal" Version="6.0.1" />
@@ -16,10 +27,6 @@
     <PackageReference Include="Npgsql" Version="5.0.7" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\material-dashboard-master\material-dashboard-master\assets\js\core\" />
   </ItemGroup>
 
 </Project>
