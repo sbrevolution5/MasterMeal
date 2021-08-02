@@ -5,7 +5,7 @@
 <h3>CreateSupply</h3>
 <EditForm Model="@supply" OnValidSubmit="SaveSupply">
     <label>Supply Name</label>
-    <InputText @bind-Value="supply.Name"></InputText>
+    <InputText @bind-Value="supply.Name" class="form-control"></InputText>
     <button type="submit" class="btn btn-success">Submit</button>
 </EditForm>
 @code {

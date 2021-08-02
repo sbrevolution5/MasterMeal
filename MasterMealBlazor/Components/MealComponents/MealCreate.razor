@@ -11,11 +11,11 @@ else
         <div class="row">
             <div class="col">
                 <label>Date of Meal</label>
-                <InputDate @bind-Value="meal.Date">
+                <InputDate @bind-Value="meal.Date"  class="form-control">
 
                 </InputDate>
                 <label>Recipe</label>
-                <InputSelect @bind-Value="meal.RecipeId">
+                <InputSelect @bind-Value="meal.RecipeId"  class="form-control selectpicker">
                     <option value="">Select a Recipe</option>
                     @foreach (var recipe in recipes)
                         {

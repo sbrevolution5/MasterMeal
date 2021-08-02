@@ -12,14 +12,14 @@ else
     
 <EditForm Model="@ingredient" OnValidSubmit="CreateType">
 
-    <InputText @bind-Value="ingredient.Name" />
-    <InputSelect @bind-Value="ingredient.MeasurementType">
+    <InputText @bind-Value="ingredient.Name"  class="form-control"/>
+    <InputSelect @bind-Value="ingredient.MeasurementType"  class="form-control selectpicker">
         @foreach(var measure in Enum.GetValues(typeof(MeasurementType)))
         {
             <option value="@measure">@measure</option>
         }
     </InputSelect>
-    <InputSelect @bind-Value="ingredient.TypeId">
+    <InputSelect @bind-Value="ingredient.TypeId" class="form-control selectpicker">
         @foreach(var type in types)
         {
             <option value="@type.Id">@type.Name</option>

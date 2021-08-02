@@ -14,7 +14,7 @@ else
     <div class="card m-1 shadow">
         <EditForm Model="@qIngredient">
             <label>Ingredient Name</label>
-            <InputSelect ValueExpression="@(()=>qIngredient.IngredientId)" Value="@qIngredient.IngredientId" ValueChanged="@((int id)=>TypeChange(id))">
+            <InputSelect ValueExpression="@(()=>qIngredient.IngredientId)" Value="@qIngredient.IngredientId" ValueChanged="@((int id)=>TypeChange(id))"  class="form-control selectpicker">
                 <option value="">Select An Ingredient</option>
                 @foreach (var ingredient in ingredients)
                 {
@@ -24,8 +24,8 @@ else
             <div class="row">
                 <div class="col">
                     <label>Quantity</label>
-                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" />
-                    <InputSelect @bind-Value="qIngredient.Fraction">
+                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int"  class="form-control"/>
+                    <InputSelect @bind-Value="qIngredient.Fraction" class="form-control selectpicker">
                         @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
                             {
                             <option value="@fraction">@fraction</option>
@@ -34,7 +34,7 @@ else
                     @if (measurementType == MeasurementType.Volume)
                     {
 
-                        <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit">
+                        <InputSelect @bind-Value="qIngredient.VolumeMeasurementUnit" class="form-control selectpicker">
                             <option value="">Select A Unit</option>
                             @foreach (var unit in Enum.GetValues(typeof(VolumeMeasurementUnit)))
                                     {
@@ -45,7 +45,7 @@ else
                     else if (measurementType == MeasurementType.Mass)
                     {
 
-                        <InputSelect @bind-Value="qIngredient.MassMeasurementUnit">
+                        <InputSelect @bind-Value="qIngredient.MassMeasurementUnit" class="form-control selectpicker">
                             <option value="">Select A Unit</option>
                             @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
                                     {
@@ -65,7 +65,7 @@ else
             <div class="row">
                 <div class="col">
                     <label>Shopping Notes:</label>
-                    <InputText @bind-Value="qIngredient.Notes" />
+                    <InputText @bind-Value="qIngredient.Notes"  class="form-control"/>
 
                 </div>
             </div>

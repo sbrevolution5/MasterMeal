@@ -6,7 +6,7 @@
 <h3>New Recipe Type</h3>
 <EditForm Model="@type" OnValidSubmit="CreateType">
 
-    <input @bind-value="type.Name" />
+    <InputText @bind-value="type.Name" class="form-control selectpicker"/>
     <button type="submit">submit</button>
 </EditForm>
 @code {
