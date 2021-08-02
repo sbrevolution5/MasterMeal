@@ -17,7 +17,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Name:</label>
-                <InputText @bind-Value="recipeName" />
+                <InputText @bind-Value="recipeName" class="form-control"/>
 
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Image:</label>
-                <InputFile @bind-Value="imageFile" />
+                <InputFile @bind-Value="imageFile"  class="form-control"/>
                 <p>Image will be cropped down to 128x128, distortion may occur.</p>
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Description:</label>
-                <InputTextArea @bind-Value="recipeDescription" />
+                <InputTextArea @bind-Value="recipeDescription"  class="form-control"/>
 
             </div>
         </div>
@@ -45,7 +45,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Cooking Time:</label>
-                <InputNumber @bind-Value="cookingTime" TValue="int" />
+                <InputNumber @bind-Value="cookingTime" TValue="int"  class="form-control"/>
 
             </div>
         </div>
@@ -54,7 +54,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Servings:</label>
-                <InputNumber @bind-Value="recipe.Servings" TValue="int" />
+                <InputNumber @bind-Value="recipe.Servings" TValue="int"  class="form-control"/>
 
             </div>
         </div>
@@ -68,7 +68,7 @@
                     <p>loading...</p>}
                 else
                 {
-                    <InputSelect @bind-Value="TypeId" TValue="int">
+                    <InputSelect @bind-Value="TypeId" TValue="int" class="form-control selectpicker">
                         <option value="">Select a Type</option>
                         @foreach (RecipeType type in Types)
                         {
@@ -124,7 +124,7 @@
                     @foreach (var step in steps)
                     {
                     <li>
-                        <InputTextArea @bind-Value="step.Text"></InputTextArea>
+                        <InputTextArea @bind-Value="step.Text"  class="form-control"></InputTextArea>
                         @*<StepInput />*@
                         <button class="btn btn-danger" @onclick="(()=>steps.Remove(step))">Remove</button>
                     </li>
