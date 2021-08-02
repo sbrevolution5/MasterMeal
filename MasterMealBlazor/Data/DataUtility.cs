@@ -28,7 +28,6 @@ namespace MasterMealBlazor.Data
             await dbContextSvc.Database.MigrateAsync();
             await SeedDefaultImageAsync(dbContextSvc);
             await SeedRecipeTypesAsync(dbContextSvc);
-            await SeedIngredientTypesAsync(dbContextSvc);
         }
 
         private static async Task SeedDefaultImageAsync(ApplicationDbContext context)
@@ -75,39 +74,6 @@ namespace MasterMealBlazor.Data
                 types.Add(new()
                 {
                     Name = "Asian"
-                });
-                context.AddRange(types);
-                await context.SaveChangesAsync();
-            }
-        }
-        private static async Task SeedIngredientTypesAsync(ApplicationDbContext context)
-        {
-            if ((await context.IngredientType.ToListAsync()).Count() < 1)
-            {
-                var types = new List<IngredientType>();
-                types.Add(new()
-                {
-                    Name = "Meat"
-                });
-                types.Add(new()
-                {
-                    Name = "Produce"
-                });
-                types.Add(new()
-                {
-                    Name = "Dairy"
-                });
-                types.Add(new()
-                {
-                    Name = "Spice"
-                });
-                types.Add(new()
-                {
-                    Name = "Sauce"
-                });
-                types.Add(new()
-                {
-                    Name = "Bread"
                 });
                 context.AddRange(types);
                 await context.SaveChangesAsync();
