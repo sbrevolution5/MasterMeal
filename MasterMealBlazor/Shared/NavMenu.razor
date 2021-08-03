@@ -6,28 +6,31 @@
 </div>
 
 <div @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <i class="fas fa-home"></i> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Recipe/index">
-                <i class="fas fa-utensils"></i> Recipes
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Ingredient/index">
-                <i class="far fa-lemon"></i>Ingredients
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="supplies/index">
-                <i class="fas fa-shopping-cart"></i> Supplies
-            </NavLink>
-        </li>
-    </ul>
+    <nav class="app-nav">
+
+        <ul class="app-menu list-unstyled">
+            <li class="nav-item">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <i class="nav-icon fas fa-home"></i> <span class="nav-link-text">Home</span>
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="Recipe/index">
+                    <i class="nav-icon fas fa-utensils"></i> <span class="nav-link-text">Recipes</span>
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="Ingredient/index">
+                    <i class="nav-icon far fa-lemon"></i><span class="nav-link-text">Ingredients</span>
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="supplies/index">
+                    <i class="nav-icon fas fa-shopping-cart"></i> <span class="nav-link-text">Supplies</span>
+                </NavLink>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 @code {
