@@ -26,14 +26,14 @@ namespace MasterMealBlazor.Data
             //var userManagerSvc = svcProvider.GetRequiredService<UserManager<Chef>>();
             //TsTEP 1: This is the programmatic equivalent to Update-Database
             await dbContextSvc.Database.MigrateAsync();
-            await SeedDefaultImageAsync(dbContextSvc);
+            await SeedDefaultImagesAsync(dbContextSvc);
             await SeedRecipeTypesAsync(dbContextSvc);
         }
 
-        private static async Task SeedDefaultImageAsync(ApplicationDbContext context)
+        private static async Task SeedDefaultImagesAsync(ApplicationDbContext context)
         {
-            var image = await context.Image.FirstOrDefaultAsync(i=>i.Id==1);
-            if (image == null)
+            var mealImage = await context.Image.FirstOrDefaultAsync(i=>i.Id==1);
+            if (mealImage == null)
             {
                 var file = $"{Directory.GetCurrentDirectory()}/wwwroot/DefaultRecipe.jpg";
                 var fileData = await File.ReadAllBytesAsync(file);
@@ -45,6 +45,20 @@ namespace MasterMealBlazor.Data
                 context.Add(newImage);
                 await context.SaveChangesAsync();
             }
+            var userImage = await context.Image.FirstOrDefaultAsync(i=>i.Id==2);
+            if (userImage == null)
+            {
+                var file = $"{Directory.GetCurrentDirectory()}/wwwroot/DefaultUser.png";
+                var fileData = await File.ReadAllBytesAsync(file);
+                var newImage = new DBImage(){
+                    ImageData = fileData,
+                    ContentType = "png",
+                    Id = 2
+                };
+                context.Add(newImage);
+                await context.SaveChangesAsync();
+            }
+
         }
         private static async Task SeedRecipeTypesAsync(ApplicationDbContext context)
         {
