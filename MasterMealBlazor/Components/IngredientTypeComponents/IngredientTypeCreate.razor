@@ -1,10 +1,12 @@
 ﻿@page "/ingredientType/Create"
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject NavigationManager navigationManager
+@attribute [Authorize]
+
 <h3>IngredientTypeCreate</h3>
 <EditForm Model="@type" OnValidSubmit="CreateType">
 
-    <InputText @bind-value="type.Name"  class="form-control"/>
+    <InputText @bind-value="type.Name" class="form-control" />
     <button type="submit">submit</button>
 </EditForm>
 @code {

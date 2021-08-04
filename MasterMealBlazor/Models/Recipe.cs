@@ -12,7 +12,7 @@ namespace MasterMealBlazor.Models
         public int Id { get; set; }
         public virtual ICollection<QIngredient> Ingredients { get; set; } = new HashSet<QIngredient>();
         public virtual ICollection<Supply> Supplies { get; set; } = new HashSet<Supply>();
-        public ICollection<Step> Steps { get; set; } = new HashSet<Step>();
+        public virtual ICollection<Step> Steps { get; set; } = new HashSet<Step>();
         public int Servings { get; set; }
         public string Name { get; set; }
         public int CookingTime { get; set; }
@@ -24,6 +24,8 @@ namespace MasterMealBlazor.Models
         public int ImageId { get; set; }
         public virtual RecipeType Type { get; set; }
         public virtual DBImage Image { get; set; }
+        public string RecipeSource { get; set; }
+        public string RecipeSourceUrl { get; set; }
         [NotMapped]
         public float AvgRating
         {

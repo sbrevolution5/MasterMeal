@@ -2,6 +2,8 @@
 @page "/ingredient/edit/{id}"
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject NavigationManager navigationManager
+@attribute [Authorize]
+
 <h3>Ingredient edit</h3>
 @if (types == null || ingredient == null)
 {
@@ -9,24 +11,24 @@
 }
 else
 {
-    
-<EditForm Model="@ingredient" OnValidSubmit="EditIngredient">
 
-    <InputText @bind-Value="ingredient.Name" />
-    <InputSelect @bind-Value="ingredient.MeasurementType">
-        @foreach(var measure in Enum.GetValues(typeof(MeasurementType)))
-        {
-            <option value="@measure">@measure</option>
-        }
-    </InputSelect>
-    <InputSelect @bind-Value="ingredient.TypeId">
-        @foreach(var type in types)
-        {
-            <option value="@type.Id">@type.Name</option>
-        }
-    </InputSelect>
-    <button type="submit">submit</button>
-</EditForm>
+    <EditForm Model="@ingredient" OnValidSubmit="EditIngredient">
+
+        <InputText @bind-Value="ingredient.Name" />
+        <InputSelect @bind-Value="ingredient.MeasurementType">
+            @foreach (var measure in Enum.GetValues(typeof(MeasurementType)))
+                {
+                <option value="@measure">@measure</option>
+                }
+        </InputSelect>
+        <InputSelect @bind-Value="ingredient.TypeId">
+            @foreach (var type in types)
+                {
+                <option value="@type.Id">@type.Name</option>
+                }
+        </InputSelect>
+        <button type="submit">submit</button>
+    </EditForm>
 }
 @code {
     [Parameter]

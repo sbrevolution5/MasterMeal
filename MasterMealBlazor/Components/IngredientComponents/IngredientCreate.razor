@@ -2,6 +2,8 @@
 @page "/ingredient/Create"
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject NavigationManager navigationManager
+@attribute [Authorize]
+
 <h3>Ingredient Create</h3>
 @if (types == null)
 {
@@ -9,24 +11,24 @@
 }
 else
 {
-    
-<EditForm Model="@ingredient" OnValidSubmit="CreateType">
 
-    <InputText @bind-Value="ingredient.Name"  class="form-control"/>
-    <InputSelect @bind-Value="ingredient.MeasurementType"  class="form-control selectpicker">
-        @foreach(var measure in Enum.GetValues(typeof(MeasurementType)))
-        {
-            <option value="@measure">@measure</option>
-        }
-    </InputSelect>
-    <InputSelect @bind-Value="ingredient.TypeId" class="form-control selectpicker">
-        @foreach(var type in types)
-        {
-            <option value="@type.Id">@type.Name</option>
-        }
-    </InputSelect>
-    <button type="submit">submit</button>
-</EditForm>
+    <EditForm Model="@ingredient" OnValidSubmit="CreateType">
+
+        <InputText @bind-Value="ingredient.Name" class="form-control" />
+        <InputSelect @bind-Value="ingredient.MeasurementType" class="form-control selectpicker">
+            @foreach (var measure in Enum.GetValues(typeof(MeasurementType)))
+                {
+                <option value="@measure">@measure</option>
+                }
+        </InputSelect>
+        <InputSelect @bind-Value="ingredient.TypeId" class="form-control selectpicker">
+            @foreach (var type in types)
+                {
+                <option value="@type.Id">@type.Name</option>
+                }
+        </InputSelect>
+        <button type="submit">submit</button>
+    </EditForm>
 }
 @code {
     private List<IngredientType> types = new();

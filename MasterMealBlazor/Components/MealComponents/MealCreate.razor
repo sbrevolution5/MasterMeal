@@ -1,4 +1,5 @@
 ﻿@inject IDbContextFactory<ApplicationDbContext> ContextFactory
+@attribute [Authorize]
 <h3>MealCreate</h3>
 @if (recipes == null || meal == null)
 {
@@ -11,11 +12,11 @@ else
         <div class="row">
             <div class="col">
                 <label>Date of Meal</label>
-                <InputDate @bind-Value="meal.Date"  class="form-control">
+                <InputDate @bind-Value="meal.Date" class="form-control">
 
                 </InputDate>
                 <label>Recipe</label>
-                <InputSelect @bind-Value="meal.RecipeId"  class="form-control selectpicker">
+                <InputSelect @bind-Value="meal.RecipeId" class="form-control selectpicker">
                     <option value="">Select a Recipe</option>
                     @foreach (var recipe in recipes)
                         {

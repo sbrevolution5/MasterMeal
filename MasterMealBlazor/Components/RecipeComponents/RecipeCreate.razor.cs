@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using SixLabors.ImageSharp;
 using Microsoft.AspNetCore.Http;
-
 namespace MasterMealBlazor.Components.RecipeComponents
 {
     public partial class RecipeCreate : ComponentBase
@@ -117,5 +116,4 @@ namespace MasterMealBlazor.Components.RecipeComponents
             return;
         }
     }
-
-}
+} 

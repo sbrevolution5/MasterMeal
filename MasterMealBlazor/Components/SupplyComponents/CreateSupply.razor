@@ -1,6 +1,8 @@
 ﻿@page "/supplies/create"
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject NavigationManager navigationManager
+@attribute [Authorize]
+
 
 <h3>CreateSupply</h3>
 <EditForm Model="@supply" OnValidSubmit="SaveSupply">
