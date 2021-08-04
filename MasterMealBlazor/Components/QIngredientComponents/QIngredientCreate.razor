@@ -5,6 +5,8 @@
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject IIngredientService ingredientService
 @inject NavigationManager navigationManager
+@attribute [Authorize]
+
 @if (ingredients == null || qIngredient is null || measurementType is null)
 {
     <p>loading</p>
@@ -14,7 +16,7 @@ else
     <div class="card m-1 shadow">
         <EditForm Model="@qIngredient">
             <label>Ingredient Name</label>
-            <InputSelect ValueExpression="@(()=>qIngredient.IngredientId)" Value="@qIngredient.IngredientId" ValueChanged="@((int id)=>TypeChange(id))"  class="form-control selectpicker">
+            <InputSelect ValueExpression="@(()=>qIngredient.IngredientId)" Value="@qIngredient.IngredientId" ValueChanged="@((int id)=>TypeChange(id))" class="form-control selectpicker">
                 <option value="">Select An Ingredient</option>
                 @foreach (var ingredient in ingredients)
                 {
@@ -24,7 +26,7 @@ else
             <div class="row">
                 <div class="col">
                     <label>Quantity</label>
-                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int"  class="form-control"/>
+                    <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" class="form-control" />
                     <InputSelect @bind-Value="qIngredient.Fraction" class="form-control selectpicker">
                         @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
                             {
@@ -65,7 +67,7 @@ else
             <div class="row">
                 <div class="col">
                     <label>Shopping Notes:</label>
-                    <InputText @bind-Value="qIngredient.Notes"  class="form-control"/>
+                    <InputText @bind-Value="qIngredient.Notes" class="form-control" />
 
                 </div>
             </div>

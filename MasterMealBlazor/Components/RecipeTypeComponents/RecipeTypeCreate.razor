@@ -3,10 +3,12 @@
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject NavigationManager navigationManager
 @using MasterMealBlazor.Models
+@attribute [Authorize]
+
 <h3>New Recipe Type</h3>
 <EditForm Model="@type" OnValidSubmit="CreateType">
 
-    <InputText @bind-value="type.Name" class="form-control selectpicker"/>
+    <InputText @bind-value="type.Name" class="form-control selectpicker" />
     <button type="submit">submit</button>
 </EditForm>
 @code {

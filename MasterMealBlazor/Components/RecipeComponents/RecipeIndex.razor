@@ -19,6 +19,11 @@
 }
 else
 {
+    @foreach (var recipe in recipes)
+    {<div class="col-6 col-md-4 col-xl-3 col-xxl-2">
+        <RecipeCard recipe="@recipe"></RecipeCard>
+    </div>
+    }
     <table class="table">
         <thead>
             <tr>

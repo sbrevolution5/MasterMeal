@@ -5,11 +5,13 @@
 @using MasterMealBlazor.Services.Interfaces
 @using MasterMealBlazor.Components.QIngredientComponents
 @using MasterMealBlazor.Components.SupplyComponents
+
 @*@using MasterMealBlazor.Components.SupplyComponents*@
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<ApplicationDbContext> ContextFactory
 @inject IMeasurementService _measurementService
-@inject IFileService _fileService 
+@inject IFileService _fileService
+@attribute [Authorize]
 <h3>RecipeCreate</h3>
 <EditForm Model="@recipe">
     <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
@@ -17,7 +19,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Name:</label>
-                <InputText @bind-Value="recipeName" class="form-control"/>
+                <InputText @bind-Value="recipeName" class="form-control" />
 
             </div>
         </div>
@@ -26,7 +28,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Image:</label>
-                <InputFile @bind-Value="imageFile"  class="form-control"/>
+                <InputFile @bind-Value="imageFile" class="form-control" />
                 <p>Image will be cropped down to 128x128, distortion may occur.</p>
             </div>
         </div>
@@ -36,7 +38,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Description:</label>
-                <InputTextArea @bind-Value="recipeDescription"  class="form-control"/>
+                <InputTextArea @bind-Value="recipeDescription" class="form-control" />
 
             </div>
         </div>
@@ -45,7 +47,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Cooking Time:</label>
-                <InputNumber @bind-Value="cookingTime" TValue="int"  class="form-control"/>
+                <InputNumber @bind-Value="cookingTime" TValue="int" class="form-control" />
 
             </div>
         </div>
@@ -54,7 +56,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Servings:</label>
-                <InputNumber @bind-Value="recipe.Servings" TValue="int"  class="form-control"/>
+                <InputNumber @bind-Value="recipe.Servings" TValue="int" class="form-control" />
 
             </div>
         </div>
@@ -84,11 +86,11 @@
             <div class="form-group">
                 <label class="col-form-label">Ingredients</label>
                 <ol>
-                    @foreach(var ingredient in ingredients)
+                    @foreach (var ingredient in ingredients)
                     {
                         <li>
 
-                            <QIngredientCreate qIngredient="@ingredient"/>
+                            <QIngredientCreate qIngredient="@ingredient" />
                             <button class="btn btn-danger" @onclick="(()=>RemoveIngredient(ingredient))">Remove</button>
                         </li>
                     }
@@ -107,7 +109,7 @@
                     {
                         <li>
 
-                            <SupplyPicker supply="@supply"/>
+                            <SupplyPicker supply="@supply" />
                         </li>
                     }
                 </ol>
@@ -123,11 +125,11 @@
                 <ol>
                     @foreach (var step in steps)
                     {
-                    <li>
-                        <InputTextArea @bind-Value="step.Text"  class="form-control"></InputTextArea>
-                        @*<StepInput />*@
-                        <button class="btn btn-danger" @onclick="(()=>steps.Remove(step))">Remove</button>
-                    </li>
+                        <li>
+                            <InputTextArea @bind-Value="step.Text" class="form-control"></InputTextArea>
+                            @*<StepInput />*@
+                            <button class="btn btn-danger" @onclick="(()=>steps.Remove(step))">Remove</button>
+                        </li>
                     }
                 </ol>
 
@@ -138,5 +140,3 @@
 
     <button @onclick="SaveRecipe" class="btn btn-success">Save</button>
 </EditForm>
-
-
