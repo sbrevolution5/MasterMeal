@@ -14,6 +14,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using MasterMealBlazor.Services.Interfaces;
+using MasterMealBlazor.Services;
+using Microsoft.EntityFrameworkCore;
+using MasterMealBlazor.Data;
 
 namespace MasterMealBlazor.Areas.Identity.Pages.Account
 {
@@ -24,17 +29,21 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
         private readonly UserManager<Chef> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IFileService _fileService;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
         public RegisterModel(
             UserManager<Chef> userManager,
             SignInManager<Chef> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IFileService fileService, Microsoft.EntityFrameworkCore.IDbContextFactory<ApplicationDbContext> contextFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _fileService = fileService;
+            _contextFactory = contextFactory;
         }
 
         [BindProperty]
@@ -50,6 +59,15 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Required]
+            [Display(Name = "Screen Name")]
+            public string ScreenName { get; set; }
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -61,6 +79,9 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            public bool ShowFullName { get; set; }
+            [Display(Name = "Profile Picture")]
+            public IFormFile ImageFile { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,7 +96,31 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Chef { UserName = Input.Email, Email = Input.Email };
+                int imageId;
+                if (Input.ImageFile is not null)
+                {
+                    using var context = _contextFactory.CreateDbContext();
+                    var image = new DBImage()
+                    {
+                        ImageData = await _fileService.ConvertFileToByteArrayAsync(Input.ImageFile),
+                        ContentType = Input.ImageFile.ContentType
+                    };
+                    context.Add(image);
+                    await context.SaveChangesAsync();
+                    imageId = image.Id;
+                }
+                else //default user image
+                {
+                    imageId = 2;
+                }
+                var user = new Chef {
+                    UserName = Input.ScreenName,
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    ShowFullName = Input.ShowFullName,
+                    ImageId = imageId,
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

@@ -2,7 +2,9 @@ using Blazored.Modal;
 using JamesonBugTracker.Services;
 using MasterMealBlazor.Areas.Identity;
 using MasterMealBlazor.Data;
+using MasterMealBlazor.Models;
 using MasterMealBlazor.Services;
+using MasterMealBlazor.Services.Factories;
 using MasterMealBlazor.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -48,8 +50,11 @@ namespace MasterMealBlazor
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<Chef, IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddClaimsPrincipalFactory<ChefClaimsPrincipalFactory>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();

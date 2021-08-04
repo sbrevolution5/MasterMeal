@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -16,6 +16,35 @@
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ScreenName"></label>
+                <input asp-for="Input.ScreenName" class="form-control" />
+                <span asp-validation-for="Input.ScreenName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ImageFile"></label>
+                <div class="custom-file">
+                    <input asp-for="Input.ImageFile" type="file" class="form-control-file custom-file-input" accept="image/*" />
+                    <label class="control-label custom-file-label">Choose</label>
+                </div>
+
+                <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-check">
+                <label asp-for="Input.ShowFullName"></label>
+                <input asp-for="Input.ShowFullName" type="checkbox" class="form-check-input" />
+                <span asp-validation-for="Input.ShowFullName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
@@ -64,4 +93,13 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+@* JQUERY ONLY FOR FILE INPUT *@
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
 }
