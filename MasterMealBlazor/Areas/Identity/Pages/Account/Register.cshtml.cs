@@ -94,19 +94,20 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            using var context = _contextFactory.CreateDbContext();
             if (ModelState.IsValid)
             {
                 int imageId;
                 if (Input.ImageFile is not null)
                 {
-                    using var context = _contextFactory.CreateDbContext();
                     var image = new DBImage()
                     {
                         ImageData = await _fileService.ConvertFileToByteArrayAsync(Input.ImageFile),
                         ContentType = Input.ImageFile.ContentType
                     };
                     context.Add(image);
-                    await context.SaveChangesAsync();
+                    //DONT SAVE YET IN CASE USER REGISTRATION FAILS!
+                    //await context.SaveChangesAsync();
                     imageId = image.Id;
                 }
                 else //default user image
@@ -114,8 +115,10 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
                     imageId = 2;
                 }
                 var user = new Chef {
-                    UserName = Input.ScreenName,
+                    UserName = Input.Email,
+                    ScreenName = Input.ScreenName,
                     Email = Input.Email,
+                    DisplayName = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     ShowFullName = Input.ShowFullName,
@@ -124,6 +127,8 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    //SAVE IMAGE
+                    await context.SaveChangesAsync();
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

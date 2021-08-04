@@ -32,7 +32,7 @@ namespace MasterMealBlazor.Data
 
         private static async Task SeedDefaultImagesAsync(ApplicationDbContext context)
         {
-            var mealImage = await context.Image.FirstOrDefaultAsync(i=>i.Id==1);
+            var mealImage = await context.DBImage.FirstOrDefaultAsync(i=>i.Id==1);
             if (mealImage == null)
             {
                 var file = $"{Directory.GetCurrentDirectory()}/wwwroot/DefaultRecipe.jpg";
@@ -45,7 +45,7 @@ namespace MasterMealBlazor.Data
                 context.Add(newImage);
                 await context.SaveChangesAsync();
             }
-            var userImage = await context.Image.FirstOrDefaultAsync(i=>i.Id==2);
+            var userImage = await context.DBImage.FirstOrDefaultAsync(i=>i.Id==2);
             if (userImage == null)
             {
                 var file = $"{Directory.GetCurrentDirectory()}/wwwroot/DefaultUser.png";

@@ -50,7 +50,7 @@ namespace MasterMealBlazor
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<Chef, IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<Chef, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddClaimsPrincipalFactory<ChefClaimsPrincipalFactory>()
                 .AddDefaultUI()
