@@ -98,20 +98,22 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 int imageId;
+                DBImage image;
                 if (Input.ImageFile is not null)
                 {
-                    var image = new DBImage()
+                    image = new DBImage()
                     {
                         ImageData = await _fileService.ConvertFileToByteArrayAsync(Input.ImageFile),
                         ContentType = Input.ImageFile.ContentType
                     };
                     context.Add(image);
                     //DONT SAVE YET IN CASE USER REGISTRATION FAILS!
-                    //await context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
                     imageId = image.Id;
                 }
                 else //default user image
                 {
+                    image = null;
                     imageId = 2;
                 }
                 var user = new Chef {
@@ -122,13 +124,11 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     ShowFullName = Input.ShowFullName,
-                    ImageId = imageId,
+                    ImageId = imageId
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    //SAVE IMAGE
-                    await context.SaveChangesAsync();
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -151,6 +151,11 @@ namespace MasterMealBlazor.Areas.Identity.Pages.Account
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
+                }
+                else
+                {
+                    //TODO IF IT FAILS, REMOVE IMAGE
+                    context.Remove(image);
                 }
                 foreach (var error in result.Errors)
                 {
