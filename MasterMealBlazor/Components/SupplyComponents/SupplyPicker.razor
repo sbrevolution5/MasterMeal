@@ -12,7 +12,7 @@ else
     <option value="">Select An Ingredient</option>
     @foreach (var supply in supplies)
     {
-        <option value="@supply.Id">@supply.Name</option>
+        <option value="@supply.Id" hidden>@supply.Name</option>
     }
 </InputSelect>
 }

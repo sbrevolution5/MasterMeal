@@ -27,6 +27,24 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
+                <label>Recipe Source:</label>
+                <InputText @bind-Value="recipe.RecipeSource" class="form-control" />
+                <small class="text-muted">Where the recipe came from, if it is not a personal recipe</small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label>Source URL:</label>
+                <InputText @bind-Value="recipe.RecipeSourceUrl" class="form-control" />
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
                 <label>Image:</label>
                 <InputFile @bind-Value="imageFile" class="form-control" />
                 <p>Image will be cropped down to 128x128, distortion may occur.</p>
@@ -71,7 +89,7 @@
                 else
                 {
                     <InputSelect @bind-Value="TypeId" TValue="int" class="form-control selectpicker">
-                        <option value="">Select a Type</option>
+                        <option value="" hidden>Select a Type</option>
                         @foreach (RecipeType type in Types)
                         {
                             <option value="@type.Id">@type.Name</option>
@@ -85,18 +103,13 @@
         <div class="col">
             <div class="form-group">
                 <label class="col-form-label">Ingredients</label>
-                <ol>
+                <button @onclick="AddIngredient" class="btn btn-success">Add Ingredient</button>
                     @foreach (var ingredient in ingredients)
                     {
-                        <li>
-
                             <QIngredientCreate qIngredient="@ingredient" />
                             <button class="btn btn-danger" @onclick="(()=>RemoveIngredient(ingredient))">Remove</button>
-                        </li>
                     }
-                </ol>
 
-                <button @onclick="AddIngredient" class="btn btn-success">Add Ingredient</button>
             </div>
         </div>
     </div>

@@ -13,7 +13,7 @@
 }
 else
 {
-    <div class="card m-1 shadow">
+    <div class="card m-1 p-2 shadow">
         <EditForm Model="@qIngredient">
             <label>Ingredient Name</label>
             <InputSelect ValueExpression="@(()=>qIngredient.IngredientId)" Value="@qIngredient.IngredientId" ValueChanged="@((int id)=>TypeChange(id))" class="form-control selectpicker">

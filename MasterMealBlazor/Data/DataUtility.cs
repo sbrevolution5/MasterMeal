@@ -18,7 +18,7 @@ namespace MasterMealBlazor.Data
 
             using var svcScope = host.Services.CreateScope();
             var svcProvider = svcScope.ServiceProvider;
-            //Service: An instance of RoleManager
+            //Service: An instance of DBContext
             var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
             //Service: An instance of RoleManager
             //var roleManagerSvc = svcProvider.GetRequiredService<RoleManager<IdentityRole>>();
