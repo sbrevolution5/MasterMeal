@@ -223,7 +223,7 @@ namespace MasterMealBlazor.Services
                 conversionFactor = 24;
 
             }
-            float ozConversion = (float)fracOz / 2f;
+            float ozConversion = (float)fracOz / 24f;
             //Get whats left from remainder
             string measurement;
             int remainder = fracOz % conversionFactor;

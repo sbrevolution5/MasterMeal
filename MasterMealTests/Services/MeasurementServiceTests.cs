@@ -57,11 +57,11 @@ namespace MasterMealBlazor.Services.Tests
         }
 
         [Test()]
-        [TestCase(2,"1 Ounce")]
-        [TestCase(32,"1 Pound")]
-        [TestCase(16, "1/2 Pounds")]
-        [TestCase(40, "1 1/4 Pounds")]
-        [TestCase(34, "1 1/4 Pounds")]
+        [TestCase(24,"1 Ounce")]
+        [TestCase(384,"1 Pound")]
+        [TestCase(24*8, "1/2 Pounds")]
+        [TestCase(20*24, "1 1/4 Pounds")]
+        [TestCase(24*24, "1 1/2 Pounds")]
         public void DecodeMassMeasurementTest_SimpleInput_ReturnsCorrectUnit(int input, string expected)
         {
             var result = _measurementService.DecodeMassMeasurement(input);
@@ -105,9 +105,12 @@ namespace MasterMealBlazor.Services.Tests
         }
 
         [Test()]
-        public void FractionToStringTest()
+        [TestCase(Fraction.Half, "1/2")]
+        public void FractionToStringTest(Fraction input, string expected)
         {
-            Assert.Fail();
+            var result = _measurementService.FractionToString(input);
+            Assert.That(result, Is.EqualTo(expected));
+
         }
     }
 }
