@@ -49,13 +49,6 @@ namespace MasterMealBlazor.Services.Tests
             var result = _measurementService.DecodeVolumeMeasurement(input);
             Assert.That(result, Does.Contain(expected));
         }
-
-        [Test()]
-        public void DoubleToFractionTest()
-        {
-            Assert.Fail();
-        }
-
         [Test()]
         [TestCase(24,"1 Ounce")]
         [TestCase(384,"1 Pound")]
@@ -68,10 +61,10 @@ namespace MasterMealBlazor.Services.Tests
             Assert.That(result, Does.Contain(expected));
         }
         [Test()]
-        [TestCase(32,"(16 oz.)")]
-        [TestCase(16, "(8 oz.)")]
-        [TestCase(40, "(20 oz.)")]
-        [TestCase(34, "(17 oz.)")]
+        [TestCase(16*24,"(16 oz.)")]
+        [TestCase(8*24, "(8 oz.)")]
+        [TestCase(20*24, "(20 oz.)")]
+        [TestCase(17*24, "(17 oz.)")]
         public void DecodeMassMeasurementTest_SimpleInput_ReturnsCorrectOunce(int input, string expected)
         {
             var result = _measurementService.DecodeMassMeasurement(input);
@@ -88,9 +81,9 @@ namespace MasterMealBlazor.Services.Tests
         }
 
         [Test()]
-        [TestCase(1, Fraction.Half, MassMeasurementUnit.pound, 48)]
-        [TestCase(1, Fraction.NoFraction, MassMeasurementUnit.ounce, 2)]
-        [TestCase(15, Fraction.NoFraction, MassMeasurementUnit.ounce, 30)]
+        [TestCase(1, Fraction.Half, MassMeasurementUnit.pound, 24*24)]
+        [TestCase(1, Fraction.NoFraction, MassMeasurementUnit.ounce, 24)]
+        [TestCase(15, Fraction.NoFraction, MassMeasurementUnit.ounce, 15*24)]
         public void EncodeMassMeasurementTest(int wholeNum, Fraction fraction, MassMeasurementUnit unit, int expected)
         {
             var result = _measurementService.EncodeMassMeasurement(wholeNum, fraction, unit);

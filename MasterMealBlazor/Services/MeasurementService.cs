@@ -116,7 +116,7 @@ namespace MasterMealBlazor.Services
             }
             else
             {
-                double fractionDouble = remainder / 24d*16d;
+                double fractionDouble = remainder / (24d*16d);
                 return FractionToString(DoubleToFraction(fractionDouble));
 
             }
@@ -207,7 +207,7 @@ namespace MasterMealBlazor.Services
         /// <returns></returns>
         public string DecodeMassMeasurement(int fracOz)
         {
-            string unitString = "";
+            string unitString;
             MassMeasurementUnit unit;
             int conversionFactor;
             if (fracOz >= 24*16 || fracOz == 24*8 || fracOz == 24*4 || fracOz == 24*12)
