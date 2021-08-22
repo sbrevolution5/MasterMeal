@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using MasterMealBlazor.Enums;
 using MasterMealBlazor.Services;
+using System.Diagnostics;
 
 namespace MasterMealBlazor.Data
 {
@@ -23,19 +24,53 @@ namespace MasterMealBlazor.Data
             //Service: An instance of DBContext
             var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
             //Service: An instance of RoleManager
-            //var roleManagerSvc = svcProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var roleManagerSvc = svcProvider.GetRequiredService<RoleManager<IdentityRole>>();
             //Service: An instance of the UserManager
-            //var userManagerSvc = svcProvider.GetRequiredService<UserManager<Chef>>();
+            var userManagerSvc = svcProvider.GetRequiredService<UserManager<Chef>>();
             //TsTEP 1: This is the programmatic equivalent to Update-Database
             await dbContextSvc.Database.MigrateAsync();
+            await SeedAdminUserAsync(userManagerSvc,roleManagerSvc);
             await SeedDefaultImagesAsync(dbContextSvc);
             await SeedRecipeTypesAsync(dbContextSvc);
             await SeedIngredientTypesAsync(dbContextSvc);
             await SeedIngredientsAsync(dbContextSvc);
             await SeedSuppliesAsync(dbContextSvc);
-            await SeedRecipesAsync(dbContextSvc);
+            await SeedRecipesAsync(dbContextSvc,userManagerSvc);
         }
-
+        private static async Task SeedAdminUserAsync(UserManager<Chef> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            //Seed Default Admin User
+            var defaultUser = new Chef
+            {
+                UserName = "sethbcoding@gmail.com",
+                Email = "sethbcoding@gmail.com",
+                FirstName = "Seth",
+                LastName = "Burleson",
+                EmailConfirmed = true,
+            };
+            try
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, UserRoles.Admin.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("*************  ERROR  *************");
+                Debug.WriteLine("Error Seeding Default Admin User.");
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine("***********************************");
+                throw;
+            }
+        }
+        public static async Task SeedRolesAsync(UserManager<Chef> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            //Seed Roles
+            await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin.ToString()));
+        }
         private static async Task SeedDefaultImagesAsync(ApplicationDbContext context)
         {
             var mealImage = await context.DBImage.FirstOrDefaultAsync(i => i.Id == 1);
@@ -116,14 +151,7 @@ namespace MasterMealBlazor.Data
                 ingredients.Add(MakeIngredient("Ground Beef", "Meat", MeasurementType.Mass, context, ingTypes));
                 ingredients.Add(MakeIngredient("Olive Oil", "Oil", MeasurementType.Volume, context, ingTypes));
                 //Buffalo Spiced Crispy Chicken
-                ingredients.Add(MakeIngredient("Sour Cream", "Cold Products", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Panko Breadcrumbs", "Breadcrumb", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Honey", "Condiments and Sauces", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Green Beans", "Produce", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Scallions", "Produce", MeasurementType.Count, context, ingTypes));
-                ingredients.Add(MakeIngredient("Frank's Seasoning Blend", "Spices", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Montrey Jack (Shredded)", "Cheese", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Chicken Breast", "Meat", MeasurementType.Mass, context, ingTypes));
+                
                 //Beef and cheese tostadas
                 ingredients.Add(MakeIngredient("Roma Tomato", "Produce", MeasurementType.Count, context, ingTypes));
                 ingredients.Add(MakeIngredient("Green Bell Pepper", "Produce", MeasurementType.Count, context, ingTypes));
@@ -134,6 +162,7 @@ namespace MasterMealBlazor.Data
                 ingredients.Add(MakeIngredient("Lime", "Produce", MeasurementType.Count, context, ingTypes));
                 ingredients.Add(MakeIngredient("Hot Sauce", "Condiments And Sauces", MeasurementType.Volume, context, ingTypes));
                 ingredients.Add(MakeIngredient("Cilantro", "Produce", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Butter", "Dairy", MeasurementType.Volume, context, ingTypes));
                 await context.SaveChangesAsync();
             }
         }
@@ -153,6 +182,11 @@ namespace MasterMealBlazor.Data
                 supplies.Add(NewSupply("Medium Bowl"));
                 supplies.Add(NewSupply("Olive Oil"));
                 supplies.Add(NewSupply("Salt And Pepper"));
+                supplies.Add(NewSupply("Strainer"));
+                supplies.Add(NewSupply("Paper Towels"));
+                supplies.Add(NewSupply("Large Bowl"));
+                supplies.Add(NewSupply("Medium Pot"));
+                supplies.Add(NewSupply("Potato Masher"));
                 await context.SaveChangesAsync();
             }
         }
@@ -166,29 +200,31 @@ namespace MasterMealBlazor.Data
             return sup;
         }
 
-        private static async Task SeedRecipesAsync(ApplicationDbContext context)
+        private static async Task SeedRecipesAsync(ApplicationDbContext context,UserManager<Chef> userManager)
         {
             if ((await context.Recipe.ToListAsync()).Count() < 1)
             {
                 var types = await context.RecipeType.ToListAsync();
                 var ing = await context.Ingredient.ToListAsync();
-                var recipes = new List<Recipe>();
+                var admin = await userManager.FindByEmailAsync("Sethbcoding@gmail.com");
+                #region BeefTostada
                 var beefTostada = new Recipe()
                 {
                     Name = "Beef & Cheese Tostadas",
                     Description = "With Green Bell Pepper, Tomato Salsa, & Hot Sauce Crema",
                     RecipeSource = "HelloFresh",
+                    AuthorId = admin.Id,
                     Servings = 2,
                     CookingTime = 30,
                     TypeId = types.Where(t => t.Name == "Mexican").FirstOrDefault().Id
                 };
                 var beefIng = new List<QIngredient>();
-                beefIng.Add(NewQIngredient("Roma Tomato", 1,  ing,beefTostada.Id));
-                beefIng.Add(NewQIngredient("Yellow Onion", 1, ing,beefTostada.Id));
-                beefIng.Add(NewQIngredient("Green Bell Pepper", 1, ing,beefTostada.Id));
-                beefIng.Add(NewQIngredient("Lime", 1, ing,beefTostada.Id));
-                beefIng.Add(NewQIngredient("Beef Stock Concentrate", 1, ing,beefTostada.Id));
-                beefIng.Add(NewQIngredient("Flour Tortillas", 6, ing,beefTostada.Id));
+                beefIng.Add(NewQIngredient("Roma Tomato", 1, ing, beefTostada.Id));
+                beefIng.Add(NewQIngredient("Yellow Onion", 1, ing, beefTostada.Id));
+                beefIng.Add(NewQIngredient("Green Bell Pepper", 1, ing, beefTostada.Id));
+                beefIng.Add(NewQIngredient("Lime", 1, ing, beefTostada.Id));
+                beefIng.Add(NewQIngredient("Beef Stock Concentrate", 1, ing, beefTostada.Id));
+                beefIng.Add(NewQIngredient("Flour Tortillas", 6, ing, beefTostada.Id));
                 beefIng.Add(NewQIngredient("Ground Beef", 10, Fraction.NoFraction, MassMeasurementUnit.ounce, ing, beefTostada.Id));
                 beefIng.Add(NewQIngredient("Sour Cream", 4, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, beefTostada.Id));
                 beefIng.Add(NewQIngredient("Mexican Cheese (Shredded)", 0, Fraction.Half, VolumeMeasurementUnit.Cup, ing, beefTostada.Id));
@@ -196,15 +232,14 @@ namespace MasterMealBlazor.Data
                 beefIng.Add(NewQIngredient("Hot Sauce", 1, Fraction.NoFraction, VolumeMeasurementUnit.Teaspoon, ing, beefTostada.Id));
                 beefIng.Add(NewQIngredient("Chili Powder", 1, Fraction.NoFraction, VolumeMeasurementUnit.Teaspoon, ing, beefTostada.Id));
                 beefIng.Add(NewQIngredient("Southwest Spice Blend", 1, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, beefTostada.Id));
-                await context.SaveChangesAsync();
                 var sup = await context.Supply.ToListAsync();
                 var beefSupplies = new List<Supply>();
-                beefSupplies.Add(AddSupply(beefSupplies, "Large Pan",sup));
-                beefSupplies.Add(AddSupply(beefSupplies, "Baking Sheet",sup));
-                beefSupplies.Add(AddSupply(beefSupplies, "Small Bowl",sup));
-                beefSupplies.Add(AddSupply(beefSupplies, "Medium Bowl",sup));
-                beefSupplies.Add(AddSupply(beefSupplies, "Olive Oil",sup));
-                beefSupplies.Add(AddSupply(beefSupplies, "Salt And Pepper",sup));
+                beefSupplies.Add(AddSupply("Large Pan", sup));
+                beefSupplies.Add(AddSupply("Baking Sheet", sup));
+                beefSupplies.Add(AddSupply("Small Bowl", sup));
+                beefSupplies.Add(AddSupply("Medium Bowl", sup));
+                beefSupplies.Add(AddSupply("Olive Oil", sup));
+                beefSupplies.Add(AddSupply("Salt And Pepper", sup));
 
                 var beefSteps = new List<Step>();
                 beefSteps.Add(AddStep("Preheat Oven to 450F.", beefTostada.Id));
@@ -217,6 +252,101 @@ namespace MasterMealBlazor.Data
                 beefSteps.Add(AddStep("Drizzle tortillas with 1 TBS olive oil; brush or rub to coat all over.Arrange on a baking sheet.Gently prick each tortilla in a few places with a fork.", beefTostada.Id));
                 beefSteps.Add(AddStep("Bake on top rack, flipping halfway through, until lightly golden, 4 - 5 minutes per side.", beefTostada.Id));
                 beefSteps.Add(AddStep("Serve and top with pico de gallo and lime crema", beefTostada.Id));
+                #endregion
+                #region AnchoBBQ
+                var anchoBBQ = new Recipe()
+                {
+                    Name = "Ancho BBQ Sloppy Joes",
+                    Description = "With Pickle Slices & Oven Gold Potatoes",
+                    RecipeSource = "HelloFresh",
+                    AuthorId = admin.Id,
+                    Servings = 2,
+                    CookingTime = 30,
+                    TypeId = types.Where(t => t.Name == "American").FirstOrDefault().Id
+                };
+                var anchIng = new List<QIngredient>();
+                anchIng.Add(NewQIngredient("Yellow Onion", 1, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("Gold Potatoes", 6, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("Dill Pickles", 2, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("Beef Stock Concentrate", 1, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("Potato Buns", 2, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("Ground Beef", 10, Fraction.NoFraction, MassMeasurementUnit.ounce, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("BBQ Sauce", 4, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("Ketchup", 2, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("Ancho Chili Powder", 1, Fraction.NoFraction, VolumeMeasurementUnit.Teaspoon, ing, anchoBBQ.Id));
+                anchIng.Add(NewQIngredient("Cornstarch", 1, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, anchoBBQ.Id));
+                var anchSupplies = new List<Supply>();
+                anchSupplies.Add(AddSupply("Large Pan", sup));
+                anchSupplies.Add(AddSupply("Baking Sheet", sup));
+                anchSupplies.Add(AddSupply("Small Bowl", sup));
+                anchSupplies.Add(AddSupply("Olive Oil", sup));
+                anchSupplies.Add(AddSupply("Salt And Pepper", sup));
+
+                var anchSteps = new List<Step>();
+                anchSteps.Add(AddStep("Preheat oven to 450°.", anchoBBQ.Id));
+                anchSteps.Add(AddStep("Cut potatoes into ¼-inch-thick rounds. Toss on a baking sheet with a large drizzle of oil, salt, and pepper.", anchoBBQ.Id));
+                anchSteps.Add(AddStep("Roast on top rack until lightly browned and tender, 18-20 minutes.", anchoBBQ.Id));
+                anchSteps.Add(AddStep(" While potatoes roast, half, peel, and dice onion. Thinly slice pickle into rounds. Halve buns.", anchoBBQ.Id));
+                anchSteps.Add(AddStep("In a small bowl, combing BBQ Sauce, ketchup, chili powder, stock concentrate, half the cornstarch, and 1 TBS water.", anchoBBQ.Id));
+                anchSteps.Add(AddStep("Heat a drizzle of oil in a large pan over medium-high heat. Add onion; cook stirring, until softened, 4-5 minutes.", anchoBBQ.Id));
+                anchSteps.Add(AddStep("Add beef; season with salt and pepper. Cook breaking up meat into pieces, until browned, 3-5 minutes.", anchoBBQ.Id));
+                anchSteps.Add(AddStep("Add BBQ sauce mixture to pan. Cook, stirring, until sauce has thickened and beef is cooked through, 2-3 minutes. Taste and season with salt and pepper.", anchoBBQ.Id));
+                anchSteps.Add(AddStep("While filling cooks, toast buns until golden brown..", anchoBBQ.Id));
+                anchSteps.Add(AddStep("Serve meat on buns, topped with pickle ", anchoBBQ.Id));
+                #endregion
+                #region Buffalochicken
+                var buffaloChk = new Recipe()
+                {
+                    Name = "Buffalo Spiced Crispy Chicken",
+                    Description = "With Mashed Potatoes, Buttery Green Beans, & Honey Drizzle",
+                    RecipeSource = "HelloFresh",
+                    AuthorId = admin.Id,
+                    Servings = 2,
+                    CookingTime = 35,
+                    TypeId = types.Where(t => t.Name == "Chicken").FirstOrDefault().Id
+                };
+                var buffIng = new List<QIngredient>();
+                buffIng.Add(NewQIngredient("Lime", 1, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Scallions", 2, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Gold Potatoes", 6, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Chicken Breast", 10, Fraction.NoFraction, MassMeasurementUnit.ounce, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Sour Cream", 4, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Butter", 3, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Montrey Jack (Shredded)", 0, Fraction.OneQuarter, VolumeMeasurementUnit.Cup, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Panko Breadcrumbs", 0, Fraction.OneQuarter, VolumeMeasurementUnit.Cup, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Honey", 2, Fraction.NoFraction, VolumeMeasurementUnit.Teaspoon, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Green Beans", 6, Fraction.NoFraction, VolumeMeasurementUnit.Ounce, ing, buffaloChk.Id));
+                buffIng.Add(NewQIngredient("Franks Seasoning Blend", 1, Fraction.NoFraction, VolumeMeasurementUnit.Teaspoon, ing, buffaloChk.Id));
+                
+                var buffSupplies = new List<Supply>();
+                buffSupplies.Add(AddSupply("Large Bowl", sup));
+                buffSupplies.Add(AddSupply("Baking Sheet", sup));
+                buffSupplies.Add(AddSupply("Paper Towels", sup));
+                buffSupplies.Add(AddSupply("Strainer", sup));
+                buffSupplies.Add(AddSupply("Small Bowl", sup));
+                buffSupplies.Add(AddSupply("Medium Bowl", sup));
+                buffSupplies.Add(AddSupply("Medium Pot", sup));
+                buffSupplies.Add(AddSupply("Olive Oil", sup));
+                buffSupplies.Add(AddSupply("Salt And Pepper", sup));
+
+                var buffSteps = new List<Step>();
+                buffSteps.Add(AddStep("Preheat oven to 425°.", buffaloChk.Id));
+                buffSteps.Add(AddStep("Trim and thinly slice scallions, separating whites from greens", buffaloChk.Id));
+                buffSteps.Add(AddStep("In a small bowl, combine half the sour cream, ½ tsp Frank’s Seasoning, and a big pinch of salt. Stir in water 1 tsp at a time until mixture reaches drizzling consistency", buffaloChk.Id));
+                buffSteps.Add(AddStep("Place 1 TBS butter in a medium bowl, microwave until melted. Stir in panko, Monterey Jack, remaining Frank’s Seasoning, and a big pinch of salt and pepper.", buffaloChk.Id));
+                buffSteps.Add(AddStep("Dice potatoes in ½-inch pieces. Place in a medium pot with enough salted water to cover by 2 inches. Bring to a boil; cook until tender, 15-20 minutes. Reserve ½ cup potato cooking liquid, then drain", buffaloChk.Id));
+                buffSteps.Add(AddStep("Add a drizzle of oil and scallion whites to empty pot over low heat; cook until softened, 1 minute.", buffaloChk.Id));
+                buffSteps.Add(AddStep("Return potatoes to pot; mash with remaining sour cream and 1 TBS butter until smooth and creamy, adding splashes of reserved potato cooking liquid as needed.Season with salt and pepper. Keep covered off heat.", buffaloChk.Id));
+                buffSteps.Add(AddStep("While potatoes cook, pat chicken dry with paper towels and season all over with salt and pepper.Place on one side of a lightly oiled baking sheet.", buffaloChk.Id));
+                buffSteps.Add(AddStep("Mound tops of chicken with panko mixture, pressing firmly to adhere to top. ", buffaloChk.Id));
+                buffSteps.Add(AddStep("Toss green beans on opposite side of sheet from chicken with a large drizzle of oil and a pinch of salt & pepper.", buffaloChk.Id));
+                buffSteps.Add(AddStep("Roast on top rack until chicken is golden brown and cooked through and green beans are tender, 15 - 18 minutes.", buffaloChk.Id));
+                buffSteps.Add(AddStep("Transfer roasted green beans to a large bowl; add 1 TBS butter and toss until melted.", buffaloChk.Id));
+                buffSteps.Add(AddStep("Drizzle chicken with creamy buffalo sauce and honey.", buffaloChk.Id));
+
+                #endregion
+
+                await context.SaveChangesAsync();
             }
         }
 
@@ -230,7 +360,7 @@ namespace MasterMealBlazor.Data
             return step;
         }
 
-        private static Supply AddSupply(List<Supply> beefSupplies, string v, List<Supply> sup)
+        private static Supply AddSupply(string v, List<Supply> sup)
         {
             Supply supply = sup.Where(s => s.Name == v).FirstOrDefault();
             return supply;
