@@ -119,15 +119,16 @@
         <div class="col">
             <div class="form-group">
                 <label>Supplies</label>
-                <ol>
+                <ul>
                     @foreach (var supply in supplies)
                     {
-                        <li>
+                    <li>
 
-                            <SupplyPicker supply="@supply" />
-                        </li>
+                        <SupplyPicker supply="@supply" />
+                        <button class="btn btn-danger" @onclick="(()=>RemoveSupply(supply))">Remove</button>
+                    </li>
                     }
-                </ol>
+                </ul>
                 <button @onclick="AddSupply" class="btn btn-success">Add Supply</button>
 
             </div>

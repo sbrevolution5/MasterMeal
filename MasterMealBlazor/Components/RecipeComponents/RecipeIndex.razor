@@ -19,45 +19,55 @@
 }
 else
 {
-    @foreach (var recipe in recipes)
-    {<div class="col-6 col-md-4 col-xl-3 col-xxl-2">
-        <RecipeCard recipe="@recipe"></RecipeCard>
-    </div>
-    }
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Cooking Time</th>
-                <th>Author</th>
-                <th>Rating</th>
-                <th>Links</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var recipe in recipes)
+    <div class="row">
+        @{ var counter = 1; }
+        @foreach (var recipe in recipes)
+        {
+            <div class="col-6 col-md-4 col-xl-3 col-xxl-2">
+                <RecipeCard recipe="@recipe"></RecipeCard>
+            </div>
+            if (counter % 3 == 0)
             {
-
-                <tr>
-                    <td scope="row">@recipe.Id</td>
-                    <td>@recipe.Name</td>
-                    <td>@recipe.Type.Name</td>
-                    <td>@recipe.CookingTime</td>
-                    <td>@recipe.Author?.DisplayName</td>
-                    <td>@recipe.AvgRating</td>
-                    <td><a href="/recipe/details/@recipe.Id" class="btn btn-primary">Details</a></td>
-                </tr>
+            @:</div><div class="row">
+                counter = 0;
             }
-        </tbody>
-    </table>
-}
-@code {
+            counter++;
+        }
+    </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Cooking Time</th>
+                    <th>Author</th>
+                    <th>Rating</th>
+                    <th>Links</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var recipe in recipes)
+                {
+
+                    <tr>
+                        <td scope="row">@recipe.Id</td>
+                        <td>@recipe.Name</td>
+                        <td>@recipe.Type.Name</td>
+                        <td>@recipe.CookingTime</td>
+                        <td>@recipe.Author?.DisplayName</td>
+                        <td>@recipe.AvgRating</td>
+                        <td><a href="/recipe/details/@recipe.Id" class="btn btn-primary">Details</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        }
+        @code {
     private List<Recipe> recipes;
-    protected async override Task OnInitializedAsync()
-    {
-        using var context = ContextFactory.CreateDbContext();
-        recipes = await context.Recipe.Include(r => r.Type).Include(r=>r.Author).ToListAsync();
-    }
-}
+        protected async override Task OnInitializedAsync()
+        {
+            using var context = ContextFactory.CreateDbContext();
+            recipes = await context.Recipe.Include(r => r.Type).Include(r => r.Author).ToListAsync();
+        }
+        }
