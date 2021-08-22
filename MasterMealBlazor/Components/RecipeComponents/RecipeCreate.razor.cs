@@ -35,6 +35,7 @@ namespace MasterMealBlazor.Components.RecipeComponents
             recipe.Description = recipeDescription;
             recipe.CookingTime = cookingTime;
             recipe.TypeId = TypeId;
+            recipe.Supplies = supplies;
             using var context = ContextFactory.CreateDbContext();
             int imageId = 1;
             if (imageFile is not null)
