@@ -29,8 +29,9 @@ namespace MasterMealBlazor.Data
             var userManagerSvc = svcProvider.GetRequiredService<UserManager<Chef>>();
             //TsTEP 1: This is the programmatic equivalent to Update-Database
             await dbContextSvc.Database.MigrateAsync();
-            await SeedAdminUserAsync(userManagerSvc,roleManagerSvc);
             await SeedDefaultImagesAsync(dbContextSvc);
+            await SeedRolesAsync(userManagerSvc, roleManagerSvc);
+            await SeedAdminUserAsync(userManagerSvc,roleManagerSvc);
             await SeedRecipeTypesAsync(dbContextSvc);
             await SeedIngredientTypesAsync(dbContextSvc);
             await SeedIngredientsAsync(dbContextSvc);
@@ -43,10 +44,13 @@ namespace MasterMealBlazor.Data
             var defaultUser = new Chef
             {
                 UserName = "sethbcoding@gmail.com",
+                DisplayName = "sethbcoding@gmail.com",
                 Email = "sethbcoding@gmail.com",
                 FirstName = "Seth",
                 LastName = "Burleson",
+                ScreenName = "Master Admin",
                 EmailConfirmed = true,
+                ImageId = 2,
             };
             try
             {
@@ -70,6 +74,8 @@ namespace MasterMealBlazor.Data
         {
             //Seed Roles
             await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(UserRoles.User.ToString()));
+
         }
         private static async Task SeedDefaultImagesAsync(ApplicationDbContext context)
         {
@@ -124,6 +130,7 @@ namespace MasterMealBlazor.Data
                 types.Add(NewType("Canned Good"));
                 types.Add(NewType("Soup"));
                 types.Add(NewType("Pasta"));
+                await context.AddRangeAsync(types);
                 await context.SaveChangesAsync();
             }
 
@@ -151,18 +158,28 @@ namespace MasterMealBlazor.Data
                 ingredients.Add(MakeIngredient("Ground Beef", "Meat", MeasurementType.Mass, context, ingTypes));
                 ingredients.Add(MakeIngredient("Olive Oil", "Oil", MeasurementType.Volume, context, ingTypes));
                 //Buffalo Spiced Crispy Chicken
-                
+                ingredients.Add(MakeIngredient("Scallions", "Produce", MeasurementType.Count, context, ingTypes));
+                ingredients.Add(MakeIngredient("Gold Potatoes", "Produce", MeasurementType.Count, context, ingTypes));
+                ingredients.Add(MakeIngredient("Chicken Breast", "Meat",MeasurementType.Mass, context, ingTypes));
+                ingredients.Add(MakeIngredient("Sour Cream", "Cold Products",MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Butter", "Dairy", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Montrey Jack (Shredded)", "Cheese", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Panko Breadcrumbs", "Breadcrumbs", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Honey", "Condiments and Sauces", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Green Beans", "Produce", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Franks Seasoning Blend", "Spice", MeasurementType.Volume, context, ingTypes));
                 //Beef and cheese tostadas
                 ingredients.Add(MakeIngredient("Roma Tomato", "Produce", MeasurementType.Count, context, ingTypes));
                 ingredients.Add(MakeIngredient("Green Bell Pepper", "Produce", MeasurementType.Count, context, ingTypes));
                 ingredients.Add(MakeIngredient("Flour Tortillas", "Bread", MeasurementType.Count, context, ingTypes));
                 ingredients.Add(MakeIngredient("Mexican Cheese (Shredded)", "Cheese", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Chili Powder", "Spices", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Southwest Spice Blend", "Spices", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Chili Powder", "Spice", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Southwest Spice Blend", "Spice", MeasurementType.Volume, context, ingTypes));
                 ingredients.Add(MakeIngredient("Lime", "Produce", MeasurementType.Count, context, ingTypes));
-                ingredients.Add(MakeIngredient("Hot Sauce", "Condiments And Sauces", MeasurementType.Volume, context, ingTypes));
+                ingredients.Add(MakeIngredient("Hot Sauce", "Condiments and Sauces", MeasurementType.Volume, context, ingTypes));
                 ingredients.Add(MakeIngredient("Cilantro", "Produce", MeasurementType.Volume, context, ingTypes));
                 ingredients.Add(MakeIngredient("Butter", "Dairy", MeasurementType.Volume, context, ingTypes));
+                await context.AddRangeAsync(ingredients);
                 await context.SaveChangesAsync();
             }
         }
@@ -252,6 +269,10 @@ namespace MasterMealBlazor.Data
                 beefSteps.Add(AddStep("Drizzle tortillas with 1 TBS olive oil; brush or rub to coat all over.Arrange on a baking sheet.Gently prick each tortilla in a few places with a fork.", beefTostada.Id));
                 beefSteps.Add(AddStep("Bake on top rack, flipping halfway through, until lightly golden, 4 - 5 minutes per side.", beefTostada.Id));
                 beefSteps.Add(AddStep("Serve and top with pico de gallo and lime crema", beefTostada.Id));
+                await context.AddAsync(beefTostada);
+                await context.AddRangeAsync(beefSteps);
+                await context.AddRangeAsync(beefSupplies);
+                await context.AddRangeAsync(beefIng);
                 #endregion
                 #region AnchoBBQ
                 var anchoBBQ = new Recipe()
@@ -293,6 +314,10 @@ namespace MasterMealBlazor.Data
                 anchSteps.Add(AddStep("Add BBQ sauce mixture to pan. Cook, stirring, until sauce has thickened and beef is cooked through, 2-3 minutes. Taste and season with salt and pepper.", anchoBBQ.Id));
                 anchSteps.Add(AddStep("While filling cooks, toast buns until golden brown..", anchoBBQ.Id));
                 anchSteps.Add(AddStep("Serve meat on buns, topped with pickle ", anchoBBQ.Id));
+                await context.AddAsync(anchoBBQ);
+                await context.AddRangeAsync(anchSteps);
+                await context.AddRangeAsync(anchSupplies);
+                await context.AddRangeAsync(anchIng);
                 #endregion
                 #region Buffalochicken
                 var buffaloChk = new Recipe()
@@ -306,7 +331,6 @@ namespace MasterMealBlazor.Data
                     TypeId = types.Where(t => t.Name == "Chicken").FirstOrDefault().Id
                 };
                 var buffIng = new List<QIngredient>();
-                buffIng.Add(NewQIngredient("Lime", 1, ing, buffaloChk.Id));
                 buffIng.Add(NewQIngredient("Scallions", 2, ing, buffaloChk.Id));
                 buffIng.Add(NewQIngredient("Gold Potatoes", 6, ing, buffaloChk.Id));
                 buffIng.Add(NewQIngredient("Chicken Breast", 10, Fraction.NoFraction, MassMeasurementUnit.ounce, ing, buffaloChk.Id));
@@ -343,7 +367,10 @@ namespace MasterMealBlazor.Data
                 buffSteps.Add(AddStep("Roast on top rack until chicken is golden brown and cooked through and green beans are tender, 15 - 18 minutes.", buffaloChk.Id));
                 buffSteps.Add(AddStep("Transfer roasted green beans to a large bowl; add 1 TBS butter and toss until melted.", buffaloChk.Id));
                 buffSteps.Add(AddStep("Drizzle chicken with creamy buffalo sauce and honey.", buffaloChk.Id));
-
+                await context.AddAsync(buffaloChk);
+                await context.AddRangeAsync(buffSteps);
+                await context.AddRangeAsync(buffSupplies);
+                await context.AddRangeAsync(buffIng);
                 #endregion
 
                 await context.SaveChangesAsync();
