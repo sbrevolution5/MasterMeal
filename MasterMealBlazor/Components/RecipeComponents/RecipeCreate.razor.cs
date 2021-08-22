@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using SixLabors.ImageSharp;
 using Microsoft.AspNetCore.Http;
+
 namespace MasterMealBlazor.Components.RecipeComponents
 {
     public partial class RecipeCreate : ComponentBase
     {
+
         private RecipeType[] Types;
         private IFormFile imageFile;
         protected async override Task OnInitializedAsync()
@@ -81,7 +83,7 @@ namespace MasterMealBlazor.Components.RecipeComponents
                 context.Add(ingredient);
             }
             await context.SaveChangesAsync();
-
+            navigationManager.NavigateTo("/recipe/index");
         }
         //private static void SaveStep(DbContext context, Step step)
         //{
