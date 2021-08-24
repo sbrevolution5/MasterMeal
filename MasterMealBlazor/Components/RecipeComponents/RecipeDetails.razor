@@ -40,7 +40,7 @@ else
                 </div>
             </div>
         }
-        @foreach (var step in recipe.Steps)
+        @foreach (var step in recipe.Steps.OrderBy(s=>s.StepNumber))
         {
             //card with step
             <div class="card">
