@@ -13,7 +13,7 @@
 @inject NavigationManager navigationManager
 
 @attribute [Authorize]
-@if (recipe == null || ingredients == null)
+@if (recipe == null || ingredients == null || steps == null || supplies == null)
 {
     <p>loading</p>
 }
@@ -63,7 +63,7 @@ else
             <div class="col">
                 <div class="form-group">
                     <label>Description:</label>
-                    <InputTextArea @bind-Value="recipeDescription" class="form-control" />
+                    <InputTextArea @bind-Value="recipe.Description" class="form-control" />
 
                 </div>
             </div>
@@ -72,7 +72,7 @@ else
             <div class="col">
                 <div class="form-group">
                     <label>Cooking Time:</label>
-                    <InputNumber @bind-Value="cookingTime" TValue="int" class="form-control" />
+                    <InputNumber @bind-Value="recipe.CookingTime" TValue="int" class="form-control" />
 
                 </div>
             </div>
@@ -95,7 +95,7 @@ else
                         <p>loading...</p>}
                     else
                     {
-                        <InputSelect @bind-Value="TypeId" TValue="int" class="form-control selectpicker">
+                        <InputSelect @bind-Value="recipe.TypeId" TValue="int" class="form-control selectpicker">
                             <option value="" hidden>Select a Type</option>
                             @foreach (RecipeType type in Types)
                             {

@@ -20,23 +20,18 @@ namespace MasterMealBlazor.Components.RecipeComponents
         private List<Step> steps = new();
         private List<Supply> supplies = new();
         private List<QIngredient> ingredients = new();
-        private string recipeName;
-        private string recipeDescription;
-        private int cookingTime;
-        private int TypeId;
         private Recipe recipe;
         protected async override Task OnInitializedAsync()
         {
             using var context = ContextFactory.CreateDbContext();
             Types = await context.RecipeType.ToArrayAsync();
             recipe = await context.Recipe.FirstOrDefaultAsync(i => i.Id == Convert.ToInt32(id));
+            steps = recipe.Steps.ToList();
+            supplies = recipe.Supplies.ToList();
+            ingredients = recipe.Ingredients.ToList();
         }
         public async void SaveRecipe()
         {
-            recipe.Name = recipeName;
-            recipe.Description = recipeDescription;
-            recipe.CookingTime = cookingTime;
-            recipe.TypeId = TypeId;
             recipe.Supplies = supplies;
             using var context = ContextFactory.CreateDbContext();
             int imageId = 1;
