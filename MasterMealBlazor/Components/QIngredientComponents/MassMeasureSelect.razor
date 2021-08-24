@@ -1,0 +1,12 @@
+﻿@using MasterMealBlazor.Enums
+<InputSelect @bind-Value="thisMassMeasureUnit" class="form-control selectpicker">
+    <option value="">Select A Unit</option>
+    @foreach (var unit in Enum.GetValues(typeof(MassMeasurementUnit)))
+    {
+        <option value="@unit">@unit</option>
+    }
+</InputSelect>
+@code {
+    [Parameter]
+    public MassMeasurementUnit thisMassMeasureUnit{ get; set; }
+}
