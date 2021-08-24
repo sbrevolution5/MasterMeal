@@ -271,16 +271,16 @@ namespace MasterMealBlazor.Data
             beefSupplies.Add(await AddSupplyAsync("Salt And Pepper", sup, beefTostada.Id, context));
 
             var beefSteps = new List<Step>();
-            beefSteps.Add(AddStep("Preheat Oven to 450F.", beefTostada.Id));
-            beefSteps.Add(AddStep("Dice tomato. Roughly chop cilantro. Halve and peel onion; thinly slice one half. Finely chop remaining onion until you have 2 TBS. Quarter lime. Halve, core, and thinly slice bell pepper into strips.", beefTostada.Id));
-            beefSteps.Add(AddStep("In a medium bowl, combine tomato, cilantro, chopped onion, juice from half the lime, and a pinch of salt and pepper.", beefTostada.Id));
-            beefSteps.Add(AddStep("In a small bowl, combine sour cream with as much hot sauce as you like.Stir in water 1 tsp.at a time until mixture reaches a drizzling consistency.Season with salt.", beefTostada.Id));
-            beefSteps.Add(AddStep("Heat a drizzle of olive oil in a large pan over medium - high heat.Add beef, Southwest Spice, chili powder, and a few big pinches of salt.Cook, breaking up meat into pieces, until browned, 4 - 5 minutes.", beefTostada.Id));
-            beefSteps.Add(AddStep("Once beef is browned, add bell pepper, sliced onion, and a pinch of salt to pan.Cook, stirring, until veggies are tender and beef is cooked through, 5 - 7 minutes. ", beefTostada.Id));
-            beefSteps.Add(AddStep("Add stock concentrate and ¼ cup water.Simmer until thickened, 1 - 2 minutes.Season with salt; remove pan from heat and set aside.", beefTostada.Id));
-            beefSteps.Add(AddStep("Drizzle tortillas with 1 TBS olive oil; brush or rub to coat all over.Arrange on a baking sheet.Gently prick each tortilla in a few places with a fork.", beefTostada.Id));
-            beefSteps.Add(AddStep("Bake on top rack, flipping halfway through, until lightly golden, 4 - 5 minutes per side.", beefTostada.Id));
-            beefSteps.Add(AddStep("Serve and top with pico de gallo and lime crema", beefTostada.Id));
+            beefSteps.Add(AddStep("Preheat Oven to 450F.",1, beefTostada.Id));
+            beefSteps.Add(AddStep("Dice tomato. Roughly chop cilantro. Halve and peel onion; thinly slice one half. Finely chop remaining onion until you have 2 TBS. Quarter lime. Halve, core, and thinly slice bell pepper into strips.",2, beefTostada.Id));
+            beefSteps.Add(AddStep("In a medium bowl, combine tomato, cilantro, chopped onion, juice from half the lime, and a pinch of salt and pepper.",3, beefTostada.Id));
+            beefSteps.Add(AddStep("In a small bowl, combine sour cream with as much hot sauce as you like.Stir in water 1 tsp.at a time until mixture reaches a drizzling consistency.Season with salt.",4, beefTostada.Id));
+            beefSteps.Add(AddStep("Heat a drizzle of olive oil in a large pan over medium - high heat.Add beef, Southwest Spice, chili powder, and a few big pinches of salt.Cook, breaking up meat into pieces, until browned, 4 - 5 minutes.",5, beefTostada.Id));
+            beefSteps.Add(AddStep("Once beef is browned, add bell pepper, sliced onion, and a pinch of salt to pan.Cook, stirring, until veggies are tender and beef is cooked through, 5 - 7 minutes. ",6, beefTostada.Id));
+            beefSteps.Add(AddStep("Add stock concentrate and ¼ cup water.Simmer until thickened, 1 - 2 minutes.Season with salt; remove pan from heat and set aside.",7, beefTostada.Id));
+            beefSteps.Add(AddStep("Drizzle tortillas with 1 TBS olive oil; brush or rub to coat all over.Arrange on a baking sheet.Gently prick each tortilla in a few places with a fork.",8, beefTostada.Id));
+            beefSteps.Add(AddStep("Bake on top rack, flipping halfway through, until lightly golden, 4 - 5 minutes per side.",9, beefTostada.Id));
+            beefSteps.Add(AddStep("Serve and top with pico de gallo and lime crema",10, beefTostada.Id));
             //beefTostada.Supplies =beefSupplies;
             await context.AddRangeAsync(beefSteps);
             await context.AddRangeAsync(beefIng);
@@ -324,16 +324,16 @@ namespace MasterMealBlazor.Data
             anchSupplies.Add(await AddSupplyAsync("Salt And Pepper", sup, anchoBBQ.Id, context));
 
             var anchSteps = new List<Step>();
-            anchSteps.Add(AddStep("Preheat oven to 450°.", anchoBBQ.Id));
-            anchSteps.Add(AddStep("Cut potatoes into ¼-inch-thick rounds. Toss on a baking sheet with a large drizzle of oil, salt, and pepper.", anchoBBQ.Id));
-            anchSteps.Add(AddStep("Roast on top rack until lightly browned and tender, 18-20 minutes.", anchoBBQ.Id));
-            anchSteps.Add(AddStep(" While potatoes roast, half, peel, and dice onion. Thinly slice pickle into rounds. Halve buns.", anchoBBQ.Id));
-            anchSteps.Add(AddStep("In a small bowl, combing BBQ Sauce, ketchup, chili powder, stock concentrate, half the cornstarch, and 1 TBS water.", anchoBBQ.Id));
-            anchSteps.Add(AddStep("Heat a drizzle of oil in a large pan over medium-high heat. Add onion; cook stirring, until softened, 4-5 minutes.", anchoBBQ.Id));
-            anchSteps.Add(AddStep("Add beef; season with salt and pepper. Cook breaking up meat into pieces, until browned, 3-5 minutes.", anchoBBQ.Id));
-            anchSteps.Add(AddStep("Add BBQ sauce mixture to pan. Cook, stirring, until sauce has thickened and beef is cooked through, 2-3 minutes. Taste and season with salt and pepper.", anchoBBQ.Id));
-            anchSteps.Add(AddStep("While filling cooks, toast buns until golden brown..", anchoBBQ.Id));
-            anchSteps.Add(AddStep("Serve meat on buns, topped with pickle ", anchoBBQ.Id));
+            anchSteps.Add(AddStep("Preheat oven to 450°.",1, anchoBBQ.Id));
+            anchSteps.Add(AddStep("Cut potatoes into ¼-inch-thick rounds. Toss on a baking sheet with a large drizzle of oil, salt, and pepper.",2, anchoBBQ.Id));
+            anchSteps.Add(AddStep("Roast on top rack until lightly browned and tender, 18-20 minutes.",3, anchoBBQ.Id));
+            anchSteps.Add(AddStep(" While potatoes roast, half, peel, and dice onion. Thinly slice pickle into rounds. Halve buns.",4, anchoBBQ.Id));
+            anchSteps.Add(AddStep("In a small bowl, combing BBQ Sauce, ketchup, chili powder, stock concentrate, half the cornstarch, and 1 TBS water.",5, anchoBBQ.Id));
+            anchSteps.Add(AddStep("Heat a drizzle of oil in a large pan over medium-high heat. Add onion; cook stirring, until softened, 4-5 minutes.",6, anchoBBQ.Id));
+            anchSteps.Add(AddStep("Add beef; season with salt and pepper. Cook breaking up meat into pieces, until browned, 3-5 minutes.",7, anchoBBQ.Id));
+            anchSteps.Add(AddStep("Add BBQ sauce mixture to pan. Cook, stirring, until sauce has thickened and beef is cooked through, 2-3 minutes. Taste and season with salt and pepper.",8, anchoBBQ.Id));
+            anchSteps.Add(AddStep("While filling cooks, toast buns until golden brown.",9, anchoBBQ.Id));
+            anchSteps.Add(AddStep("Serve meat on buns, topped with pickle ",10, anchoBBQ.Id));
             //anchoBBQ.Supplies = anchSupplies;
             await context.AddRangeAsync(anchSteps);
             await context.AddRangeAsync(anchIng);
@@ -381,19 +381,19 @@ namespace MasterMealBlazor.Data
             buffaloChk.Supplies.Add(await AddSupplyAsync("Salt And Pepper", sup, buffaloChk.Id, context));
 
             var buffSteps = new List<Step>();
-            buffSteps.Add(AddStep("Preheat oven to 425°.", buffaloChk.Id));
-            buffSteps.Add(AddStep("Trim and thinly slice scallions, separating whites from greens", buffaloChk.Id));
-            buffSteps.Add(AddStep("In a small bowl, combine half the sour cream, ½ tsp Frank’s Seasoning, and a big pinch of salt. Stir in water 1 tsp at a time until mixture reaches drizzling consistency", buffaloChk.Id));
-            buffSteps.Add(AddStep("Place 1 TBS butter in a medium bowl, microwave until melted. Stir in panko, Monterey Jack, remaining Frank’s Seasoning, and a big pinch of salt and pepper.", buffaloChk.Id));
-            buffSteps.Add(AddStep("Dice potatoes in ½-inch pieces. Place in a medium pot with enough salted water to cover by 2 inches. Bring to a boil; cook until tender, 15-20 minutes. Reserve ½ cup potato cooking liquid, then drain", buffaloChk.Id));
-            buffSteps.Add(AddStep("Add a drizzle of oil and scallion whites to empty pot over low heat; cook until softened, 1 minute.", buffaloChk.Id));
-            buffSteps.Add(AddStep("Return potatoes to pot; mash with remaining sour cream and 1 TBS butter until smooth and creamy, adding splashes of reserved potato cooking liquid as needed.Season with salt and pepper. Keep covered off heat.", buffaloChk.Id));
-            buffSteps.Add(AddStep("While potatoes cook, pat chicken dry with paper towels and season all over with salt and pepper.Place on one side of a lightly oiled baking sheet.", buffaloChk.Id));
-            buffSteps.Add(AddStep("Mound tops of chicken with panko mixture, pressing firmly to adhere to top. ", buffaloChk.Id));
-            buffSteps.Add(AddStep("Toss green beans on opposite side of sheet from chicken with a large drizzle of oil and a pinch of salt & pepper.", buffaloChk.Id));
-            buffSteps.Add(AddStep("Roast on top rack until chicken is golden brown and cooked through and green beans are tender, 15 - 18 minutes.", buffaloChk.Id));
-            buffSteps.Add(AddStep("Transfer roasted green beans to a large bowl; add 1 TBS butter and toss until melted.", buffaloChk.Id));
-            buffSteps.Add(AddStep("Drizzle chicken with creamy buffalo sauce and honey.", buffaloChk.Id));
+            buffSteps.Add(AddStep("Preheat oven to 425°.",1, buffaloChk.Id));
+            buffSteps.Add(AddStep("Trim and thinly slice scallions, separating whites from greens",2, buffaloChk.Id));
+            buffSteps.Add(AddStep("In a small bowl, combine half the sour cream, ½ tsp Frank’s Seasoning, and a big pinch of salt. Stir in water 1 tsp at a time until mixture reaches drizzling consistency",3, buffaloChk.Id));
+            buffSteps.Add(AddStep("Place 1 TBS butter in a medium bowl, microwave until melted. Stir in panko, Monterey Jack, remaining Frank’s Seasoning, and a big pinch of salt and pepper.",4, buffaloChk.Id));
+            buffSteps.Add(AddStep("Dice potatoes in ½-inch pieces. Place in a medium pot with enough salted water to cover by 2 inches. Bring to a boil; cook until tender, 15-20 minutes. Reserve ½ cup potato cooking liquid, then drain",5, buffaloChk.Id));
+            buffSteps.Add(AddStep("Add a drizzle of oil and scallion whites to empty pot over low heat; cook until softened, 1 minute.",6, buffaloChk.Id));
+            buffSteps.Add(AddStep("Return potatoes to pot; mash with remaining sour cream and 1 TBS butter until smooth and creamy, adding splashes of reserved potato cooking liquid as needed.Season with salt and pepper. Keep covered off heat.",7, buffaloChk.Id));
+            buffSteps.Add(AddStep("While potatoes cook, pat chicken dry with paper towels and season all over with salt and pepper.Place on one side of a lightly oiled baking sheet.",8, buffaloChk.Id));
+            buffSteps.Add(AddStep("Mound tops of chicken with panko mixture, pressing firmly to adhere to top. ",9, buffaloChk.Id));
+            buffSteps.Add(AddStep("Toss green beans on opposite side of sheet from chicken with a large drizzle of oil and a pinch of salt & pepper.",10, buffaloChk.Id));
+            buffSteps.Add(AddStep("Roast on top rack until chicken is golden brown and cooked through and green beans are tender, 15 - 18 minutes.",11, buffaloChk.Id));
+            buffSteps.Add(AddStep("Transfer roasted green beans to a large bowl; add 1 TBS butter and toss until melted.",12, buffaloChk.Id));
+            buffSteps.Add(AddStep("Drizzle chicken with creamy buffalo sauce and honey.",13, buffaloChk.Id));
 
             await context.AddRangeAsync(buffSteps);
             await context.AddRangeAsync(buffIng);
@@ -402,12 +402,13 @@ namespace MasterMealBlazor.Data
             await context.SaveChangesAsync();
         }
 
-        private static Step AddStep(string v, int id)
+        private static Step AddStep(string v,int stepNum, int id)
         {
             var step = new Step()
             {
                 Text = v,
-                RecipeId = id
+                RecipeId = id,
+                StepNumber = stepNum
             };
             return step;
         }
