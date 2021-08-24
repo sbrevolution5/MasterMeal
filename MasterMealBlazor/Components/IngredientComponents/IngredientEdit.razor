@@ -47,7 +47,7 @@ else
     {
         using (var context = ContextFactory.CreateDbContext())
         {
-
+            ingredient.Type = null;
             context.Update(ingredient);
             await context.SaveChangesAsync();
 
