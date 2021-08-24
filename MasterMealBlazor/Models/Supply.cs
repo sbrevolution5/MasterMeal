@@ -7,12 +7,9 @@ namespace MasterMealBlazor.Models
 {
     public class Supply
     {
-        public Supply()
-        {
-            this.Recipes = new HashSet<Recipe>();
-        }
+        
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Recipe> Recipes { get; set; }
+        public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
     }
 }

@@ -204,6 +204,7 @@ namespace MasterMealBlazor.Data
                 supplies.Add(NewSupply("Large Bowl"));
                 supplies.Add(NewSupply("Medium Pot"));
                 supplies.Add(NewSupply("Potato Masher"));
+                await context.AddRangeAsync(supplies);
                 await context.SaveChangesAsync();
             }
         }
@@ -262,12 +263,12 @@ namespace MasterMealBlazor.Data
             beefIng.Add(NewQIngredient("Chili Powder", 1, Fraction.NoFraction, VolumeMeasurementUnit.Teaspoon, ing, beefTostada.Id));
             beefIng.Add(NewQIngredient("Southwest Spice Blend", 1, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, beefTostada.Id));
             var beefSupplies = new List<Supply>();
-            beefSupplies.Add(AddSupply("Large Pan", sup));
-            beefSupplies.Add(AddSupply("Baking Sheet", sup));
-            beefSupplies.Add(AddSupply("Small Bowl", sup));
-            beefSupplies.Add(AddSupply("Medium Bowl", sup));
-            beefSupplies.Add(AddSupply("Olive Oil", sup));
-            beefSupplies.Add(AddSupply("Salt And Pepper", sup));
+            beefSupplies.Add(await AddSupplyAsync("Large Pan", sup, beefTostada.Id, context));
+            beefSupplies.Add(await AddSupplyAsync("Baking Sheet", sup, beefTostada.Id, context));
+            beefSupplies.Add(await AddSupplyAsync("Small Bowl", sup, beefTostada.Id, context));
+            beefSupplies.Add(await AddSupplyAsync("Medium Bowl", sup, beefTostada.Id, context));
+            beefSupplies.Add(await AddSupplyAsync("Olive Oil", sup, beefTostada.Id, context));
+            beefSupplies.Add(await AddSupplyAsync("Salt And Pepper", sup, beefTostada.Id, context));
 
             var beefSteps = new List<Step>();
             beefSteps.Add(AddStep("Preheat Oven to 450F.", beefTostada.Id));
@@ -316,11 +317,11 @@ namespace MasterMealBlazor.Data
             anchIng.Add(NewQIngredient("Ancho Chili Powder", 1, Fraction.NoFraction, VolumeMeasurementUnit.Teaspoon, ing, anchoBBQ.Id));
             anchIng.Add(NewQIngredient("Cornstarch", 1, Fraction.NoFraction, VolumeMeasurementUnit.Tablespoon, ing, anchoBBQ.Id));
             var anchSupplies = new List<Supply>();
-            anchSupplies.Add(AddSupply("Large Pan", sup));
-            anchSupplies.Add(AddSupply("Baking Sheet", sup));
-            anchSupplies.Add(AddSupply("Small Bowl", sup));
-            anchSupplies.Add(AddSupply("Olive Oil", sup));
-            anchSupplies.Add(AddSupply("Salt And Pepper", sup));
+            anchSupplies.Add(await AddSupplyAsync("Large Pan", sup, anchoBBQ.Id, context));
+            anchSupplies.Add(await AddSupplyAsync("Baking Sheet", sup, anchoBBQ.Id, context));
+            anchSupplies.Add(await AddSupplyAsync("Small Bowl", sup, anchoBBQ.Id, context));
+            anchSupplies.Add(await AddSupplyAsync("Olive Oil", sup, anchoBBQ.Id, context));
+            anchSupplies.Add(await AddSupplyAsync("Salt And Pepper", sup, anchoBBQ.Id, context));
 
             var anchSteps = new List<Step>();
             anchSteps.Add(AddStep("Preheat oven to 450°.", anchoBBQ.Id));
@@ -368,16 +369,16 @@ namespace MasterMealBlazor.Data
             buffIng.Add(NewQIngredient("Green Beans", 6, Fraction.NoFraction, VolumeMeasurementUnit.Ounce, ing, buffaloChk.Id));
             buffIng.Add(NewQIngredient("Franks Seasoning Blend", 1, Fraction.NoFraction, VolumeMeasurementUnit.Teaspoon, ing, buffaloChk.Id));
 
-            var buffSupplies = new List<Supply>();
-            buffSupplies.Add(AddSupply("Large Bowl", sup));
-            buffSupplies.Add(AddSupply("Baking Sheet", sup));
-            buffSupplies.Add(AddSupply("Paper Towels", sup));
-            buffSupplies.Add(AddSupply("Strainer", sup));
-            buffSupplies.Add(AddSupply("Small Bowl", sup));
-            buffSupplies.Add(AddSupply("Medium Bowl", sup));
-            buffSupplies.Add(AddSupply("Medium Pot", sup));
-            buffSupplies.Add(AddSupply("Olive Oil", sup));
-            buffSupplies.Add(AddSupply("Salt And Pepper", sup));
+
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Large Bowl", sup, buffaloChk.Id,context));
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Baking Sheet", sup, buffaloChk.Id, context));
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Paper Towels", sup, buffaloChk.Id, context));
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Strainer", sup, buffaloChk.Id, context));
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Small Bowl", sup, buffaloChk.Id, context));
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Medium Bowl", sup, buffaloChk.Id, context));
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Medium Pot", sup, buffaloChk.Id, context));
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Olive Oil", sup, buffaloChk.Id, context));
+            buffaloChk.Supplies.Add(await AddSupplyAsync("Salt And Pepper", sup, buffaloChk.Id, context));
 
             var buffSteps = new List<Step>();
             buffSteps.Add(AddStep("Preheat oven to 425°.", buffaloChk.Id));
@@ -393,7 +394,6 @@ namespace MasterMealBlazor.Data
             buffSteps.Add(AddStep("Roast on top rack until chicken is golden brown and cooked through and green beans are tender, 15 - 18 minutes.", buffaloChk.Id));
             buffSteps.Add(AddStep("Transfer roasted green beans to a large bowl; add 1 TBS butter and toss until melted.", buffaloChk.Id));
             buffSteps.Add(AddStep("Drizzle chicken with creamy buffalo sauce and honey.", buffaloChk.Id));
-            //buffaloChk.Supplies = buffSupplies;
 
             await context.AddRangeAsync(buffSteps);
             await context.AddRangeAsync(buffIng);
@@ -412,9 +412,12 @@ namespace MasterMealBlazor.Data
             return step;
         }
 
-        private static Supply AddSupply(string v, List<Supply> sup)
+        private static async Task<Supply> AddSupplyAsync(string v, List<Supply> sup, int rId, ApplicationDbContext context)
         {
             Supply supply = sup.Where(s => s.Name == v).FirstOrDefault();
+            Recipe rec = await context.Recipe.Where(r => r.Id == rId).FirstOrDefaultAsync();
+            supply.Recipes.Add(rec);
+            await context.SaveChangesAsync();
             return supply;
         }
 

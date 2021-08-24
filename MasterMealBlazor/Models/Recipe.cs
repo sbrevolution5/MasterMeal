@@ -15,7 +15,6 @@ namespace MasterMealBlazor.Models
         }
         public int Id { get; set; }
         public virtual ICollection<QIngredient> Ingredients { get; set; } = new HashSet<QIngredient>();
-        public virtual ICollection<Supply> Supplies { get; set; } = new HashSet<Supply>();
         public virtual ICollection<Step> Steps { get; set; } = new HashSet<Step>();
         public int Servings { get; set; }
         public string Name { get; set; }
@@ -30,6 +29,8 @@ namespace MasterMealBlazor.Models
         public virtual DBImage Image { get; set; }
         public string RecipeSource { get; set; } = "";
         public string RecipeSourceUrl { get; set; } = "";
+        //Many to many, Not virtual!
+        public ICollection<Supply> Supplies { get; set; } = new List<Supply>();
         [NotMapped]
         public float AvgRating
         {
