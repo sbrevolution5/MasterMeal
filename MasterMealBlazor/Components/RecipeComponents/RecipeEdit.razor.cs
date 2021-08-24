@@ -25,8 +25,8 @@ namespace MasterMealBlazor.Components.RecipeComponents
         {
             using var context = ContextFactory.CreateDbContext();
             Types = await context.RecipeType.ToArrayAsync();
-            recipe = await context.Recipe.FirstOrDefaultAsync(i => i.Id == Convert.ToInt32(id));
-            steps = recipe.Steps.ToList();
+            recipe = await context.Recipe.Include(r=>r.Steps).Include(r=>r.Supplies).Include(r=>r.Ingredients).ThenInclude(i=>i.Ingredient).FirstOrDefaultAsync(i => i.Id == Convert.ToInt32(id));
+            steps = recipe.Steps.OrderBy(s => s.StepNumber).ToList();
             supplies = recipe.Supplies.ToList();
             ingredients = recipe.Ingredients.ToList();
         }
