@@ -57,7 +57,7 @@ else
                         <td>@recipe.CookingTime</td>
                         <td>@recipe.Author?.DisplayName</td>
                         <td>@recipe.AvgRating</td>
-                        <td><a href="/recipe/details/@recipe.Id" class="btn btn-primary">Details</a></td>
+                        <td><a href="/recipe/details/@recipe.Id" class="btn btn-primary">Details</a><a href="/recipe/edit/@recipe.Id" class="btn btn-primary">Edit</a></td>
                     </tr>
                 }
             </tbody>
