@@ -34,7 +34,7 @@ else
     [Parameter]
     public string id { get; set; }
     private List<IngredientType> types = new();
-    private Ingredient ingredient = new Ingredient();
+    private Ingredient ingredient;
     protected override async Task OnInitializedAsync()
     {
         using (var context = ContextFactory.CreateDbContext())
