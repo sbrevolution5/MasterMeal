@@ -20,7 +20,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Name:</label>
-                <InputText @bind-Value="recipeName" class="form-control" />
+                <InputText @bind-Value="recipe.Name" class="form-control" />
 
             </div>
         </div>
@@ -57,7 +57,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Description:</label>
-                <InputTextArea @bind-Value="recipeDescription" class="form-control" />
+                <InputTextArea @bind-Value="recipe.Description" class="form-control" />
 
             </div>
         </div>
@@ -66,7 +66,7 @@
         <div class="col">
             <div class="form-group">
                 <label>Cooking Time:</label>
-                <InputNumber @bind-Value="cookingTime" TValue="int" class="form-control" />
+                <InputNumber @bind-Value="recipe.CookingTime" TValue="int" class="form-control" />
 
             </div>
         </div>
@@ -89,7 +89,7 @@
                     <p>loading...</p>}
                 else
                 {
-                    <InputSelect @bind-Value="TypeId" TValue="int" class="form-control selectpicker">
+                    <InputSelect @bind-Value="recipe.TypeId" TValue="int" class="form-control selectpicker">
                         <option value="" hidden>Select a Type</option>
                         @foreach (RecipeType type in Types)
                         {

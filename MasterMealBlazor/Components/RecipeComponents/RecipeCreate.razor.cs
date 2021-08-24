@@ -24,17 +24,10 @@ namespace MasterMealBlazor.Components.RecipeComponents
         private List<Step> steps = new();
         private List<Supply> supplies = new();
         private List<QIngredient> ingredients = new();
-        private string recipeName;
-        private string recipeDescription;
-        private int cookingTime;
-        private int TypeId;
         private Recipe recipe = new();
         public async void SaveRecipe()
         {
-            recipe.Name = recipeName;
-            recipe.Description = recipeDescription;
-            recipe.CookingTime = cookingTime;
-            recipe.TypeId = TypeId;
+            
             recipe.Supplies = supplies;
             using var context = ContextFactory.CreateDbContext();
             int imageId = 1;
