@@ -178,7 +178,6 @@ namespace MasterMealBlazor.Data
                 ingredients.Add(MakeIngredient("Lime", "Produce", MeasurementType.Count, context, ingTypes));
                 ingredients.Add(MakeIngredient("Hot Sauce", "Condiments and Sauces", MeasurementType.Volume, context, ingTypes));
                 ingredients.Add(MakeIngredient("Cilantro", "Produce", MeasurementType.Volume, context, ingTypes));
-                ingredients.Add(MakeIngredient("Butter", "Dairy", MeasurementType.Volume, context, ingTypes));
                 await context.AddRangeAsync(ingredients);
                 await context.SaveChangesAsync();
             }
