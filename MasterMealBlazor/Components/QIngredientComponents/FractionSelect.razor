@@ -1,0 +1,10 @@
+﻿@using MasterMealBlazor.Enums
+<InputSelect @bind-Value="fraction" class="form-control selectpicker">
+    @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
+    {
+        <option value="@fraction">@fraction</option>
+    }
+</InputSelect>
+@code {
+    public Fraction fraction { get; set; }
+}

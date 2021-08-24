@@ -32,12 +32,7 @@ else
                     <label>Quantity</label>
                     <InputNumber @bind-Value="qIngredient.QuantityNumber" TValue="int" class="form-control" />
                     <!--FractionSelect Component-->
-                    <InputSelect @bind-Value="qIngredient.Fraction" class="form-control selectpicker">
-                        @foreach (var fraction in Enum.GetValues(typeof(Fraction)))
-                            {
-                            <option value="@fraction">@fraction</option>
-                            }
-                    </InputSelect>
+                    <FractionSelect fraction="qIngredient.Fraction"/>
                     @if (measurementType == MeasurementType.Volume)
                     {
                         //VolumeMeasureSelect
